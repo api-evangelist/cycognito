@@ -1,0 +1,17 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/cycognito-v1-openapi-original.json
+docs: https://api.platform.cycognito.com/v1/docs/index.html
+notes: API V1 authenticates with a user-generated API key in the Authorization header. Platform SSO is separately handled by an Auth0 tenant (auth.cycognito.com, OpenID Connect) and is not the API-key surface.
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: apiAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/cycognito-v1-openapi-original.json
