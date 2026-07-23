@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Verify IPs API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Verify IPs
+paths:
+  /v1/is-scanner-ips:
+    post:
+      description: Determine if an IP address is associated with CyCognito. This check focuses on a specific 24-hour window, which is set by a provided date-time or defaults to the day of the request. Verification data is retained for 166 days, after which any requests will return as negative.
+      security:
+      - apiAuth: []
+      summary: Verify IP ownership
+      tags:
+      - Verify IPs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ips:
+                  description: A comma-separated list of IP addresses to be verified.
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - 1.1.1.1
+                  - 2.2.2.2
+                date-time:
+                  description: "The date-time string that specifies the start of a 24-hour window during which the IP addresses will be verified. \n*Format:* `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`"
+                  type: string
+                  example: '2022-11-02T16:07:03.071Z'
+              required:
+              - ips
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ip:
+                      description: An IP address provided by the user for verification.
+                      type: string
+                      example: 1.2.3.4
+                    scanner:
+                      description: Indicates whether the specified IP address was utilized by CyCognito's scanning infrastructure during the time frame specified in the user's query. A value of `true` means the IP was part of CyCognito's scanning activities, while `false` indicates it was not used by CyCognito during the queried period.
+                      type: boolean
+                      example: 'true'
+                  required:
+                  - ip
+                  - scanner
+components:
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

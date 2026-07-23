@@ -1,0 +1,415 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Organizations API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Organizations
+paths:
+  /v1/orgs:
+    post:
+      description: Fetch organizations based on given criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      security:
+      - apiAuth: []
+      summary: Retrieve organizations
+      tags:
+      - Organizations
+      parameters:
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Comma-separated list of desired organization attributes. For more information, view the response example and schema.
+      - name: advanced-search
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name="kb-advanced-search-link">Advanced Search</span> documentation for more details.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: origin
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: in
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - discovered
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    assets-count:
+                      description: Represents the total number of assets attributed to the organization.
+                      anyOf:
+                      - type: integer
+                      - type: 'null'
+                      example: '10384'
+                    assets-count-by-security-grade:
+                      description: Provides a breakdown of assets based on their security grades, displaying the total number of assets for each grade (A, B, C, D, and F).
+                      anyOf:
+                      - type: object
+                        properties:
+                          a:
+                            type: integer
+                          b:
+                            type: integer
+                          c:
+                            type: integer
+                          d:
+                            type: integer
+                          f:
+                            type: integer
+                        required:
+                        - a
+                        - b
+                        - c
+                        - d
+                        - f
+                      - type: 'null'
+                      example: "{\n      \"a\": 23456,\n      \"b\": 1234,\n      \"c\": 345,\n      \"d\": 56,\n      \"f\": 78\n    }"
+                    attractiveness-label:
+                      description: Represents the organization's appeal to potential attackers. Ranging from very low to extreme, it essentially mirrors the highest attractiveness level among its attributed assets. For instance, an organization with assets showcasing high-risk services might have elevated attractiveness.
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    country:
+                      description: The two-letter country code in which the organization's underlying IP range is currently hosted.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    discoverability:
+                      description: Represents the organization's amount of exposure, or how easily an attacker can identify and link the organization to your enterprise. Ranging from low to extreme, it essentially mirrors the highest discoverability level among its attributed assets.
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    discovery-path:
+                      description: The sequence of steps involved in discovering a specific asset or organization in your attack surface. It details each step and the connections between them, illustrating how one step leads to the subsequent step in the discovery process.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            src:
+                              type: string
+                            dest:
+                              type: string
+                            movement-type:
+                              $ref: '#/components/schemas/json.any?'
+                            movement-data:
+                              $ref: '#/components/schemas/json.any?'
+                          required:
+                          - src
+                          - dest
+                          - movement-type
+                          - movement-data
+                      - type: 'null'
+                      example: '[{"dest":"org/acme-corporation","movement_data":{"sources":[]},"movement_type":"default","src":"_ENTRY_"},{"dest":"ip/1.1.1.1","movement_data":{"probability":1,"relation_id":"org-relation/acme-corporation-has-subsidiary-acme-jubilee-limited","sources":[]},"movement_type":"relation","src":"org/acme-corporation"}]'
+                    domain:
+                      description: The domain name associated with the organization—e.g., *studio.acme.com*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: studio.acme.com
+                    first-seen:
+                      description: The date and time at which CyCognito's discovery first identified the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-08-03T15:18:48.907Z'
+                    id:
+                      description: A unique string that identifies the organization in your CyCognito platform.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: org/acme.org
+                    issues-count:
+                      description: The number of issues found on a particular asset or organization.
+                      anyOf:
+                      - type: integer
+                      - type: 'null'
+                      example: '7'
+                    issues-count-by-severity:
+                      description: The number of issues found on a particular organization, distributed according to severity.
+                      anyOf:
+                      - type: object
+                        properties:
+                          critical:
+                            type: integer
+                          high:
+                            type: integer
+                          medium:
+                            type: integer
+                          low:
+                            type: integer
+                        required:
+                        - critical
+                        - high
+                        - medium
+                        - low
+                        additionalProperties: false
+                      - type: 'null'
+                      example: "{\n      \"critical\": 23,\n      \"high\": 78,\n      \"low\": 234,\n      \"medium\": 101\n    }"
+                    labels:
+                      description: Comprises keywords closely linked to the organization. These keywords aid in formulating hypotheses about organizations and in identifying associated domains and IP ranges.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Associates, Inc.\",\n      \"Acme AG\"\n    ]"
+                    last-seen:
+                      description: The date and time at which CyCognito's discovery most recently identified the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-08-04T09:52:00.935Z'
+                    name:
+                      description: The name of the organization.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Organization
+                    origin:
+                      description: Indicates whether the organization was discovered (i.e., it was identified based on CyCognito's discovery algorithms), or custom (i.e., a user created the organization manually).
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Discovered
+                    probability:
+                      description: Represents the likelihood that an organization belongs to your enterprise.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '100'
+                    references:
+                      description: 'Contains details linked to the organization''s Wikipedia, Crunchbase, and LinkedIn pages. '
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            url:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - type
+                          - url
+                      - type: 'null'
+                      example: "[\n      {\n        \"type\": \"linkedin\",\n        \"url\": \"https://us.linkedin.com/in/greenwood-yorke-22513\"\n      },\n      {\n        \"type\": \"crunchbase\",\n        \"url\": \"https://www.crunchbase.com/organization/acmecorporation\"\n      }\n    ]"
+                    security-grade:
+                      description: Represents the overall security grade of the organization as an asset group. Unlike traditional methods, CyCognito determines this grade by analyzing various factors across the asset spectrum, not solely relying on the asset with the lowest grade in the group.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: C
+                    security-score:
+                      description: Represents the overall security score of the organization as an asset group. Unlike traditional methods, CyCognito determines this numerical score by analyzing various factors across the asset spectrum, not solely relying on the asset with the lowest security score in the group.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '66'
+                    severe-issues-count:
+                      description: Refers to the number of severe issues (those with a severity level of *high* to *critical*) across all of the assets attributed to the organization.
+                      anyOf:
+                      - type: integer
+                      - type: 'null'
+                      example: '62'
+                    sources:
+                      description: Contains URLs related to the services or origins from which the organization data was gathered.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            name:
+                              $ref: '#/components/schemas/json.any?'
+                            value:
+                              type: string
+                          required:
+                          - type
+                          - name
+                          - value
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"google-search\",\n        \"type\": \"google-search\",\n        \"value\": \"http://google.com/search?q=Acme+Associates+AS&num=10&hl=en&gl=US\"\n      },\n      {\n        \"name\": \"Acme Associates AS\",\n        \"type\": \"s&p-org\",\n        \"value\": \"s&p-org\"\n      }\n    ]"
+                    teams:
+                      description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                    tech-owners:
+                      description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            org-name:
+                              type: string
+                          required:
+                          - name
+                          - email
+                          - org-name
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+  /v1/orgs/org-mgmt:
+    post:
+      description: Attribute or unattribute assets from specified organizations.
+      security:
+      - apiAuth: []
+      summary: Adjust organization attributions
+      tags:
+      - Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset-ids:
+                  description: "A comma-separated list in which each item contains the unique ID for the assets whose organization attributions you would like to modify. The unique ID corresponds to the `id` field (from the *Retrieve assets* response) and should be in the format `&lt;asset_type&gt;/&lt;asset_id&gt;`.  \n   \n*Examples:* `ip/1.1.1.1`, `domain/acme.com`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - ip/1.2.3.4
+                  - ip/127.0.0.1
+                  - domain/example.com
+                orgs-to-add:
+                  description: A comma-separated list containing the names of the organizations to attribute the assets to.
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - org1
+                  - org4
+                orgs-to-remove:
+                  description: A comma-separated list containing the names of the organizations to unattribute the assets to.
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - org2
+                  - org3
+                propagate:
+                  description: Indicates whether the actions should propagate to other assets.
+                  type: boolean
+                  example: true
+              required:
+              - asset-ids
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: When the response status is 200, the user's action to adjust organizational attributions has been successfully submitted. It always displays the string *User action submitted*.
+                    type: string
+                    example: User action submitted
+                required:
+                - status
+components:
+  schemas:
+    json.any?:
+      anyOf:
+      - type: string
+      - type: boolean
+      - type: number
+      - type: string
+        format: dateTime
+      - type: string
+        format: byte
+      - type: array
+        items:
+          $ref: '#/components/schemas/json.any?'
+      - type: object
+        additionalProperties:
+          $ref: '#/components/schemas/json.any?'
+      - type: 'null'
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

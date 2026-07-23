@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Revalidation API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Revalidation
+paths:
+  /v1/revalidate:
+    post:
+      description: Trigger a revalidation on selected assets or asset groups (and by association, on their related issues).
+      security:
+      - apiAuth: []
+      summary: Initiate revalidation
+      tags:
+      - Revalidation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: A comma-separated list in which each item contains the unique ID for the assets and issues that you would like to revalidate. The unique ID corresponds to the `id` field (from the *Retrieve assets* and *Search issues* responses) and should be in the format `&lt;asset_type&gt;/&lt;asset_id&gt;` (for assets), or `issue/&lt;affected_asset&gt;-&lt;issue_id&gt;` (for issues).
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - ip/1.1.1.1
+                  - domain/example.com
+                  - webapp/example.com
+                  - issue/CVE-1234-56789
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    description: Indicates the outcome of the revalidation request. When the response status is 200, displays *success*. When the response status is 400, displays *failed*.
+                    type: string
+                    example: success
+                  revalidations-for-request:
+                    description: The number of entity IDs included in the revalidation request.
+                    type: integer
+                    example: '123'
+                  revalidations-left:
+                    description: The remaining number of revalidations available for the realm. When the response status is 200, this number is updated post-action. When the response status is 400, it shows the initial count.
+                    type: integer
+                    example: '4567'
+                required:
+                - result
+                - revalidations-for-request
+                - revalidations-left
+components:
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

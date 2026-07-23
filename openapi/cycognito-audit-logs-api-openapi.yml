@@ -1,0 +1,217 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Audit Logs API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Audit Logs
+paths:
+  /v1/audit-log:
+    post:
+      description: Access events and activities from the audit log within defined timeframes.
+      security:
+      - apiAuth: []
+      summary: Retrieve audit logs
+      tags:
+      - Audit Logs
+      parameters:
+      - name: count
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: 'Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: created-at
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: between
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - - '2026-07-02T01:56:10.859Z'
+                      - '2026-07-09T01:56:10.861Z'
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    attached-file-id:
+                      description: If an event involved file uploads or attachments, this field contains the unique identifier for that file, allowing for easy retrieval or reference.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: abcd-123456-efgh-7890
+                    created-at:
+                      description: "A timestamp indicating when the event or action was executed. \n*Format:* `yyyy-mm-ddTHH:mm:ssZ`"
+                      type: string
+                      format: date-time
+                      example: '2024-05-18T13:09:08.557Z'
+                    details:
+                      description: Additional context or information related to the event, providing more granularity about the executed action.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Asset tags were added to 'Acme Homes'
+                    event:
+                      description: A concise descriptor of the action or activity that took place, like *Asset removed* or *Team member signed in*.
+                      type: string
+                      example: Asset tags added
+                    target-ids:
+                      description: An array of unique identifiers associated specifically with the targeted assets affected by the event. Useful for tracing specific assets related to the action.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n \"domain/example.com\"\n ]"
+                    target-type:
+                      description: Specifies the type of entity the event is related to, such as *asset*, *issue*, or *org*. Helps in categorizing the event's context.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Asset
+                    team-id:
+                      description: A unique identifier assigned to the team related to the event or action. This aids in filtering events by team-specific activities.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 1234a5678bcd
+                    team-name:
+                      description: The official name of the team related to the event or action. Provides a human-readable reference for the associated team.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Homes
+                    user-email:
+                      description: The email address associated with the user who performed the action. Useful for communication or verification purposes.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: marty@acme.com
+                    user-id:
+                      description: A unique identifier assigned to the user, aiding in distinguishing different platform users.
+                      type: string
+                      example: asdf1234qwer5678
+                    user-name:
+                      description: The full name of the user who performed the action.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Marty McFly
+                    user-role:
+                      description: The specific role assigned to the user within the platform, such as Admin, User, or Guest. Determines the user's access and privileges.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: admin
+                  required:
+                  - attached-file-id
+                  - created-at
+                  - details
+                  - event
+                  - target-ids
+                  - target-type
+                  - team-id
+                  - team-name
+                  - user-email
+                  - user-id
+                  - user-name
+                  - user-role
+                  additionalProperties: false
+components:
+  schemas:
+    json.any?:
+      anyOf:
+      - type: string
+      - type: boolean
+      - type: number
+      - type: string
+        format: dateTime
+      - type: string
+        format: byte
+      - type: array
+        items:
+          $ref: '#/components/schemas/json.any?'
+      - type: object
+        additionalProperties:
+          $ref: '#/components/schemas/json.any?'
+      - type: 'null'
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

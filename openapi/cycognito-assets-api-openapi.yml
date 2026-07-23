@@ -1,0 +1,3711 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Assets
+paths:
+  /v1/assets:
+    post:
+      description: Query assets across all asset types (IPs, domains, certificates, web applications, IP ranges) simultaneously in a single API call. This unified endpoint simplifies asset management by allowing you to retrieve and filter multiple asset types at once, rather than querying each type separately. Returns results in a consistent format with fields set to `null` when not applicable to a specific asset type.
+      security:
+      - apiAuth: []
+      summary: Retrieve unified assets
+      tags:
+      - Assets
+      parameters:
+      - name: count
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000.
+      - name: advanced-search
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name="kb-advanced-search-link">Advanced Search</span> documentation for more details.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: 'Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99.'
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies a search term for conducting a keyword-based search and retrieving data that matches your query.
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema.
+      - name: sort-by
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies the field by which the results should be sorted.
+      - name: sort-order
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        required: false
+        description: Sorts the specified field in ascending or descending order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: status
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: in
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - new
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    active:
+                      description: Indicates whether an IP address, domain, or certificate is currently used by your organization's IT infrastructure.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    additional-properties:
+                      description: Supplementary attributes or characteristics of a web application asset, particularly detailing any unique web resource features or specifications of interest.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n      \"hosting.environment\": {\n        \"value\": [\n          \"IaaS\"\n        ],\n        \"display_name\": \"Hosting environment\"\n      },\n      \"hosting.provider\": {\n        \"value\": [\n          \"Amazon\"\n        ],\n        \"display_name\": \"Hosting provider\"\n      },\n      \"hosting.type\": {\n        \"value\": [\n          \"cloud\"\n        ],\n        \"display_name\": \"Hosting type\"\n      }\n    }"
+                    advisories:
+                      description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              last-verified:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              evidence-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              evidence-last-seen:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              vulnerable:
+                                anyOf:
+                                - type: boolean
+                                - type: 'null'
+                              advisory:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              issue-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - last-verified
+                            - evidence-id
+                            - evidence-last-seen
+                            - vulnerable
+                            - advisory
+                            - issue-id
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"last_verified\": \"2024-08-04T08:21:17.000Z\",\n        \"id\": \"ip/1.2.2.2\",\n        \"issue_id\": \"CYC-VS-APACHE-HTTP_SERVER-2.2.15\",\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"type\": \"ip\",\n        \"evidence_id\": \"issue/1.2.2.2-cyc-vs-apache-http_server-2.2.15\",\n        \"realm_id\": \"acme-corporation\",\n        \"security_score\": 16,\n        \"evidence_last_seen\": \"2024-08-04T08:21:17.000Z\",\n        \"vulnerable\": true\n      }\n    ]"
+                    alive:
+                      description: Indicates whether an IP Address has at least one open or closed port (i.e., an installed service), or responds to a ping.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    alive-evidence:
+                      description: Refers to any specific evidence gathered from the internet which indicates the reason why an asset is considered alive.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: ports
+                    as-list:
+                      description: The list of autonomous systems (AS list) to which an IP range and its IP addresses belong.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"AS1234\",\n      \"AS23456\",\n      \"AS567890\"\n    ]"
+                    asns:
+                      description: The Autonomous System Number (ASN) of an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "[\n      {\n        \"owner\": \"Amazon.com, Inc.\",\n        \"asn\": \"AS16509\"\n      },\n      {\n        \"owner\": \"GoDaddy.com, LLC\",\n        \"asn\": \"AS26496\"\n      }\n    ]"
+                    attractiveness:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a highly attractive target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: extreme
+                    attractiveness-label:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    attribution-certainty:
+                      description: Refers to the degree of certainty in which an organization can be said to own a particular asset. This value is expressed as one of five levels for ease of prioritization.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: highest
+                    business-units:
+                      description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Marketing\"\n    ]"
+                    certificate-subject-key-id:
+                      description: The certificates subject key.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    certification-authority-key-id:
+                      description: The certificates authority key.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    cidr:
+                      description: The CIDR IP range.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 1.1.*.*
+                    cis-controls:
+                      description: Refers to the compliance control number of the CIS framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                    closed-ports:
+                      description: A collection of objects describing closed ports associated with the asset.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                            port:
+                              type: integer
+                            first-seen:
+                              type: string
+                            protocol:
+                              type: string
+                              enum:
+                              - tcp
+                              - udp
+                          required:
+                          - status
+                          - port
+                          - first-seen
+                          - protocol
+                          additionalProperties: false
+                      - type: 'null'
+                      example: "[\n      {\n        \"port\": 80,\n        \"protocol\": \"udp\",\n        \"status\": \"closed\"\n      },\n      {\n        \"port\": 8081,\n        \"protocol\": \"tcp\",\n   \"first_seen\": \"2024-09-29T18:26:30.650Z\",\n     \"status\": \"closed\"\n      }\n    ]"
+                    cloud-env:
+                      description: The cloud environment in which the asset is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: ACME AWS Cloud Environment
+                    cloud-env-metadata:
+                      description: Data that CyCognito fetches directly from your cloud service (e.g., AWS, Azure, GCP) and includes the configuration of your instance.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          additionalProperties:
+                            anyOf:
+                            - type: string
+                            - type: object
+                      - type: 'null'
+                      example: "[{\"cloud-env\": \"value\"\n                                                                      \"cloud-env-id\": \"value\"\n                                                                      \"metadata\": \"value\"}]"
+                    comment:
+                      description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                      anyOf:
+                      - type: object
+                        properties:
+                          content:
+                            type: string
+                          last-update:
+                            anyOf:
+                            - type: string
+                              format: date-time
+                            - type: 'null'
+                        required:
+                        - content
+                        - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    comments:
+                      description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            content:
+                              type: string
+                            created-by-name:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            last-update:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - content
+                          - created-by-name
+                          - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    compliance-violations:
+                      description: Refers to specific compliance frameworks that have been violated.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                    continent:
+                      description: The geographical continent in which the asset or issue is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Americas
+                    country-code:
+                      description: The country code in which the asset's underlying IP range is currently hosted.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    created:
+                      description: The date and time at which the asset was created—e.g., *2019-03-03T22:00:10.000Z*.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2019-03-03T22:00:10.000Z'
+                    discoverability:
+                      description: Indicates an asset's level of exposure, or how easily an attacker can find an asset affected by a specific issue and identify its relation to your enterprise.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    discovery-path:
+                      description: The sequence of steps involved in discovering a specific asset or organization in your attack surface. It details each step and the connections between them, illustrating how one step leads to the subsequent step in the discovery process.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            src:
+                              type: string
+                            dest:
+                              type: string
+                            movement-type:
+                              $ref: '#/components/schemas/json.any?'
+                            movement-data:
+                              $ref: '#/components/schemas/json.any?'
+                          required:
+                          - src
+                          - dest
+                          - movement-type
+                          - movement-data
+                      - type: 'null'
+                      example: '[{"dest":"org/acme-corporation","movement_data":{"sources":[]},"movement_type":"default","src":"_ENTRY_"},{"dest":"ip/1.1.1.1","movement_data":{"probability":1,"relation_id":"org-relation/acme-corporation-has-subsidiary-acme-jubilee-limited","sources":[]},"movement_type":"relation","src":"org/acme-corporation"}]'
+                    dns-rcode:
+                      description: A string representing one of the common <a href="https://support.umbrella.com/hc/en-us/articles/232254248-Common-DNS-return-codes-for-any-DNS-service-and-Umbrella-">DNS return code messages</a>.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: NXDOMAIN
+                    dns-records:
+                      description: A list of the domain's DNS, SPF, and DKIM records.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n      \"A\": [\n        \"1.1.255.255\"\n      ],\n      \"MX\": [\n        \"10 us2.mx1.foobar.com.\"\n      ],\n      \"NS\": [\n        \"ns0.acmedns.net.\"\n      ],\n      \"SOA\": [\n        \"ns0.acmedns.net. support.acme.com. 1122334455 66778 8990 9090 1212\"\n      ],\n      \"TXT\": [\n        \"\\\"v=spf1 redirect=_spf.foobar.com\\\"\"\n      ]\n    }"
+                    domain:
+                      description: The domain name associated with the asset.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: www.foobar.com
+                    domains:
+                      description: A list of domain names associated with the IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"blog.domain.com\",\n      \"blog2.domain.com\",\n      \"blog3.domain.com\"\n    ]"
+                    dynamic-dns:
+                      description: Indicates whether a domain changes its DNS resolutions frequently or not.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'no'
+                    dynamically-resolved:
+                      description: Refers to whether an IP address is dynamically resolved or not, or partially dynamically resolved.
+                      anyOf:
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/json.any?'
+                      - type: string
+                      - type: 'null'
+                      example: 'no'
+                    environments:
+                      description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                    expiration:
+                      description: The date and time at which the asset expired—e.g., *2019-06-01T22:00:10.000Z*.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-02-07T23:59:59.000Z'
+                    first-detected:
+                      description: The date and time at which CyCognito first discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-03-18T09:07:22.977Z'
+                    first-seen:
+                      description: The date and time at which CyCognito first discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-03-18T09:07:22.977Z'
+                    formats:
+                      description: 'The specific type or standard of the web application''s structure and markup. It denotes the version or specification of web content being used, enabling users to identify how the application''s content is formatted. *Examples: html-5*, *xhtml-1.0-strict*, *xhtml-1.0-transitional*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"html-5\"\n    ]"
+                    has-form:
+                      description: Indicates whether a web page belonging to a web application contains a form or not.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    has-login:
+                      description: Refers to whether a web application includes a login mechanism in which a user could input credentials.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    home-page-description:
+                      description: The description of the homepage.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Official homepage of Acme
+                    home-page-status-code:
+                      description: Indicates the HTTP status code returned by the homepage of a web application. This integer value represents the response status of the website, providing insight into its current accessibility or operational state.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '200'
+                    home-page-title:
+                      description: The title of the homepage.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Home
+                    home-page-url:
+                      description: The URL of the homepage.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: https://1.1.1.1
+                    hosting-type:
+                      description: Refers to type of hosting platform for the asset or issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: undetermined
+                    id:
+                      description: "The unique identifier for an asset, formatted by combining its type (ip, domain, cert, webapp, or iprange) with its name: IP addresses as `ip/{ip}`, domains as `domain/{domain}`, certificates as `cert/{cert}`, web applications as `webapp/{webapp}`, and IP ranges as `iprange/{iprange}`. \n *Examples:* `ip/192.168.0.0`, `domain/acme-studios.com`"
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: ip/192.168.0.0
+                    investigation-status:
+                      description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                      anyOf:
+                      - type: string
+                        enum:
+                        - investigating
+                        - investigated
+                        - uninvestigated
+                      - type: 'null'
+                      example: investigating
+                    ip:
+                      description: The IP address—e.g., `1.2.3.4`.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 1.1.1.1
+                    ip-addresses:
+                      description: A list of the IP addresses hosting the asset.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"1.1.1.2\",\n      \"1.1.2.1\",\n      \"1.2.1.1\"\n    ]"
+                    ip-ranges:
+                      description: A list detailing specific IP ranges, with each item indicating the range (`inetnum`) and its associated owner (i.e., the organization registered in the Whois database). For example, a range might be *1.1.1.1-2.2.2.2* owned by *Acme Studios*.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              inetnum:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              owner:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - inetnum
+                            - owner
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"inetnum\": \"1.1.1.1-1.1.1.255\",\n        \"owner\": \"Acme Utilities\"\n      },\n      {\n        \"inetnum\": \"1.1.2.1-2.2.2.2\",\n        \"owner\": \"Acme Gardens\"\n      }\n    ]"
+                    ips-count:
+                      description: The number of IP address assets that are contained within the IP range.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '8'
+                    is-encrypted:
+                      description: Indicates whether a web page that is contained by a web application is encrypted or not.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'no'
+                    is-subdomain:
+                      description: Indicates whether a domain is actually a subdomain of a particular parent domain.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    iso27001-controls:
+                      description: Refers to the compliance control number of the ISO 27001 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    iso27002-controls:
+                      description: Refers to the compliance control number of the ISO 27002 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    issuer-alt-names:
+                      description: A list of alternate names for the certificate's issuer.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"http://ca.example.net/\",\n      \"certmaster@example.net\",\n      \"1.1.1.1\"\n    ]"
+                    issuer-common-name:
+                      description: The common name for the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: example.com
+                    issuer-country:
+                      description: The country of the certificate's issuer—e.g., *US*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    issuer-locality:
+                      description: The locality of the certificate's issuer—e.g., *US*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    issuer-organization:
+                      description: The organization of the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Corporation
+                    issuer-organization-unit:
+                      description: The organization unit of the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: IT Department
+                    issuer-state:
+                      description: The state of the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: California
+                    issues-count:
+                      description: The number of issues found on a particular asset or organization.
+                      anyOf:
+                      - type: integer
+                      - type: 'null'
+                      example: '7'
+                    known-status:
+                      description: Indicates whether a user designated an asset as *known* to your enterprise.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: known
+                    last-detected:
+                      description: The date and time at which CyCognito most recently discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    last-seen:
+                      description: The date and time at which CyCognito most recently discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    locations:
+                      description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"USA\"\n    ]"
+                    name-servers:
+                      description: Identifies the servers where the domain is registered, aiding in asset searches based on domain-related information.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"ns0.acmedns.net\",\n      \"ns1.acmedns.net\"\n    ]"
+                    nist-800-171-controls:
+                      description: Refers to the compliance control number of the NIST 800-171 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                    nist-800-53-controls:
+                      description: Refers to the compliance control number of the NIST 800-53 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                    open-ports:
+                      description: A collection of objects describing open ports that are associated with the asset.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                            port:
+                              type: integer
+                            first-seen:
+                              type: string
+                            protocol:
+                              type: string
+                              enum:
+                              - tcp
+                              - udp
+                          required:
+                          - status
+                          - port
+                          - first-seen
+                          - protocol
+                          additionalProperties: false
+                      - type: 'null'
+                      example: "[\n      {\n        \"port\": 80,\n        \"protocol\": \"tcp\",\n   \"first_seen\": \"2024-09-29T18:26:30.650Z\",\n     \"status\": \"open\"\n      }\n    ]"
+                    organizations:
+                      description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Gardens\"\n    ]"
+                    parent-domain:
+                      description: The parent domain of a domain asset.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: acme.net
+                    pci-dss-controls:
+                      description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                    platforms:
+                      description: A list of platforms associated with an asset or issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                    ptr-domains:
+                      description: The PTR record associated with an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - $ref: '#/components/schemas/json.any?'
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"domain_name\": \"is-oveds.sabich.amazonaws.com\",\n        \"first_seen\": \"2023-05-09T11:53:26.726Z\",\n        \"subject\": [\n          \"2.4.6.8.foo.bar.\"\n        ],\n        \"to_time\": \"2024-07-28T09:49:19.227Z\"\n      }\n    ]"
+                    public-key-length:
+                      description: The public key length of the certificate's signature.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '2048'
+                    public-key-type:
+                      description: The public key type of the certificate's signature.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: RSA
+                    range:
+                      description: A range of IP addresses (e.g., `1.1.1.1-2.2.2.2`), corresponding to the **IP Range** column in the Asset List.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 1.1.1.1-2.2.2.2
+                    range-description:
+                      description: A text string describing the significance of the particular IP range.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '"Acme Commerce Sdn Bhd\nVO2-07-07\nLingkaran SV\nSunway Velocity\nJalan Peel\n55100 Kuala Lumpur"'
+                    range-name:
+                      description: A text string representing a common name for the IP range.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: WEBSERVER-AS-AP
+                    region:
+                      description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Central Asia
+                    registered-org-name:
+                      description: The name of the organization as it appears in the Whois database.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: WEBSERVER-AS-AP
+                    registrant:
+                      description: The company that holds or owns the domain.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: acme
+                    registrar:
+                      description: The company that manages the domain name.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: godaddy.com
+                    related:
+                      description: Indicates whether an asset is directly related to your organization.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'yes'
+                    related-asset-ids:
+                      description: A list of IDs for assets that are associated with the specified asset.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n      \"ip\": [\n        \"ip/1.1.1.1\",\n        \"ip/2.2.2.2\"\n      ],\n      \"cert\": [\n        \"cert/1234567890qwertyuiop\"\n      ],\n      \"webapp\": [\n        \"webapp/acmecorporation.com:82\"\n      ]\n    }"
+                    related-screenshot-urls:
+                      description: A list mapping URLs of a web application's associated web resources to their corresponding screenshot URLs.
+                      anyOf:
+                      - type: object
+                        additionalProperties:
+                          type: string
+                      - type: 'null'
+                      example: "{\n      \"http://1.2.3.4/\": \"https://foo.bar.com/abc-1d23e4fg5hi67j8k\"\n    }"
+                    revalidation-request-time:
+                      description: Indicates the date and time at which an issue revalidation was requested.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-08-03T15:18:48.452Z'
+                    revalidation-requested:
+                      description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    security-grade:
+                      description: Specifies the security grade of the asset based on factors such as attractiveness, and the number and severity of its associated issues.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: F
+                    security-score:
+                      description: Refers to CyCognito's method of evaluating an individual asset's security status, and how likely it contributes to the overall security of its organization. This value is expressed as an integer from 0 to 100.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '5'
+                    serial-number:
+                      description: The serial number associated with the information being secured by a certificate.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '3960198806143193780718529211402714933521680192'
+                    services:
+                      description: Refers to software that runs on a particular platform.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              scan-status:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              ports:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    anyOf:
+                                    - type: string
+                                    - type: integer
+                                    - type: 'null'
+                                - type: 'null'
+                              first-seen:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                                - type: string
+                              last-seen:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                                - type: string
+                              evidence:
+                                anyOf:
+                                - $ref: '#/components/schemas/json.any?'
+                                - type: 'null'
+                              banners:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    anyOf:
+                                    - type: object
+                                      properties:
+                                        port:
+                                          anyOf:
+                                          - type: string
+                                          - type: 'null'
+                                        banner:
+                                          anyOf:
+                                          - type: string
+                                          - type: 'null'
+                                      required:
+                                      - port
+                                      - banner
+                                    - type: 'null'
+                                - type: 'null'
+                            additionalProperties: false
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"first_seen\": \"2024-08-02 22:12:44.161\",\n        \"id\": \"cpe:2.3:o:foo:bar:*:*:*:*:*:*:*:*\",\n        \"last_seen\": \"2024-08-02 22:12:44.161\",\n        \"ports\": [\n          \"443/tcp\",\n          \"80/tcp\"\n        ],\n        \"scan_status\": \"new\",\n        \"banners\": \"Version 1.2.3\"\n, \n  \"evidence\": {\n        \"hosts\": [\n          \"1.1.1.1\"\n        ],\n        \"urls\": [\n          https//:\n        ]\n      }, \n      }\n    ]"
+                    serving-machines:
+                      description: A list of servers that have been found to serve the certificate.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "[\n      {\n        \"id\": \"ip/1.1.1.1\",\n        \"ip\": \"1.2.3.4\",\n        \"port\": \"443\",\n        \"protocol\": \"tcp\"\n      }\n    ]"
+                    severe-issues:
+                      description: The number of severe issues associated with the asset.
+                      anyOf:
+                      - type: integer
+                      - type: 'null'
+                      example: '24'
+                    signature:
+                      description: The identifier for the certificate.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: qwert56789ghjkl2345fghjyuio90cvb345cvbghjtyu
+                    signature-algorithm:
+                      description: The certificate's signature algorithm—e.g., `SHA256`.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: SHA256
+                    source:
+                      description: The name of the service or origin from which data about the IP range was gathered.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: WHOISXMLAPI
+                    sni-hosts:
+                      description: Retrieves certificates from alive, non-shared IPs with open ports — using SNI when a host is present, or without SNI otherwise (443 must be open).
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            ip:
+                              type: string
+                            port:
+                              type: integer
+                            protocol:
+                              type: string
+                            sni:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            time:
+                              type: string
+                          required:
+                          - ip
+                          - port
+                          - protocol
+                          - sni
+                          - time
+                      - type: 'null'
+                    status:
+                      description: "Refers to the latest status of an asset following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The asset was first seen up to 30 days before the latest data update. \n * `normal` – The asset has not changed since the latest data update. \n * `removed` – The asset was not seen in the latest data update. \n * `changed` – Changes to the asset's ports or services were found in the latest data update. This status is valid for IP assets only. "
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: new
+                    subject-alt-names:
+                      description: A list of the certificate's alternate subject names.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"www-qa1.acmemarkets.com\",\n      \"www-qa2.acmemarkets.com\",\n      \"shop-qa2.acmemarkets.com\"\n    ]"
+                    subject-common-name:
+                      description: The common name for the certificate's subject—e.g., `api.prod.acme.com`.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: api.prod.acme.com
+                    subject-country:
+                      description: The country of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    subject-locality:
+                      description: The locality of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: San Francisco
+                    subject-organization:
+                      description: The organization of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Product
+                    subject-organization-unit:
+                      description: The organization unit of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: IT
+                    subject-state:
+                      description: The state of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: California
+                    supported-protocols:
+                      description: Specifies the type of application layer protocol for the web application.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"html/1.1\"\n    ]"
+                    tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    teams:
+                      description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                    tech-owners:
+                      description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            org-name:
+                              type: string
+                          required:
+                          - name
+                          - email
+                          - org-name
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                    type:
+                      description: 'Indicates one of the five supported types of assets in CyCognito: IP address, domain, certificate, web application, or IP range. '
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: ip
+                    web-pages:
+                      description: A list of the web application's underlying web pages.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"html-5\"\n    ]"
+                    web-resources-urls:
+                      description: A list of the web application's underlying web resource URLs.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"http://1.1.1.1:10080/\"\n    ]"
+                    web-servers:
+                      description: A string representing the name of the home page's web server.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"AmazonS3\"\n    ]"
+                    webapp-address:
+                      description: The name of the web application asset—e.g., `1.2.3.4`, `subdomain.acme.com`. This corresponds to the **Webapp Address** column in the Asset List.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: webapp.acme.com
+    delete:
+      description: Remove multiple assets from your attack surface in a single request. CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again.
+      security:
+      - apiAuth: []
+      summary: Remove assets in bulk
+      tags:
+      - Assets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list in which each item contains the unique ID for the assets whose custom tags you would like to modify. The unique ID corresponds to the `id` field (from the *Retrieve assets* response) and should be in the format `&lt;asset_type&gt;/&lt;asset_id&gt;`.\n   \n*Examples:* `ip/1.1.1.1`, `domain/acme.com`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - ip/1.1.1.1
+                  - ip/2.2.2.2
+                  - domain/acme.com
+                  - webapp/acme.com
+                  - iprange/1.1.1.1-1.2.3.4
+                removal-type:
+                  description: 'Indicates whether or not an asset removal should affect discovery. A value of `block-discovery` means that the selected asset will be removed, and that all other assets that are discovered via this asset will also be removed. A value of `allow-discovery` means that the selected asset will be removed, and that all other assets discovered via this asset will **not** be affected. '
+                  type: string
+                  enum:
+                  - block-discovery
+                  - allow-discovery
+                  example: block-discovery
+                comment:
+                  description: An explanation or reason why the asset is being removed.
+                  type: string
+                  example: The asset is no longer relevant.
+              required:
+              - entity-ids
+              - comment
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: Indicates whether an asset was successfully removed.
+                    type: string
+                    example: Asset successfully removed.
+                required:
+                - status
+  /v1/assets/{asset_type}:
+    post:
+      description: Fetch assets based on given criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      security:
+      - apiAuth: []
+      summary: Retrieve assets
+      tags:
+      - Assets
+      parameters:
+      - name: asset_type
+        in: path
+        schema:
+          type: string
+          enum:
+          - ip
+          - domain
+          - cert
+          - webapp
+          - iprange
+        required: true
+        description: Specifies the category of the asset.
+      - name: count
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000.
+      - name: advanced-search
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name="kb-advanced-search-link">Advanced Search</span> documentation for more details.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: 'Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99.'
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies a search term for conducting a keyword-based search and retrieving data that matches your query.
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema.
+      - name: sort-by
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies the field by which the results should be sorted.
+      - name: sort-order
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        required: false
+        description: Sorts the specified field in ascending or descending order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: status
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: in
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - new
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    active:
+                      description: Indicates whether an IP address, domain, or certificate is currently used by your organization's IT infrastructure.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    additional-properties:
+                      description: Supplementary attributes or characteristics of a web application asset, particularly detailing any unique web resource features or specifications of interest.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n      \"hosting.environment\": {\n        \"value\": [\n          \"IaaS\"\n        ],\n        \"display_name\": \"Hosting environment\"\n      },\n      \"hosting.provider\": {\n        \"value\": [\n          \"Amazon\"\n        ],\n        \"display_name\": \"Hosting provider\"\n      },\n      \"hosting.type\": {\n        \"value\": [\n          \"cloud\"\n        ],\n        \"display_name\": \"Hosting type\"\n      }\n    }"
+                    advisories:
+                      description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              last-verified:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              evidence-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              evidence-last-seen:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              vulnerable:
+                                anyOf:
+                                - type: boolean
+                                - type: 'null'
+                              advisory:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              issue-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - last-verified
+                            - evidence-id
+                            - evidence-last-seen
+                            - vulnerable
+                            - advisory
+                            - issue-id
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"last_verified\": \"2024-08-04T08:21:17.000Z\",\n        \"id\": \"ip/1.2.2.2\",\n        \"issue_id\": \"CYC-VS-APACHE-HTTP_SERVER-2.2.15\",\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"type\": \"ip\",\n        \"evidence_id\": \"issue/1.2.2.2-cyc-vs-apache-http_server-2.2.15\",\n        \"realm_id\": \"acme-corporation\",\n        \"security_score\": 16,\n        \"evidence_last_seen\": \"2024-08-04T08:21:17.000Z\",\n        \"vulnerable\": true\n      }\n    ]"
+                    alive:
+                      description: Indicates whether an IP Address has at least one open or closed port (i.e., an installed service), or responds to a ping.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    alive-evidence:
+                      description: Refers to any specific evidence gathered from the internet which indicates the reason why an asset is considered alive.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: ports
+                    as-list:
+                      description: The list of autonomous systems (AS list) to which an IP range and its IP addresses belong.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"AS1234\",\n      \"AS23456\",\n      \"AS567890\"\n    ]"
+                    asns:
+                      description: The Autonomous System Number (ASN) of an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "[\n      {\n        \"owner\": \"Amazon.com, Inc.\",\n        \"asn\": \"AS16509\"\n      },\n      {\n        \"owner\": \"GoDaddy.com, LLC\",\n        \"asn\": \"AS26496\"\n      }\n    ]"
+                    attractiveness:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a highly attractive target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: extreme
+                    attractiveness-label:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    attribution-certainty:
+                      description: Refers to the degree of certainty in which an organization can be said to own a particular asset. This value is expressed as one of five levels for ease of prioritization.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: highest
+                    business-units:
+                      description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Marketing\"\n    ]"
+                    certificate-subject-key-id:
+                      description: The certificates subject key.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    certification-authority-key-id:
+                      description: The certificates authority key.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    cidr:
+                      description: The CIDR IP range.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 1.1.*.*
+                    cis-controls:
+                      description: Refers to the compliance control number of the CIS framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                    closed-ports:
+                      description: A collection of objects describing closed ports associated with the asset.
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                          port:
+                            type: integer
+                          first-seen:
+                            type: string
+                          protocol:
+                            type: string
+                            enum:
+                            - tcp
+                            - udp
+                        required:
+                        - status
+                        - port
+                        - first-seen
+                        - protocol
+                        additionalProperties: false
+                      example: "[\n      {\n        \"port\": 80,\n        \"protocol\": \"udp\",\n        \"status\": \"closed\"\n      },\n      {\n        \"port\": 8081,\n        \"protocol\": \"tcp\",\n   \"first_seen\": \"2024-09-29T18:26:30.650Z\",\n     \"status\": \"closed\"\n      }\n    ]"
+                    cloud-env:
+                      description: The cloud environment in which the asset is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: ACME AWS Cloud Environment
+                    cloud-env-metadata:
+                      description: Data that CyCognito fetches directly from your cloud service (e.g., AWS, Azure, GCP) and includes the configuration of your instance.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          additionalProperties:
+                            anyOf:
+                            - type: string
+                            - type: object
+                      - type: 'null'
+                      example: "[{\"cloud-env\": \"value\"\n                                                                      \"cloud-env-id\": \"value\"\n                                                                      \"metadata\": \"value\"}]"
+                    comment:
+                      description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                      anyOf:
+                      - type: object
+                        properties:
+                          content:
+                            type: string
+                          last-update:
+                            anyOf:
+                            - type: string
+                              format: date-time
+                            - type: 'null'
+                        required:
+                        - content
+                        - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    comments:
+                      description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            content:
+                              type: string
+                            created-by-name:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            last-update:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - content
+                          - created-by-name
+                          - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    compliance-violations:
+                      description: Refers to specific compliance frameworks that have been violated.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                    continent:
+                      description: The geographical continent in which the asset or issue is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Americas
+                    country-code:
+                      description: The country code in which the asset's underlying IP range is currently hosted.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    created:
+                      description: The date and time at which the asset was created—e.g., *2019-03-03T22:00:10.000Z*.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2019-03-03T22:00:10.000Z'
+                    discoverability:
+                      description: Indicates an asset's level of exposure, or how easily an attacker can find an asset affected by a specific issue and identify its relation to your enterprise.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    discovery-path:
+                      description: The sequence of steps involved in discovering a specific asset or organization in your attack surface. It details each step and the connections between them, illustrating how one step leads to the subsequent step in the discovery process.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            src:
+                              type: string
+                            dest:
+                              type: string
+                            movement-type:
+                              $ref: '#/components/schemas/json.any?'
+                            movement-data:
+                              $ref: '#/components/schemas/json.any?'
+                          required:
+                          - src
+                          - dest
+                          - movement-type
+                          - movement-data
+                      - type: 'null'
+                      example: '[{"dest":"org/acme-corporation","movement_data":{"sources":[]},"movement_type":"default","src":"_ENTRY_"},{"dest":"ip/1.1.1.1","movement_data":{"probability":1,"relation_id":"org-relation/acme-corporation-has-subsidiary-acme-jubilee-limited","sources":[]},"movement_type":"relation","src":"org/acme-corporation"}]'
+                    dns-rcode:
+                      description: A string representing one of the common <a href="https://support.umbrella.com/hc/en-us/articles/232254248-Common-DNS-return-codes-for-any-DNS-service-and-Umbrella-">DNS return code messages</a>.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: NXDOMAIN
+                    dns-records:
+                      description: A list of the domain's DNS, SPF, and DKIM records.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n      \"A\": [\n        \"1.1.255.255\"\n      ],\n      \"MX\": [\n        \"10 us2.mx1.foobar.com.\"\n      ],\n      \"NS\": [\n        \"ns0.acmedns.net.\"\n      ],\n      \"SOA\": [\n        \"ns0.acmedns.net. support.acme.com. 1122334455 66778 8990 9090 1212\"\n      ],\n      \"TXT\": [\n        \"\\\"v=spf1 redirect=_spf.foobar.com\\\"\"\n      ]\n    }"
+                    domain:
+                      description: The domain name associated with the asset.
+                      type: string
+                      example: www.foobar.com
+                    domains:
+                      description: A list of domain names associated with the IP address.
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"blog.domain.com\",\n      \"blog2.domain.com\",\n      \"blog3.domain.com\"\n    ]"
+                    dynamic-dns:
+                      description: Indicates whether a domain changes its DNS resolutions frequently or not.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'no'
+                    dynamically-resolved:
+                      description: Refers to whether an IP address is dynamically resolved or not, or partially dynamically resolved.
+                      anyOf:
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/json.any?'
+                      - type: string
+                      - type: 'null'
+                      example: 'no'
+                    environments:
+                      description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                    expiration:
+                      description: The date and time at which the asset expired—e.g., *2019-06-01T22:00:10.000Z*.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-02-07T23:59:59.000Z'
+                    first-detected:
+                      description: The date and time at which CyCognito first discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-03-18T09:07:22.977Z'
+                    first-seen:
+                      description: The date and time at which CyCognito first discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-03-18T09:07:22.977Z'
+                    formats:
+                      description: 'The specific type or standard of the web application''s structure and markup. It denotes the version or specification of web content being used, enabling users to identify how the application''s content is formatted. *Examples: html-5*, *xhtml-1.0-strict*, *xhtml-1.0-transitional*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"html-5\"\n    ]"
+                    has-form:
+                      description: Indicates whether a web page belonging to a web application contains a form or not.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    has-login:
+                      description: Refers to whether a web application includes a login mechanism in which a user could input credentials.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    home-page-description:
+                      description: The description of the homepage.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Official homepage of Acme
+                    home-page-status-code:
+                      description: Indicates the HTTP status code returned by the homepage of a web application. This integer value represents the response status of the website, providing insight into its current accessibility or operational state.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '200'
+                    home-page-title:
+                      description: The title of the homepage.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Home
+                    home-page-url:
+                      description: The URL of the homepage.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: https://1.1.1.1
+                    hosting-type:
+                      description: Refers to type of hosting platform for the asset or issue.
+                      type: string
+                      example: undetermined
+                    id:
+                      description: "The unique identifier for an asset, formatted by combining its type (ip, domain, cert, webapp, or iprange) with its name: IP addresses as `ip/{ip}`, domains as `domain/{domain}`, certificates as `cert/{cert}`, web applications as `webapp/{webapp}`, and IP ranges as `iprange/{iprange}`. \n *Examples:* `ip/192.168.0.0`, `domain/acme-studios.com`"
+                      type: string
+                      example: ip/192.168.0.0
+                    investigation-status:
+                      description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                      anyOf:
+                      - type: string
+                        enum:
+                        - investigating
+                        - investigated
+                        - uninvestigated
+                      - type: 'null'
+                      example: investigating
+                    ip:
+                      description: The IP address—e.g., `1.2.3.4`.
+                      type: string
+                      example: 1.1.1.1
+                    ip-addresses:
+                      description: A list of the IP addresses hosting the asset.
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"1.1.1.2\",\n      \"1.1.2.1\",\n      \"1.2.1.1\"\n    ]"
+                    ip-ranges:
+                      description: A list detailing specific IP ranges, with each item indicating the range (`inetnum`) and its associated owner (i.e., the organization registered in the Whois database). For example, a range might be *1.1.1.1-2.2.2.2* owned by *Acme Studios*.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              inetnum:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              owner:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - inetnum
+                            - owner
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"inetnum\": \"1.1.1.1-1.1.1.255\",\n        \"owner\": \"Acme Utilities\"\n      },\n      {\n        \"inetnum\": \"1.1.2.1-2.2.2.2\",\n        \"owner\": \"Acme Gardens\"\n      }\n    ]"
+                    ips-count:
+                      description: The number of IP address assets that are contained within the IP range.
+                      type: number
+                      example: '8'
+                    is-encrypted:
+                      description: Indicates whether a web page that is contained by a web application is encrypted or not.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'no'
+                    is-subdomain:
+                      description: Indicates whether a domain is actually a subdomain of a particular parent domain.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    iso27001-controls:
+                      description: Refers to the compliance control number of the ISO 27001 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    iso27002-controls:
+                      description: Refers to the compliance control number of the ISO 27002 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    issuer-alt-names:
+                      description: A list of alternate names for the certificate's issuer.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"http://ca.example.net/\",\n      \"certmaster@example.net\",\n      \"1.1.1.1\"\n    ]"
+                    issuer-common-name:
+                      description: The common name for the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: example.com
+                    issuer-country:
+                      description: The country of the certificate's issuer—e.g., *US*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    issuer-locality:
+                      description: The locality of the certificate's issuer—e.g., *US*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    issuer-organization:
+                      description: The organization of the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Corporation
+                    issuer-organization-unit:
+                      description: The organization unit of the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: IT Department
+                    issuer-state:
+                      description: The state of the certificate's issuer.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: California
+                    issues-count:
+                      description: The number of issues found on a particular asset or organization.
+                      anyOf:
+                      - type: integer
+                      - type: 'null'
+                      example: '7'
+                    known-status:
+                      description: Indicates whether a user designated an asset as *known* to your enterprise.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: known
+                    last-detected:
+                      description: The date and time at which CyCognito most recently discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    last-seen:
+                      description: The date and time at which CyCognito most recently discovered and attributed the asset to the organization.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    locations:
+                      description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"USA\"\n    ]"
+                    name-servers:
+                      description: Identifies the servers where the domain is registered, aiding in asset searches based on domain-related information.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"ns0.acmedns.net\",\n      \"ns1.acmedns.net\"\n    ]"
+                    nist-800-171-controls:
+                      description: Refers to the compliance control number of the NIST 800-171 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                    nist-800-53-controls:
+                      description: Refers to the compliance control number of the NIST 800-53 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                    open-ports:
+                      description: A collection of objects describing open ports that are associated with the asset.
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                          port:
+                            type: integer
+                          first-seen:
+                            type: string
+                          protocol:
+                            type: string
+                            enum:
+                            - tcp
+                            - udp
+                        required:
+                        - status
+                        - port
+                        - first-seen
+                        - protocol
+                        additionalProperties: false
+                      example: "[\n      {\n        \"port\": 80,\n        \"protocol\": \"tcp\",\n   \"first_seen\": \"2024-09-29T18:26:30.650Z\",\n     \"status\": \"open\"\n      }\n    ]"
+                    organizations:
+                      description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Gardens\"\n    ]"
+                    parent-domain:
+                      description: The parent domain of a domain asset.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: acme.net
+                    pci-dss-controls:
+                      description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                    platforms:
+                      description: A list of platforms associated with an asset or issue.
+                      type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                    ptr-domains:
+                      description: The PTR record associated with an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - $ref: '#/components/schemas/json.any?'
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"domain_name\": \"is-oveds.sabich.amazonaws.com\",\n        \"first_seen\": \"2023-05-09T11:53:26.726Z\",\n        \"subject\": [\n          \"2.4.6.8.foo.bar.\"\n        ],\n        \"to_time\": \"2024-07-28T09:49:19.227Z\"\n      }\n    ]"
+                    public-key-length:
+                      description: The public key length of the certificate's signature.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '2048'
+                    public-key-type:
+                      description: The public key type of the certificate's signature.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: RSA
+                    range:
+                      description: A range of IP addresses (e.g., `1.1.1.1-2.2.2.2`), corresponding to the **IP Range** column in the Asset List.
+                      type: string
+                      example: 1.1.1.1-2.2.2.2
+                    range-description:
+                      description: A text string describing the significance of the particular IP range.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '"Acme Commerce Sdn Bhd\nVO2-07-07\nLingkaran SV\nSunway Velocity\nJalan Peel\n55100 Kuala Lumpur"'
+                    range-name:
+                      description: A text string representing a common name for the IP range.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: WEBSERVER-AS-AP
+                    region:
+                      description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Central Asia
+                    registered-org-name:
+                      description: The name of the organization as it appears in the Whois database.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: WEBSERVER-AS-AP
+                    registrant:
+                      description: The company that holds or owns the domain.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: acme
+                    registrar:
+                      description: The company that manages the domain name.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: godaddy.com
+                    related:
+                      description: Indicates whether an asset is directly related to your organization.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'yes'
+                    related-asset-ids:
+                      description: A list of IDs for assets that are associated with the specified asset.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n      \"ip\": [\n        \"ip/1.1.1.1\",\n        \"ip/2.2.2.2\"\n      ],\n      \"cert\": [\n        \"cert/1234567890qwertyuiop\"\n      ],\n      \"webapp\": [\n        \"webapp/acmecorporation.com:82\"\n      ]\n    }"
+                    related-screenshot-urls:
+                      description: A list mapping URLs of a web application's associated web resources to their corresponding screenshot URLs.
+                      anyOf:
+                      - type: object
+                        additionalProperties:
+                          type: string
+                      - type: 'null'
+                      example: "{\n      \"http://1.2.3.4/\": \"https://foo.bar.com/abc-1d23e4fg5hi67j8k\"\n    }"
+                    revalidation-request-time:
+                      description: Indicates the date and time at which an issue revalidation was requested.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-08-03T15:18:48.452Z'
+                    revalidation-requested:
+                      description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    security-grade:
+                      description: Specifies the security grade of the asset based on factors such as attractiveness, and the number and severity of its associated issues.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: F
+                    security-score:
+                      description: Refers to CyCognito's method of evaluating an individual asset's security status, and how likely it contributes to the overall security of its organization. This value is expressed as an integer from 0 to 100.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '5'
+                    serial-number:
+                      description: The serial number associated with the information being secured by a certificate.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '3960198806143193780718529211402714933521680192'
+                    services:
+                      description: Refers to software that runs on a particular platform.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              scan-status:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              ports:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    anyOf:
+                                    - type: string
+                                    - type: integer
+                                    - type: 'null'
+                                - type: 'null'
+                              first-seen:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                                - type: string
+                              last-seen:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                                - type: string
+                              evidence:
+                                anyOf:
+                                - $ref: '#/components/schemas/json.any?'
+                                - type: 'null'
+                              banners:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    anyOf:
+                                    - type: object
+                                      properties:
+                                        port:
+                                          anyOf:
+                                          - type: string
+                                          - type: 'null'
+                                        banner:
+                                          anyOf:
+                                          - type: string
+                                          - type: 'null'
+                                      required:
+                                      - port
+                                      - banner
+                                    - type: 'null'
+                                - type: 'null'
+                            additionalProperties: false
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"first_seen\": \"2024-08-02 22:12:44.161\",\n        \"id\": \"cpe:2.3:o:foo:bar:*:*:*:*:*:*:*:*\",\n        \"last_seen\": \"2024-08-02 22:12:44.161\",\n        \"ports\": [\n          \"443/tcp\",\n          \"80/tcp\"\n        ],\n        \"scan_status\": \"new\",\n        \"banners\": \"Version 1.2.3\"\n, \n  \"evidence\": {\n        \"hosts\": [\n          \"1.1.1.1\"\n        ],\n        \"urls\": [\n          https//:\n        ]\n      }, \n      }\n    ]"
+                    serving-machines:
+                      description: A list of servers that have been found to serve the certificate.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "[\n      {\n        \"id\": \"ip/1.1.1.1\",\n        \"ip\": \"1.2.3.4\",\n        \"port\": \"443\",\n        \"protocol\": \"tcp\"\n      }\n    ]"
+                    severe-issues:
+                      description: The number of severe issues associated with the asset.
+                      type: integer
+                      example: '24'
+                    signature:
+                      description: The identifier for the certificate.
+                      type: string
+                      example: qwert56789ghjkl2345fghjyuio90cvb345cvbghjtyu
+                    signature-algorithm:
+                      description: The certificate's signature algorithm—e.g., `SHA256`.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: SHA256
+                    source:
+                      description: The name of the service or origin from which data about the IP range was gathered.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: WHOISXMLAPI
+                    sni-hosts:
+                      description: Retrieves certificates from alive, non-shared IPs with open ports — using SNI when a host is present, or without SNI otherwise (443 must be open).
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            ip:
+                              type: string
+                            port:
+                              type: integer
+                            protocol:
+                              type: string
+                            sni:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            time:
+                              type: string
+                          required:
+                          - ip
+                          - port
+                          - protocol
+                          - sni
+                          - time
+                      - type: 'null'
+                    status:
+                      description: "Refers to the latest status of an asset following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The asset was first seen up to 30 days before the latest data update. \n * `normal` – The asset has not changed since the latest data update. \n * `removed` – The asset was not seen in the latest data update. \n * `changed` – Changes to the asset's ports or services were found in the latest data update. This status is valid for IP assets only. "
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: new
+                    subject-alt-names:
+                      description: A list of the certificate's alternate subject names.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"www-qa1.acmemarkets.com\",\n      \"www-qa2.acmemarkets.com\",\n      \"shop-qa2.acmemarkets.com\"\n    ]"
+                    subject-common-name:
+                      description: The common name for the certificate's subject—e.g., `api.prod.acme.com`.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: api.prod.acme.com
+                    subject-country:
+                      description: The country of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: US
+                    subject-locality:
+                      description: The locality of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: San Francisco
+                    subject-organization:
+                      description: The organization of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Acme Product
+                    subject-organization-unit:
+                      description: The organization unit of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: IT
+                    subject-state:
+                      description: The state of the certificate's subject.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: California
+                    supported-protocols:
+                      description: Specifies the type of application layer protocol for the web application.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"html/1.1\"\n    ]"
+                    tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    teams:
+                      description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                    tech-owners:
+                      description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            org-name:
+                              type: string
+                          required:
+                          - name
+                          - email
+                          - org-name
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                    type:
+                      description: 'Indicates one of the five supported types of assets in CyCognito: IP address, domain, certificate, web application, or IP range. '
+                      type: string
+                      example: ip
+                    web-pages:
+                      description: A list of the web application's underlying web pages.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"html-5\"\n    ]"
+                    web-resources-urls:
+                      description: A list of the web application's underlying web resource URLs.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"http://1.1.1.1:10080/\"\n    ]"
+                    web-servers:
+                      description: A string representing the name of the home page's web server.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"AmazonS3\"\n    ]"
+                    webapp-address:
+                      description: The name of the web application asset—e.g., `1.2.3.4`, `subdomain.acme.com`. This corresponds to the **Webapp Address** column in the Asset List.
+                      type: string
+                      example: webapp.acme.com
+  /v1/assets/{asset_type}/{asset_id}:
+    get:
+      description: Obtain specific asset details by type and ID.
+      security:
+      - apiAuth: []
+      summary: Fetch asset details
+      tags:
+      - Assets
+      parameters:
+      - name: asset_type
+        in: path
+        schema:
+          type: string
+          enum:
+          - ip
+          - domain
+          - cert
+          - webapp
+          - iprange
+        required: true
+        description: Specifies the category of the asset.
+      - name: asset_id
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Unique identifier for the asset (e.g., IP address, domain name).
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    description: Indicates whether an IP address, domain, or certificate is currently used by your organization's IT infrastructure.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  additional-properties:
+                    description: Supplementary attributes or characteristics of a web application asset, particularly detailing any unique web resource features or specifications of interest.
+                    anyOf:
+                    - $ref: '#/components/schemas/json.any?'
+                    - type: 'null'
+                    example: "{\n      \"hosting.environment\": {\n        \"value\": [\n          \"IaaS\"\n        ],\n        \"display_name\": \"Hosting environment\"\n      },\n      \"hosting.provider\": {\n        \"value\": [\n          \"Amazon\"\n        ],\n        \"display_name\": \"Hosting provider\"\n      },\n      \"hosting.type\": {\n        \"value\": [\n          \"cloud\"\n        ],\n        \"display_name\": \"Hosting type\"\n      }\n    }"
+                  advisories:
+                    description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: object
+                          properties:
+                            last-verified:
+                              anyOf:
+                              - type: string
+                                format: date-time
+                              - type: 'null'
+                            evidence-id:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            evidence-last-seen:
+                              anyOf:
+                              - type: string
+                                format: date-time
+                              - type: 'null'
+                            vulnerable:
+                              anyOf:
+                              - type: boolean
+                              - type: 'null'
+                            advisory:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            issue-id:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - last-verified
+                          - evidence-id
+                          - evidence-last-seen
+                          - vulnerable
+                          - advisory
+                          - issue-id
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      {\n        \"last_verified\": \"2024-08-04T08:21:17.000Z\",\n        \"id\": \"ip/1.2.2.2\",\n        \"issue_id\": \"CYC-VS-APACHE-HTTP_SERVER-2.2.15\",\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"type\": \"ip\",\n        \"evidence_id\": \"issue/1.2.2.2-cyc-vs-apache-http_server-2.2.15\",\n        \"realm_id\": \"acme-corporation\",\n        \"security_score\": 16,\n        \"evidence_last_seen\": \"2024-08-04T08:21:17.000Z\",\n        \"vulnerable\": true\n      }\n    ]"
+                  alive:
+                    description: Indicates whether an IP Address has at least one open or closed port (i.e., an installed service), or responds to a ping.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  alive-evidence:
+                    description: Refers to any specific evidence gathered from the internet which indicates the reason why an asset is considered alive.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: ports
+                  as-list:
+                    description: The list of autonomous systems (AS list) to which an IP range and its IP addresses belong.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"AS1234\",\n      \"AS23456\",\n      \"AS567890\"\n    ]"
+                  asns:
+                    description: The Autonomous System Number (ASN) of an IP address.
+                    anyOf:
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/json.any?'
+                    - type: 'null'
+                    example: "[\n      {\n        \"owner\": \"Amazon.com, Inc.\",\n        \"asn\": \"AS16509\"\n      },\n      {\n        \"owner\": \"GoDaddy.com, LLC\",\n        \"asn\": \"AS26496\"\n      }\n    ]"
+                  attractiveness:
+                    description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a highly attractive target for attackers, regardless of any issues it has.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: extreme
+                  attractiveness-label:
+                    description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: extreme
+                  attribution-certainty:
+                    description: Refers to the degree of certainty in which an organization can be said to own a particular asset. This value is expressed as one of five levels for ease of prioritization.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: highest
+                  business-units:
+                    description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                    type: array
+                    items:
+                      type: string
+                    example: "[\n      \"Marketing\"\n    ]"
+                  certificate-subject-key-id:
+                    description: The certificates subject key.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  certification-authority-key-id:
+                    description: The certificates authority key.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  cidr:
+                    description: The CIDR IP range.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: 1.1.*.*
+                  cis-controls:
+                    description: Refers to the compliance control number of the CIS framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                  closed-ports:
+                    description: A collection of objects describing closed ports associated with the asset.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                        port:
+                          type: integer
+                        first-seen:
+                          type: string
+                        protocol:
+                          type: string
+                          enum:
+                          - tcp
+                          - udp
+                      required:
+                      - status
+                      - port
+                      - first-seen
+                      - protocol
+                      additionalProperties: false
+                    example: "[\n      {\n        \"port\": 80,\n        \"protocol\": \"udp\",\n        \"status\": \"closed\"\n      },\n      {\n        \"port\": 8081,\n        \"protocol\": \"tcp\",\n   \"first_seen\": \"2024-09-29T18:26:30.650Z\",\n     \"status\": \"closed\"\n      }\n    ]"
+                  cloud-env:
+                    description: The cloud environment in which the asset is located.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: ACME AWS Cloud Environment
+                  cloud-env-metadata:
+                    description: Data that CyCognito fetches directly from your cloud service (e.g., AWS, Azure, GCP) and includes the configuration of your instance.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        additionalProperties:
+                          anyOf:
+                          - type: string
+                          - type: object
+                    - type: 'null'
+                    example: "[{\"cloud-env\": \"value\"\n                                                                      \"cloud-env-id\": \"value\"\n                                                                      \"metadata\": \"value\"}]"
+                  comment:
+                    description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                    anyOf:
+                    - type: object
+                      properties:
+                        content:
+                          type: string
+                        last-update:
+                          anyOf:
+                          - type: string
+                            format: date-time
+                          - type: 'null'
+                      required:
+                      - content
+                      - last-update
+                    - type: 'null'
+                    example: Reviewed by Gary
+                  comments:
+                    description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          content:
+                            type: string
+                          created-by-name:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          last-update:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                        required:
+                        - content
+                        - created-by-name
+                        - last-update
+                    - type: 'null'
+                    example: Reviewed by Gary
+                  compliance-violations:
+                    description: Refers to specific compliance frameworks that have been violated.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                  continent:
+                    description: The geographical continent in which the asset or issue is located.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: Americas
+                  country-code:
+                    description: The country code in which the asset's underlying IP range is currently hosted.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: US
+                  created:
+                    description: The date and time at which the asset was created—e.g., *2019-03-03T22:00:10.000Z*.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2019-03-03T22:00:10.000Z'
+                  discoverability:
+                    description: Indicates an asset's level of exposure, or how easily an attacker can find an asset affected by a specific issue and identify its relation to your enterprise.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: extreme
+                  discovery-path:
+                    description: The sequence of steps involved in discovering a specific asset or organization in your attack surface. It details each step and the connections between them, illustrating how one step leads to the subsequent step in the discovery process.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          src:
+                            type: string
+                          dest:
+                            type: string
+                          movement-type:
+                            $ref: '#/components/schemas/json.any?'
+                          movement-data:
+                            $ref: '#/components/schemas/json.any?'
+                        required:
+                        - src
+                        - dest
+                        - movement-type
+                        - movement-data
+                    - type: 'null'
+                    example: '[{"dest":"org/acme-corporation","movement_data":{"sources":[]},"movement_type":"default","src":"_ENTRY_"},{"dest":"ip/1.1.1.1","movement_data":{"probability":1,"relation_id":"org-relation/acme-corporation-has-subsidiary-acme-jubilee-limited","sources":[]},"movement_type":"relation","src":"org/acme-corporation"}]'
+                  dns-rcode:
+                    description: A string representing one of the common <a href="https://support.umbrella.com/hc/en-us/articles/232254248-Common-DNS-return-codes-for-any-DNS-service-and-Umbrella-">DNS return code messages</a>.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: NXDOMAIN
+                  dns-records:
+                    description: A list of the domain's DNS, SPF, and DKIM records.
+                    anyOf:
+                    - $ref: '#/components/schemas/json.any?'
+                    - type: 'null'
+                    example: "{\n      \"A\": [\n        \"1.1.255.255\"\n      ],\n      \"MX\": [\n        \"10 us2.mx1.foobar.com.\"\n      ],\n      \"NS\": [\n        \"ns0.acmedns.net.\"\n      ],\n      \"SOA\": [\n        \"ns0.acmedns.net. support.acme.com. 1122334455 66778 8990 9090 1212\"\n      ],\n      \"TXT\": [\n        \"\\\"v=spf1 redirect=_spf.foobar.com\\\"\"\n      ]\n    }"
+                  domain:
+                    description: The domain name associated with the asset.
+                    type: string
+                    example: www.foobar.com
+                  domains:
+                    description: A list of domain names associated with the IP address.
+                    type: array
+                    items:
+                      type: string
+                    example: "[\n      \"blog.domain.com\",\n      \"blog2.domain.com\",\n      \"blog3.domain.com\"\n    ]"
+                  dynamic-dns:
+                    description: Indicates whether a domain changes its DNS resolutions frequently or not.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: 'no'
+                  dynamically-resolved:
+                    description: Refers to whether an IP address is dynamically resolved or not, or partially dynamically resolved.
+                    anyOf:
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/json.any?'
+                    - type: string
+                    - type: 'null'
+                    example: 'no'
+                  environments:
+                    description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                  expiration:
+                    description: The date and time at which the asset expired—e.g., *2019-06-01T22:00:10.000Z*.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2023-02-07T23:59:59.000Z'
+                  first-detected:
+                    description: The date and time at which CyCognito first discovered and attributed the asset to the organization.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2022-03-18T09:07:22.977Z'
+                  first-seen:
+                    description: The date and time at which CyCognito first discovered and attributed the asset to the organization.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2022-03-18T09:07:22.977Z'
+                  formats:
+                    description: 'The specific type or standard of the web application''s structure and markup. It denotes the version or specification of web content being used, enabling users to identify how the application''s content is formatted. *Examples: html-5*, *xhtml-1.0-strict*, *xhtml-1.0-transitional*, etc.'
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"html-5\"\n    ]"
+                  has-form:
+                    description: Indicates whether a web page belonging to a web application contains a form or not.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  has-login:
+                    description: Refers to whether a web application includes a login mechanism in which a user could input credentials.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  home-page-description:
+                    description: The description of the homepage.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Official homepage of Acme
+                  home-page-status-code:
+                    description: Indicates the HTTP status code returned by the homepage of a web application. This integer value represents the response status of the website, providing insight into its current accessibility or operational state.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '200'
+                  home-page-title:
+                    description: The title of the homepage.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Acme Home
+                  home-page-url:
+                    description: The URL of the homepage.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: https://1.1.1.1
+                  hosting-type:
+                    description: Refers to type of hosting platform for the asset or issue.
+                    type: string
+                    example: undetermined
+                  id:
+                    description: "The unique identifier for an asset, formatted by combining its type (ip, domain, cert, webapp, or iprange) with its name: IP addresses as `ip/{ip}`, domains as `domain/{domain}`, certificates as `cert/{cert}`, web applications as `webapp/{webapp}`, and IP ranges as `iprange/{iprange}`. \n *Examples:* `ip/192.168.0.0`, `domain/acme-studios.com`"
+                    type: string
+                    example: ip/192.168.0.0
+                  investigation-status:
+                    description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                    anyOf:
+                    - type: string
+                      enum:
+                      - investigating
+                      - investigated
+                      - uninvestigated
+                    - type: 'null'
+                    example: investigating
+                  ip:
+                    description: The IP address—e.g., `1.2.3.4`.
+                    type: string
+                    example: 1.1.1.1
+                  ip-addresses:
+                    description: A list of the IP addresses hosting the asset.
+                    type: array
+                    items:
+                      type: string
+                    example: "[\n      \"1.1.1.2\",\n      \"1.1.2.1\",\n      \"1.2.1.1\"\n    ]"
+                  ip-ranges:
+                    description: A list detailing specific IP ranges, with each item indicating the range (`inetnum`) and its associated owner (i.e., the organization registered in the Whois database). For example, a range might be *1.1.1.1-2.2.2.2* owned by *Acme Studios*.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: object
+                          properties:
+                            inetnum:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            owner:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - inetnum
+                          - owner
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      {\n        \"inetnum\": \"1.1.1.1-1.1.1.255\",\n        \"owner\": \"Acme Utilities\"\n      },\n      {\n        \"inetnum\": \"1.1.2.1-2.2.2.2\",\n        \"owner\": \"Acme Gardens\"\n      }\n    ]"
+                  ips-count:
+                    description: The number of IP address assets that are contained within the IP range.
+                    type: number
+                    example: '8'
+                  is-encrypted:
+                    description: Indicates whether a web page that is contained by a web application is encrypted or not.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: 'no'
+                  is-subdomain:
+                    description: Indicates whether a domain is actually a subdomain of a particular parent domain.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  iso27001-controls:
+                    description: Refers to the compliance control number of the ISO 27001 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                  iso27002-controls:
+                    description: Refers to the compliance control number of the ISO 27002 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                  issuer-alt-names:
+                    description: A list of alternate names for the certificate's issuer.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"http://ca.example.net/\",\n      \"certmaster@example.net\",\n      \"1.1.1.1\"\n    ]"
+                  issuer-common-name:
+                    description: The common name for the certificate's issuer.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: example.com
+                  issuer-country:
+                    description: The country of the certificate's issuer—e.g., *US*.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: US
+                  issuer-locality:
+                    description: The locality of the certificate's issuer—e.g., *US*.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: US
+                  issuer-organization:
+                    description: The organization of the certificate's issuer.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Acme Corporation
+                  issuer-organization-unit:
+                    description: The organization unit of the certificate's issuer.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: IT Department
+                  issuer-state:
+                    description: The state of the certificate's issuer.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: California
+                  issues-count:
+                    description: The number of issues found on a particular asset or organization.
+                    anyOf:
+                    - type: integer
+                    - type: 'null'
+                    example: '7'
+                  known-status:
+                    description: Indicates whether a user designated an asset as *known* to your enterprise.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: known
+                  last-detected:
+                    description: The date and time at which CyCognito most recently discovered and attributed the asset to the organization.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-06-17T07:02:04.181Z'
+                  last-seen:
+                    description: The date and time at which CyCognito most recently discovered and attributed the asset to the organization.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-06-17T07:02:04.181Z'
+                  locations:
+                    description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"USA\"\n    ]"
+                  name-servers:
+                    description: Identifies the servers where the domain is registered, aiding in asset searches based on domain-related information.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"ns0.acmedns.net\",\n      \"ns1.acmedns.net\"\n    ]"
+                  nist-800-171-controls:
+                    description: Refers to the compliance control number of the NIST 800-171 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                  nist-800-53-controls:
+                    description: Refers to the compliance control number of the NIST 800-53 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                  open-ports:
+                    description: A collection of objects describing open ports that are associated with the asset.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                        port:
+                          type: integer
+                        first-seen:
+                          type: string
+                        protocol:
+                          type: string
+                          enum:
+                          - tcp
+                          - udp
+                      required:
+                      - status
+                      - port
+                      - first-seen
+                      - protocol
+                      additionalProperties: false
+                    example: "[\n      {\n        \"port\": 80,\n        \"protocol\": \"tcp\",\n   \"first_seen\": \"2024-09-29T18:26:30.650Z\",\n     \"status\": \"open\"\n      }\n    ]"
+                  organizations:
+                    description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"Acme Gardens\"\n    ]"
+                  parent-domain:
+                    description: The parent domain of a domain asset.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: acme.net
+                  pci-dss-controls:
+                    description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                  platforms:
+                    description: A list of platforms associated with an asset or issue.
+                    type: array
+                    items:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                  ptr-domains:
+                    description: The PTR record associated with an IP address.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - $ref: '#/components/schemas/json.any?'
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      {\n        \"domain_name\": \"is-oveds.sabich.amazonaws.com\",\n        \"first_seen\": \"2023-05-09T11:53:26.726Z\",\n        \"subject\": [\n          \"2.4.6.8.foo.bar.\"\n        ],\n        \"to_time\": \"2024-07-28T09:49:19.227Z\"\n      }\n    ]"
+                  public-key-length:
+                    description: The public key length of the certificate's signature.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '2048'
+                  public-key-type:
+                    description: The public key type of the certificate's signature.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: RSA
+                  range:
+                    description: A range of IP addresses (e.g., `1.1.1.1-2.2.2.2`), corresponding to the **IP Range** column in the Asset List.
+                    type: string
+                    example: 1.1.1.1-2.2.2.2
+                  range-description:
+                    description: A text string describing the significance of the particular IP range.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: '"Acme Commerce Sdn Bhd\nVO2-07-07\nLingkaran SV\nSunway Velocity\nJalan Peel\n55100 Kuala Lumpur"'
+                  range-name:
+                    description: A text string representing a common name for the IP range.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: WEBSERVER-AS-AP
+                  region:
+                    description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: Central Asia
+                  registered-org-name:
+                    description: The name of the organization as it appears in the Whois database.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: WEBSERVER-AS-AP
+                  registrant:
+                    description: The company that holds or owns the domain.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: acme
+                  registrar:
+                    description: The company that manages the domain name.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: godaddy.com
+                  related:
+                    description: Indicates whether an asset is directly related to your organization.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: 'yes'
+                  related-asset-ids:
+                    description: A list of IDs for assets that are associated with the specified asset.
+                    anyOf:
+                    - $ref: '#/components/schemas/json.any?'
+                    - type: 'null'
+                    example: "{\n      \"ip\": [\n        \"ip/1.1.1.1\",\n        \"ip/2.2.2.2\"\n      ],\n      \"cert\": [\n        \"cert/1234567890qwertyuiop\"\n      ],\n      \"webapp\": [\n        \"webapp/acmecorporation.com:82\"\n      ]\n    }"
+                  related-screenshot-urls:
+                    description: A list mapping URLs of a web application's associated web resources to their corresponding screenshot URLs.
+                    anyOf:
+                    - type: object
+                      additionalProperties:
+                        type: string
+                    - type: 'null'
+                    example: "{\n      \"http://1.2.3.4/\": \"https://foo.bar.com/abc-1d23e4fg5hi67j8k\"\n    }"
+                  revalidation-request-time:
+                    description: Indicates the date and time at which an issue revalidation was requested.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-08-03T15:18:48.452Z'
+                  revalidation-requested:
+                    description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  security-grade:
+                    description: Specifies the security grade of the asset based on factors such as attractiveness, and the number and severity of its associated issues.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: F
+                  security-score:
+                    description: Refers to CyCognito's method of evaluating an individual asset's security status, and how likely it contributes to the overall security of its organization. This value is expressed as an integer from 0 to 100.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '5'
+                  serial-number:
+                    description: The serial number associated with the information being secured by a certificate.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: '3960198806143193780718529211402714933521680192'
+                  services:
+                    description: Refers to software that runs on a particular platform.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: object
+                          properties:
+                            id:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            scan-status:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            ports:
+                              anyOf:
+                              - type: array
+                                items:
+                                  anyOf:
+                                  - type: string
+                                  - type: integer
+                                  - type: 'null'
+                              - type: 'null'
+                            first-seen:
+                              anyOf:
+                              - type: string
+                                format: date-time
+                              - type: 'null'
+                              - type: string
+                            last-seen:
+                              anyOf:
+                              - type: string
+                                format: date-time
+                              - type: 'null'
+                              - type: string
+                            evidence:
+                              anyOf:
+                              - $ref: '#/components/schemas/json.any?'
+                              - type: 'null'
+                            banners:
+                              anyOf:
+                              - type: array
+                                items:
+                                  anyOf:
+                                  - type: object
+                                    properties:
+                                      port:
+                                        anyOf:
+                                        - type: string
+                                        - type: 'null'
+                                      banner:
+                                        anyOf:
+                                        - type: string
+                                        - type: 'null'
+                                    required:
+                                    - port
+                                    - banner
+                                  - type: 'null'
+                              - type: 'null'
+                          additionalProperties: false
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      {\n        \"first_seen\": \"2024-08-02 22:12:44.161\",\n        \"id\": \"cpe:2.3:o:foo:bar:*:*:*:*:*:*:*:*\",\n        \"last_seen\": \"2024-08-02 22:12:44.161\",\n        \"ports\": [\n          \"443/tcp\",\n          \"80/tcp\"\n        ],\n        \"scan_status\": \"new\",\n        \"banners\": \"Version 1.2.3\"\n, \n  \"evidence\": {\n        \"hosts\": [\n          \"1.1.1.1\"\n        ],\n        \"urls\": [\n          https//:\n        ]\n      }, \n      }\n    ]"
+                  serving-machines:
+                    description: A list of servers that have been found to serve the certificate.
+                    anyOf:
+                    - $ref: '#/components/schemas/json.any?'
+                    - type: 'null'
+                    example: "[\n      {\n        \"id\": \"ip/1.1.1.1\",\n        \"ip\": \"1.2.3.4\",\n        \"port\": \"443\",\n        \"protocol\": \"tcp\"\n      }\n    ]"
+                  severe-issues:
+                    description: The number of severe issues associated with the asset.
+                    type: integer
+                    example: '24'
+                  signature:
+                    description: The identifier for the certificate.
+                    type: string
+                    example: qwert56789ghjkl2345fghjyuio90cvb345cvbghjtyu
+                  signature-algorithm:
+                    description: The certificate's signature algorithm—e.g., `SHA256`.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: SHA256
+                  source:
+                    description: The name of the service or origin from which data about the IP range was gathered.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: WHOISXMLAPI
+                  sni-hosts:
+                    description: Retrieves certificates from alive, non-shared IPs with open ports — using SNI when a host is present, or without SNI otherwise (443 must be open).
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          ip:
+                            type: string
+                          port:
+                            type: integer
+                          protocol:
+                            type: string
+                          sni:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          time:
+                            type: string
+                        required:
+                        - ip
+                        - port
+                        - protocol
+                        - sni
+                        - time
+                    - type: 'null'
+                  status:
+                    description: "Refers to the latest status of an asset following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The asset was first seen up to 30 days before the latest data update. \n * `normal` – The asset has not changed since the latest data update. \n * `removed` – The asset was not seen in the latest data update. \n * `changed` – Changes to the asset's ports or services were found in the latest data update. This status is valid for IP assets only. "
+                    anyOf:
+                    - type: string
+                    - type: string
+                    - type: 'null'
+                    example: new
+                  subject-alt-names:
+                    description: A list of the certificate's alternate subject names.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"www-qa1.acmemarkets.com\",\n      \"www-qa2.acmemarkets.com\",\n      \"shop-qa2.acmemarkets.com\"\n    ]"
+                  subject-common-name:
+                    description: The common name for the certificate's subject—e.g., `api.prod.acme.com`.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: api.prod.acme.com
+                  subject-country:
+                    description: The country of the certificate's subject.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: US
+                  subject-locality:
+                    description: The locality of the certificate's subject.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: San Francisco
+                  subject-organization:
+                    description: The organization of the certificate's subject.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Acme Product
+                  subject-organization-unit:
+                    description: The organization unit of the certificate's subject.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: IT
+                  subject-state:
+                    description: The state of the certificate's subject.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: California
+                  supported-protocols:
+                    description: Specifies the type of application layer protocol for the web application.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"html/1.1\"\n    ]"
+                  tags:
+                    description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                  teams:
+                    description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                  tech-owners:
+                    description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          org-name:
+                            type: string
+                        required:
+                        - name
+                        - email
+                        - org-name
+                    - type: 'null'
+                    example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                  type:
+                    description: 'Indicates one of the five supported types of assets in CyCognito: IP address, domain, certificate, web application, or IP range. '
+                    type: string
+                    example: ip
+                  web-pages:
+                    description: A list of the web application's underlying web pages.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"html-5\"\n    ]"
+                  web-resources-urls:
+                    description: A list of the web application's underlying web resource URLs.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"http://1.1.1.1:10080/\"\n    ]"
+                  web-servers:
+                    description: A string representing the name of the home page's web server.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"AmazonS3\"\n    ]"
+                  webapp-address:
+                    description: The name of the web application asset—e.g., `1.2.3.4`, `subdomain.acme.com`. This corresponds to the **Webapp Address** column in the Asset List.
+                    type: string
+                    example: webapp.acme.com
+    delete:
+      description: Remove an asset from your attack surface. Note that CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again.
+      security:
+      - apiAuth: []
+      summary: Remove asset
+      tags:
+      - Assets
+      parameters:
+      - name: asset_type
+        in: path
+        schema:
+          type: string
+          enum:
+          - ip
+          - domain
+          - cert
+          - webapp
+          - iprange
+        required: true
+        description: Specifies the category of the asset.
+      - name: asset_id
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Unique identifier for the asset (e.g., IP address, domain name).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                removal-type:
+                  description: 'Indicates whether or not an asset removal should affect discovery. A value of `block-discovery` means that the selected asset will be removed, and that all other assets that are discovered via this asset will also be removed. A value of `allow-discovery` means that the selected asset will be removed, and that all other assets discovered via this asset will **not** be affected. '
+                  type: string
+                  enum:
+                  - block-discovery
+                  - allow-discovery
+                  example: block-discovery
+                comment:
+                  description: An explanation or reason why the asset is being removed.
+                  type: string
+                  example: The asset is no longer relevant.
+              required:
+              - comment
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: Indicates whether an asset was successfully removed.
+                    type: string
+                    example: Asset successfully removed.
+                required:
+                - status
+  /v1/assets/{asset_type}/{asset_id}/investigation-status:
+    put:
+      description: 'Adjust the specified asset''s investigation status:
+
+        - **Investigated** – The asset has been investigated.
+
+        - **Investigating** – The asset is currently undergoing investigation by someone in your team.
+
+        - **Uninvestigated** – The asset has not been investigated yet. '
+      security:
+      - apiAuth: []
+      summary: Update asset's investigation status
+      tags:
+      - Assets
+      parameters:
+      - name: asset_type
+        in: path
+        schema:
+          type: string
+          enum:
+          - ip
+          - domain
+          - cert
+          - webapp
+          - iprange
+        required: true
+        description: Specifies the category of the asset.
+      - name: asset_id
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Unique identifier for the asset (e.g., IP address, domain name).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                investigation-status:
+                  description: "Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.  \n   \n*Supported values:* `investigating`, `investigated`, `uninvestigated`"
+                  type: string
+                  enum:
+                  - investigating
+                  - investigated
+                  - uninvestigated
+              required:
+              - investigation-status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/assets/actions/add/comment:
+    put:
+      description: Allows you to add comments to multiple assets identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content.
+      security:
+      - apiAuth: []
+      summary: Add comments to assets
+      tags:
+      - Assets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list of unique asset identifiers. Each ID corresponds to the `id` field from the *Retrieve assets* response and should be formatted as `&lt;asset_type&gt;/&lt;asset_id&gt;`.\n   \n*Examples:* `ip/1.1.1.1`, `domain/acme.com`, `webapp/acme.com`, `iprange/1.1.1.1-1.2.3.4`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - ip/1.1.1.1
+                  - domain/acme.com
+                comment:
+                  description: The content of the comment to be added to the specified assets.
+                  type: string
+                  example: This is a new comment on the asset
+              required:
+              - entity-ids
+              - comment
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/assets/actions/{action}/tags:
+    put:
+      description: Add or remove custom tags from specified assets.
+      security:
+      - apiAuth: []
+      summary: Handle asset tags
+      tags:
+      - Assets
+      parameters:
+      - name: action
+        in: path
+        schema:
+          type: string
+          enum:
+          - add
+          - remove
+          - replace
+          - remove-all
+        required: true
+        description: "Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list in which each item contains the unique ID for the assets whose custom tags you would like to modify. The unique ID corresponds to the `id` field (from the *Retrieve assets* response) and should be in the format `&lt;asset_type&gt;/&lt;asset_id&gt;`.  \n   \n*Examples:* `ip/1.1.1.1`, `domain/acme.com`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - ip/1.1.1.1
+                  - ip/2.2.2.2
+                  - domain/acme.com
+                  - webapp/acme.com
+                  - iprange/1.1.1.1-1.2.3.4
+                tags:
+                  description: A comma-separated list of custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - My tag
+                  - Another tag
+              required:
+              - entity-ids
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+components:
+  schemas:
+    json.any?:
+      anyOf:
+      - type: string
+      - type: boolean
+      - type: number
+      - type: string
+        format: dateTime
+      - type: string
+        format: byte
+      - type: array
+        items:
+          $ref: '#/components/schemas/json.any?'
+      - type: object
+        additionalProperties:
+          $ref: '#/components/schemas/json.any?'
+      - type: 'null'
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Scope Management API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Scope Management
+paths:
+  /v1/include-assets:
+    post:
+      description: "Bulk addition of new assets to your attack surface, with details such as value, asset type, organization, propagation preference, and optional description). \n*Note:* To attribute an asset to multiple organizations, you will need to create separate list entries."
+      security:
+      - apiAuth: []
+      summary: Include new assets
+      tags:
+      - Scope Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  asset-type:
+                    description: 'Specifies the category of the asset.
+
+                      *Supported values:* `ip`, `domain`, `cert`, `webapp`, `iprange`.'
+                    type: string
+                  description:
+                    description: A short description of the significance of the asset.
+                    type: string
+                  organization:
+                    description: The name of an organization to attribute the asset to.
+                    type: string
+                  propagate:
+                    description: Indicates whether the inclusion should propagate to other assets.
+                    type: boolean
+                  tags:
+                    description: A comma-separated list of custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                    type: array
+                    items:
+                      type: string
+                  value:
+                    description: The name of the asset to be included, formatted in accordance with its asset type.
+                    type: string
+                required:
+                - asset-type
+                - organization
+                - value
+              example: "[\n  {\n    \"asset_type\": \"ip\",\n    \"description\": \"An IP that was recently acquired\",\n    \"organization\": \"Acme Corporation\",\n    \"propagate\": true,\n    \"tags\": [\"Assigned to Team A\",\"Owned by Jim\"],\n    \"value\": \"1.1.1.1\"\n  },\n  {\n    \"asset_type\": \"ip\",\n    \"description\": \"An IP that was recently acquired\",\n    \"organization\": \"Acme Homes\",\n    \"propagate\": true,\n    \"tags\": \"Assigned to Team B\",\n    \"value\": \"1.1.1.2\"\n  },\n  {\n    \"asset_type\": \"domain\",\n    \"description\": \"A domain that was recently acquired\",\n    \"organization\": \"Acme Studio\",\n    \"propagate\": true,\n    \"tags\": \"Assigned to Team A\",\n    \"value\": \"studio.acme.com\"\n  },\n  {\n    \"asset_type\": \"ip-range\",\n    \"description\": \"We recently acquired the IPs in this range\",\n    \"organization\": \"Acme Corporation\",\n    \"propagate\": true,\n    \"tags\": \"Owned by Jim\",\n    \"value\": \"1.1.1.1-1.1.1.2\"\n  }\n]"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: 'Represents the outcome of the asset inclusion request. When the response status is 200, status is *success*. When the response status is 400, status is *failed*. '
+                    type: string
+                    example: success
+                  errors:
+                    description: A list detailing any errors encountered during the process. When the response status is 200, this list is empty, indicating no errors occurred. When the response status is 400, this list contains the specific error messages.
+                    type: array
+                    items:
+                      type: string
+                    example: The domain cannot be included at this time. To proceed, either remove this domain from your inclusion request, or contact support to assist you with including it manually.
+                required:
+                - status
+                - errors
+components:
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

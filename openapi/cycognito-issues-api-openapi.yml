@@ -1,0 +1,3386 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Issues API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Issues
+paths:
+  /v1/issues:
+    post:
+      description: Retrieve a list of issues based on given filter criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      security:
+      - apiAuth: []
+      summary: Search issues
+      tags:
+      - Issues
+      parameters:
+      - name: count
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000.
+      - name: advanced-search
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name="kb-advanced-search-link">Advanced Search</span> documentation for more details.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: 'Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99.'
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies a search term for conducting a keyword-based search and retrieving data that matches your query.
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema.
+      - name: sort-by
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies the field by which the results should be sorted.
+      - name: sort-order
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        required: false
+        description: Sorts the specified field in ascending or descending order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: status
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: in
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - new
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    advisories:
+                      description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              advisory:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - advisory
+                            - url
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"entity_id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"ti_severity_score\": 10,\n        \"confidence\": 100,\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"realm_id\": \"acme-corporation\",\n        \"id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"type\": \"issue\",\n        \"url\": \"https://www.cisa.gov/known-exploited-vulnerabilities-catalog\"\n      }\n    ]"
+                    affected-asset:
+                      description: The unique ID of the asset with which the issue is associated.
+                      type: string
+                      example: webapp/1.1.1.1
+                    affected-asset-tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    affected-ptr-domains:
+                      description: The PTR record associated with an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: r2.acme.net
+                    asset-status:
+                      description: The most recent status of an asset—e.g., Changed (was modified since the previous scan), New (was discovered during the most recent scan), Normal (nothing has changed since the previous scan), Removed (was not discovered in the most recent scan).
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: changed
+                    attacker-interest:
+                      description: A measurement of how attractive an issue's affected asset may be to a potential attacker. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: High
+                    attractiveness:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '4'
+                    attractiveness-label:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    base-severity:
+                      description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it. This property is available only for customers using Exploit Intelligence.
+
+                        *Supported values:* `low`, `medium`, `high`, `critical`'
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: high
+                    base-severity-score:
+                      description: The severity score, which is mostly inherited from the CVSS method for measuring of severity, and is the basis (about 80%) for the majority of the Enhanced Severity Score calculation. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '10'
+                    business-units:
+                      description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Marketing\"\n    ]"
+                    cis-controls:
+                      description: Refers to the compliance control number of the CIS framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                    comment:
+                      description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                      anyOf:
+                      - type: object
+                        properties:
+                          content:
+                            type: string
+                          last-update:
+                            anyOf:
+                            - type: string
+                              format: date-time
+                            - type: 'null'
+                        required:
+                        - content
+                        - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    comments:
+                      description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            content:
+                              type: string
+                            created-by-name:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            last-update:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - content
+                          - created-by-name
+                          - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    compliance-violations:
+                      description: Refers to specific compliance frameworks that have been violated.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                    confidence:
+                      description: Refers to the probability that an issue is valid and relevant on a scale of 0 to 100, where 0 indicates no confidence, and 100 indicates absolute confidence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '90'
+                    confidence-level:
+                      description: “Refers to the probability that an issue is valid and relevant. Possible values (from most probable to the least) are Confirmed, Likely, Potential, and Inconclusive.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: confirmed
+                    continent:
+                      description: The geographical continent in which the asset or issue is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Americas
+                    cve-ids:
+                      description: Refers to the specific CVE-ID number of the issue as established by the Mitre Corporation.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"CVE-2019-19781\"\n    ]"
+                    detection-complexity:
+                      description: 'Measures the difficulty at which a vulnerable asset can be detected by a potential attacker.
+
+                        *Supported values:* `easy`, `moderate`, `hard`'
+                      type: string
+                      example: easy
+                    detection-method:
+                      description: 'Indicates the method used to detect the issue.
+
+                        *Supported values:* `active`, `passive`'
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: active
+                    enhanced-severity:
+                      description: The severity grade (enhanced by CyCognito's Exploit Intelligence) that represents the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: critical
+                    enhanced-severity-score:
+                      description: The severity score of an issue (enhanced by CyCognito's Exploit Intelligence) that quantifies the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '10'
+                    environments:
+                      description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                    evidence:
+                      description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
+                    exploitation-availability:
+                      description: Indicates how easily an issue can be exploited. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: High
+                    exploitation-complexity:
+                      description: "Measures the difficulty at which a vulnerable asset can be assessed and consequently exploited by a potential attacker, based on the complexity of the required exploitation methods. \n*Supported values:* `very easy`, `easy`, `moderate`, `hard`, `extreme`"
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: easy
+                    exploitation-method:
+                      description: A practical method or series of methods by which an attacker can compromise or exploit an issue on a particular asset which they have detected.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: No PoC
+                    exploitation-score:
+                      description: Specifies how difficult it would be for an attacker to exploit an asset upon detecting the issue, based on the method or methods that would be required to perform the attack. For example, a simple action like a brute-force exploitation would be considered a relatively easy exploitation method.
+                      type: integer
+                      example: '5'
+                    first-detected:
+                      description: The date and time at which CyCognito first detected the issue.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-01-26T13:12:57.253Z'
+                    id:
+                      description: A unique ID for the instance of a particular issue on a specific asset. This is equivalent to the `issue_instance_id` value.
+                      type: string
+                      example: issue/webapp-1.1.1.1-cyc-js-jquery-2
+                    investigating-since:
+                      description: "The date at which investigation on a specific issue began. \n*Format:* `YYYY-MM-DD`"
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-08-21T13:12:57.253Z'
+                    investigation-status:
+                      description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                      anyOf:
+                      - type: string
+                        enum:
+                        - investigating
+                        - investigated
+                        - uninvestigated
+                      - type: 'null'
+                      example: investigating
+                    is-snoozed:
+                      description: Indicates whether an issue has been snoozed—i.e., it has been hidden from view until a later date.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    iso27001-controls:
+                      description: Refers to the compliance control number of the ISO 27001 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    iso27002-controls:
+                      description: Refers to the compliance control number of the ISO 27002 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    issue-id:
+                      description: An ID that identifies a particular issue—e.g., *CYC-TLS-HSTS-INSECURE*, *CVE-2022-33915*.
+                      type: string
+                      example: CYC-TLS-HSTS-INSECURE
+                    issue-status:
+                      description: "Refers to the current status of the issue following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The issue was first detected up to 30 days before your latest data update. \n * `normal` – The issue is still outstanding. \n * `issue-removed` – The issue was not detected in the latest data update. \n * `asset-removed` – The issue's affected asset was not seen in the latest data update. \n * `asset-not-alive` – The issue's affected asset is not alive."
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: new
+                    issue-type:
+                      description: The type of issue as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                      type: string
+                      example: Vulnerable Software
+                    issue-types:
+                      description: A list of issue types as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Unsafe Authentication\",\n      \"Misconfiguration\",\n      \"Network Security\"\n    ]"
+                    last-detected:
+                      description: The date and time at which CyCognito most recently detected the issue.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    locations:
+                      description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"USA\"\n    ]"
+                    mitre-attack-next-technique-name:
+                      description: The MITRE ATT&CK technique that attackers are likely to use to continue their attack on a vulnerability.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'Credential Access: Steal Web Session Cookie'
+                    mitre-attack-next-technique-subtitle:
+                      description: Details the likely method or action under the next tactic from the MITRE ATT&CK Enterprise Matrix.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Steal Web Session Cookie
+                    mitre-attack-next-technique-title:
+                      description: Points to the subsequent tactic in the MITRE ATT&CK Enterprise Matrix that an adversary might pursue after successfully employing the current technique.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Credential Access
+                    mitre-attack-technique-name:
+                      description: The MITRE ATT&CK technique that is currently being used by attackers to exploit a vulnerability.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'Initial Access: Exploit Public-Facing Application'
+                    mitre-attack-technique-subtitle:
+                      description: Highlights the specific technique or method under the identified tactic in the MITRE ATT&CK Enterprise Matrix—e.g., *Spearphishing Attachment* under *Initial Access*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Exploit Public-Facing Application
+                    mitre-attack-technique-title:
+                      description: Indicates the currently prevailing tactic from the MITRE ATT&CK Enterprise Matrix that an attacker could potentially employ to exploit this issue—e.g., *Initial Access*, *Execution*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Initial Access
+                    nist-800-171-controls:
+                      description: Refers to the compliance control number of the NIST 800-171 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                    nist-800-53-controls:
+                      description: Refers to the compliance control number of the NIST 800-53 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                    organizations:
+                      description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Gardens\"\n    ]"
+                    package:
+                      description: Indicates package of the issue id.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: AST
+                    pci-dss-controls:
+                      description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                    platforms:
+                      description: A list of platforms associated with an asset or issue.
+                      type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                    port:
+                      description: Indicates the number of an open TCP port on the issue's affected IP asset.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '443'
+                    potential-impact:
+                      description: A list of categories that describe what might happen if the issue is exploited—e.g., loss of integrity, loss of confidentiality, privacy violation, credential theft, etc.
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Loss of Confidentiality\",\n      \"Data Compromise\",\n      \"Network Breach\"\n    ]"
+                    potential-threat:
+                      description: The threat that the issue might cause—e.g., *Authentication Bypass*, *Denial of Service*, *Exposed Data*, *Phishing Threat*, *Unsafe Authentication*, *Vulnerable Software*, etc.
+                      type: string
+                      example: Authentication Bypass
+                    references:
+                      description: A set of hyperlinks and accompanying text that help the user understand and validate the issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"https://support.citrix.com/article/CTX267027\",\n      \"https://nvd.nist.gov/vuln/detail/CVE-2019-19781\",\n      \"https://www.us-cert.gov/ncas/alerts/aa20-031a\",\n      \"https://www.nsa.gov/News-Features/Feature-Stories/Article-View/Article/2573391/russian-foreign-intelligence-service-exploiting-five-publicly-known-vulnerabili/\"\n    ]"
+                    region:
+                      description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Central Asia
+                    remediation-effort:
+                      description: Refers to the type of effort required in order to remediate a particular issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Certificate Deployment
+                    remediation-method:
+                      description: The primary approach or strategy recommended to address a specific issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Patch
+                    remediation-steps:
+                      description: A list of instructions that describe how to resolve the issue.
+                      type: array
+                      items:
+                        type: string
+                      example: '["Patch the NetScaler to the latest version.","If a patch is not feasible, perform \"work-around\" mitigations per Citrix''s instructions.","Apply the necessary security patches provided by Citrix to fix the directory traversal vulnerability."]'
+                    resolved-at:
+                      description: 'The date at which an issue was resolved.
+
+                        *Format:* `YYYY-MM-DD`'
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-08-03T15:18:48.452Z'
+                    revalidation-request-time:
+                      description: Indicates the date and time at which an issue revalidation was requested.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-08-03T15:18:48.452Z'
+                    revalidation-requested:
+                      description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    severity:
+                      description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it.
+
+                        *Supported values:* `low`, `medium`, `high`, `critical`.'
+                      type: string
+                      example: critical
+                    severity-change-reason:
+                      description: The user-entered reason for changing an issue's severity.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: This issue is not actually considered severe by our team.
+                    severity-score:
+                      description: The severity score of an issue that quantifies the potential damage that can be caused were an attacker to exploit this issue.
+                      type: number
+                      example: '10'
+                    snooze-expiration:
+                      description: The date at which a snoozed issue is set to expire.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-09-05T00:00:00.000Z'
+                    summary:
+                      description: A brief description that summarizes the issue.
+                      type: string
+                      example: The website is using a vulnerable version of open source JS library
+                    tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    teams:
+                      description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                    tech-owners:
+                      description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            org-name:
+                              type: string
+                          required:
+                          - name
+                          - email
+                          - org-name
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                    title:
+                      description: A name that briefly describes the issue—e.g., *HTTP Redirection Phishing Threat*, *Bruteforce and dictionary attacks allowed*, etc.
+                      type: string
+                      example: HTTP Redirection Phishing Threat
+                    tools:
+                      description: Provides a breakdown of all of the known validation and exploitation tools associated with an issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              modification-date:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              tool-download-url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-description:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              is-safe:
+                                anyOf:
+                                - type: boolean
+                                - type: 'null'
+                              tool-references:
+                                $ref: '#/components/schemas/json.any?'
+                              tool-visibility:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              source-url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-type:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              relation-type:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-name:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-title:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-framework:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              issue-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-instructions:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    type: string
+                                - type: 'null'
+                            required:
+                            - modification-date
+                            - tool-download-url
+                            - tool-id
+                            - tool-description
+                            - is-safe
+                            - tool-references
+                            - tool-visibility
+                            - source-url
+                            - tool-type
+                            - id
+                            - relation-type
+                            - tool-name
+                            - tool-title
+                            - tool-framework
+                            - issue-id
+                            - tool-instructions
+                            additionalProperties: false
+                          - type: 'null'
+                      - type: 'null'
+                      example: '[{"tool_title":"Citrix ADC (NetScaler) Directory Traversal Scanner","tool_framework":"metasploit","source_url":"https%3A%2F%2Fgithub.com%2Frapid7%2Fmetasploit-framework%2Fblob%2Fmaster%2Fmodules%2Fauxiliary%2Fscanner%2Fhttp%2Fcitrix_dir_traversal.rb","tool_name":"auxiliary_scanner/http/citrix_dir_traversal","tool_type":"security","id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal","tool_instructions":["Install the module as usual","Start msfconsole","Do: `use auxiliary/scanner/http/citrix_dir_traversal`","Do: `set RHOSTS [IP]`","Do: `run`"],"issue_id":"CVE-2019-19781","tool_download_url":null,"is_safe":true,"modification_date":"2022-01-23T15:28:32Z","tool_visibility":"public","tool_references":["CVE-2019-19781","URL-https://web.archive.org/web/20200111095223/https://support.citrix.com/article/CTX267027/","URL-https://swarm.ptsecurity.com/remote-code-execution-in-citrix-adc/"],"relation_type":"validation","tool_description":"This module exploits a directory traversal vulnerability (CVE-2019-19781) within Citrix ADC (NetScaler). It requests the smb.conf file located in the /vpns/cfg directory by issuing the request /vpn/../vpns/cfg/smb.conf. It then checks if the server is vulnerable by looking for the presence of a \"[global]\" directive in smb.conf, which this file should always contain.","tool_id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal"}]'
+                    underground-activity:
+                      description: A history or summary of how the vulnerability on a particular issue has been exploited in the real world. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+  /v1/issues/issue/{issue_instance_id}:
+    get:
+      description: Obtain details of a specific issue using its identifier.
+      security:
+      - apiAuth: []
+      summary: Fetch issue details
+      tags:
+      - Issues
+      parameters:
+      - name: issue_instance_id
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Unique identifier for a specific issue occurrence on an asset. This is the `id` value from the response, excluding the `issue/` prefix.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  advisories:
+                    description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: object
+                          properties:
+                            advisory:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            url:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - advisory
+                          - url
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      {\n        \"entity_id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"ti_severity_score\": 10,\n        \"confidence\": 100,\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"realm_id\": \"acme-corporation\",\n        \"id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"type\": \"issue\",\n        \"url\": \"https://www.cisa.gov/known-exploited-vulnerabilities-catalog\"\n      }\n    ]"
+                  affected-asset:
+                    description: The unique ID of the asset with which the issue is associated.
+                    type: string
+                    example: webapp/1.1.1.1
+                  affected-asset-tags:
+                    description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                  affected-ptr-domains:
+                    description: The PTR record associated with an IP address.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: r2.acme.net
+                  asset-status:
+                    description: The most recent status of an asset—e.g., Changed (was modified since the previous scan), New (was discovered during the most recent scan), Normal (nothing has changed since the previous scan), Removed (was not discovered in the most recent scan).
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: changed
+                  attacker-interest:
+                    description: A measurement of how attractive an issue's affected asset may be to a potential attacker. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: High
+                  attractiveness:
+                    description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '4'
+                  attractiveness-label:
+                    description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: extreme
+                  base-severity:
+                    description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it. This property is available only for customers using Exploit Intelligence.
+
+                      *Supported values:* `low`, `medium`, `high`, `critical`'
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: high
+                  base-severity-score:
+                    description: The severity score, which is mostly inherited from the CVSS method for measuring of severity, and is the basis (about 80%) for the majority of the Enhanced Severity Score calculation. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '10'
+                  business-units:
+                    description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                    type: array
+                    items:
+                      type: string
+                    example: "[\n      \"Marketing\"\n    ]"
+                  cis-controls:
+                    description: Refers to the compliance control number of the CIS framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                  comment:
+                    description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                    anyOf:
+                    - type: object
+                      properties:
+                        content:
+                          type: string
+                        last-update:
+                          anyOf:
+                          - type: string
+                            format: date-time
+                          - type: 'null'
+                      required:
+                      - content
+                      - last-update
+                    - type: 'null'
+                    example: Reviewed by Gary
+                  comments:
+                    description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          content:
+                            type: string
+                          created-by-name:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                          last-update:
+                            anyOf:
+                            - type: string
+                            - type: 'null'
+                        required:
+                        - content
+                        - created-by-name
+                        - last-update
+                    - type: 'null'
+                    example: Reviewed by Gary
+                  compliance-violations:
+                    description: Refers to specific compliance frameworks that have been violated.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                  confidence:
+                    description: Refers to the probability that an issue is valid and relevant on a scale of 0 to 100, where 0 indicates no confidence, and 100 indicates absolute confidence.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '90'
+                  confidence-level:
+                    description: “Refers to the probability that an issue is valid and relevant. Possible values (from most probable to the least) are Confirmed, Likely, Potential, and Inconclusive.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: confirmed
+                  continent:
+                    description: The geographical continent in which the asset or issue is located.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: Americas
+                  cve-ids:
+                    description: Refers to the specific CVE-ID number of the issue as established by the Mitre Corporation.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"CVE-2019-19781\"\n    ]"
+                  detection-complexity:
+                    description: 'Measures the difficulty at which a vulnerable asset can be detected by a potential attacker.
+
+                      *Supported values:* `easy`, `moderate`, `hard`'
+                    type: string
+                    example: easy
+                  detection-method:
+                    description: 'Indicates the method used to detect the issue.
+
+                      *Supported values:* `active`, `passive`'
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: active
+                  enhanced-severity:
+                    description: The severity grade (enhanced by CyCognito's Exploit Intelligence) that represents the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: critical
+                  enhanced-severity-score:
+                    description: The severity score of an issue (enhanced by CyCognito's Exploit Intelligence) that quantifies the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '10'
+                  environments:
+                    description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                  evidence:
+                    description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
+                    anyOf:
+                    - $ref: '#/components/schemas/json.any?'
+                    - type: 'null'
+                    example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
+                  exploitation-availability:
+                    description: Indicates how easily an issue can be exploited. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: High
+                  exploitation-complexity:
+                    description: "Measures the difficulty at which a vulnerable asset can be assessed and consequently exploited by a potential attacker, based on the complexity of the required exploitation methods. \n*Supported values:* `very easy`, `easy`, `moderate`, `hard`, `extreme`"
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: easy
+                  exploitation-method:
+                    description: A practical method or series of methods by which an attacker can compromise or exploit an issue on a particular asset which they have detected.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: No PoC
+                  exploitation-score:
+                    description: Specifies how difficult it would be for an attacker to exploit an asset upon detecting the issue, based on the method or methods that would be required to perform the attack. For example, a simple action like a brute-force exploitation would be considered a relatively easy exploitation method.
+                    type: integer
+                    example: '5'
+                  first-detected:
+                    description: The date and time at which CyCognito first detected the issue.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2023-01-26T13:12:57.253Z'
+                  id:
+                    description: A unique ID for the instance of a particular issue on a specific asset. This is equivalent to the `issue_instance_id` value.
+                    type: string
+                    example: issue/webapp-1.1.1.1-cyc-js-jquery-2
+                  investigating-since:
+                    description: "The date at which investigation on a specific issue began. \n*Format:* `YYYY-MM-DD`"
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2023-08-21T13:12:57.253Z'
+                  investigation-status:
+                    description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                    anyOf:
+                    - type: string
+                      enum:
+                      - investigating
+                      - investigated
+                      - uninvestigated
+                    - type: 'null'
+                    example: investigating
+                  is-snoozed:
+                    description: Indicates whether an issue has been snoozed—i.e., it has been hidden from view until a later date.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  iso27001-controls:
+                    description: Refers to the compliance control number of the ISO 27001 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                  iso27002-controls:
+                    description: Refers to the compliance control number of the ISO 27002 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                  issue-id:
+                    description: An ID that identifies a particular issue—e.g., *CYC-TLS-HSTS-INSECURE*, *CVE-2022-33915*.
+                    type: string
+                    example: CYC-TLS-HSTS-INSECURE
+                  issue-status:
+                    description: "Refers to the current status of the issue following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The issue was first detected up to 30 days before your latest data update. \n * `normal` – The issue is still outstanding. \n * `issue-removed` – The issue was not detected in the latest data update. \n * `asset-removed` – The issue's affected asset was not seen in the latest data update. \n * `asset-not-alive` – The issue's affected asset is not alive."
+                    anyOf:
+                    - type: string
+                    - type: string
+                    - type: 'null'
+                    example: new
+                  issue-type:
+                    description: The type of issue as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                    type: string
+                    example: Vulnerable Software
+                  issue-types:
+                    description: A list of issue types as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"Unsafe Authentication\",\n      \"Misconfiguration\",\n      \"Network Security\"\n    ]"
+                  last-detected:
+                    description: The date and time at which CyCognito most recently detected the issue.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-06-17T07:02:04.181Z'
+                  locations:
+                    description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"USA\"\n    ]"
+                  mitre-attack-next-technique-name:
+                    description: The MITRE ATT&CK technique that attackers are likely to use to continue their attack on a vulnerability.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: 'Credential Access: Steal Web Session Cookie'
+                  mitre-attack-next-technique-subtitle:
+                    description: Details the likely method or action under the next tactic from the MITRE ATT&CK Enterprise Matrix.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Steal Web Session Cookie
+                  mitre-attack-next-technique-title:
+                    description: Points to the subsequent tactic in the MITRE ATT&CK Enterprise Matrix that an adversary might pursue after successfully employing the current technique.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Credential Access
+                  mitre-attack-technique-name:
+                    description: The MITRE ATT&CK technique that is currently being used by attackers to exploit a vulnerability.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: 'Initial Access: Exploit Public-Facing Application'
+                  mitre-attack-technique-subtitle:
+                    description: Highlights the specific technique or method under the identified tactic in the MITRE ATT&CK Enterprise Matrix—e.g., *Spearphishing Attachment* under *Initial Access*.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Exploit Public-Facing Application
+                  mitre-attack-technique-title:
+                    description: Indicates the currently prevailing tactic from the MITRE ATT&CK Enterprise Matrix that an attacker could potentially employ to exploit this issue—e.g., *Initial Access*, *Execution*.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Initial Access
+                  nist-800-171-controls:
+                    description: Refers to the compliance control number of the NIST 800-171 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                  nist-800-53-controls:
+                    description: Refers to the compliance control number of the NIST 800-53 framework.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                  organizations:
+                    description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"Acme Gardens\"\n    ]"
+                  package:
+                    description: Indicates package of the issue id.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: AST
+                  pci-dss-controls:
+                    description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                      uniqueItems: true
+                    - type: 'null'
+                    example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                  platforms:
+                    description: A list of platforms associated with an asset or issue.
+                    type: array
+                    items:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                  port:
+                    description: Indicates the number of an open TCP port on the issue's affected IP asset.
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                    example: '443'
+                  potential-impact:
+                    description: A list of categories that describe what might happen if the issue is exploited—e.g., loss of integrity, loss of confidentiality, privacy violation, credential theft, etc.
+                    type: array
+                    items:
+                      type: string
+                    example: "[\n      \"Loss of Confidentiality\",\n      \"Data Compromise\",\n      \"Network Breach\"\n    ]"
+                  potential-threat:
+                    description: The threat that the issue might cause—e.g., *Authentication Bypass*, *Denial of Service*, *Exposed Data*, *Phishing Threat*, *Unsafe Authentication*, *Vulnerable Software*, etc.
+                    type: string
+                    example: Authentication Bypass
+                  references:
+                    description: A set of hyperlinks and accompanying text that help the user understand and validate the issue.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: "[\n      \"https://support.citrix.com/article/CTX267027\",\n      \"https://nvd.nist.gov/vuln/detail/CVE-2019-19781\",\n      \"https://www.us-cert.gov/ncas/alerts/aa20-031a\",\n      \"https://www.nsa.gov/News-Features/Feature-Stories/Article-View/Article/2573391/russian-foreign-intelligence-service-exploiting-five-publicly-known-vulnerabili/\"\n    ]"
+                  region:
+                    description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                    - type: 'null'
+                    example: Central Asia
+                  remediation-effort:
+                    description: Refers to the type of effort required in order to remediate a particular issue.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Certificate Deployment
+                  remediation-method:
+                    description: The primary approach or strategy recommended to address a specific issue.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: Patch
+                  remediation-steps:
+                    description: A list of instructions that describe how to resolve the issue.
+                    type: array
+                    items:
+                      type: string
+                    example: '["Patch the NetScaler to the latest version.","If a patch is not feasible, perform \"work-around\" mitigations per Citrix''s instructions.","Apply the necessary security patches provided by Citrix to fix the directory traversal vulnerability."]'
+                  resolved-at:
+                    description: 'The date at which an issue was resolved.
+
+                      *Format:* `YYYY-MM-DD`'
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2022-08-03T15:18:48.452Z'
+                  revalidation-request-time:
+                    description: Indicates the date and time at which an issue revalidation was requested.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-08-03T15:18:48.452Z'
+                  revalidation-requested:
+                    description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                    anyOf:
+                    - type: boolean
+                    - type: 'null'
+                    example: 'true'
+                  severity:
+                    description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it.
+
+                      *Supported values:* `low`, `medium`, `high`, `critical`.'
+                    type: string
+                    example: critical
+                  severity-change-reason:
+                    description: The user-entered reason for changing an issue's severity.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: This issue is not actually considered severe by our team.
+                  severity-score:
+                    description: The severity score of an issue that quantifies the potential damage that can be caused were an attacker to exploit this issue.
+                    type: number
+                    example: '10'
+                  snooze-expiration:
+                    description: The date at which a snoozed issue is set to expire.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-09-05T00:00:00.000Z'
+                  summary:
+                    description: A brief description that summarizes the issue.
+                    type: string
+                    example: The website is using a vulnerable version of open source JS library
+                  tags:
+                    description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                  teams:
+                    description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: string
+                    - type: 'null'
+                    example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                  tech-owners:
+                    description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                    anyOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          org-name:
+                            type: string
+                        required:
+                        - name
+                        - email
+                        - org-name
+                    - type: 'null'
+                    example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                  title:
+                    description: A name that briefly describes the issue—e.g., *HTTP Redirection Phishing Threat*, *Bruteforce and dictionary attacks allowed*, etc.
+                    type: string
+                    example: HTTP Redirection Phishing Threat
+                  tools:
+                    description: Provides a breakdown of all of the known validation and exploitation tools associated with an issue.
+                    anyOf:
+                    - type: array
+                      items:
+                        anyOf:
+                        - type: object
+                          properties:
+                            modification-date:
+                              anyOf:
+                              - type: string
+                                format: date-time
+                              - type: 'null'
+                            tool-download-url:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-id:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-description:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            is-safe:
+                              anyOf:
+                              - type: boolean
+                              - type: 'null'
+                            tool-references:
+                              $ref: '#/components/schemas/json.any?'
+                            tool-visibility:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            source-url:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-type:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            id:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            relation-type:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-name:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-title:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-framework:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            issue-id:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            tool-instructions:
+                              anyOf:
+                              - type: array
+                                items:
+                                  type: string
+                              - type: 'null'
+                          required:
+                          - modification-date
+                          - tool-download-url
+                          - tool-id
+                          - tool-description
+                          - is-safe
+                          - tool-references
+                          - tool-visibility
+                          - source-url
+                          - tool-type
+                          - id
+                          - relation-type
+                          - tool-name
+                          - tool-title
+                          - tool-framework
+                          - issue-id
+                          - tool-instructions
+                          additionalProperties: false
+                        - type: 'null'
+                    - type: 'null'
+                    example: '[{"tool_title":"Citrix ADC (NetScaler) Directory Traversal Scanner","tool_framework":"metasploit","source_url":"https%3A%2F%2Fgithub.com%2Frapid7%2Fmetasploit-framework%2Fblob%2Fmaster%2Fmodules%2Fauxiliary%2Fscanner%2Fhttp%2Fcitrix_dir_traversal.rb","tool_name":"auxiliary_scanner/http/citrix_dir_traversal","tool_type":"security","id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal","tool_instructions":["Install the module as usual","Start msfconsole","Do: `use auxiliary/scanner/http/citrix_dir_traversal`","Do: `set RHOSTS [IP]`","Do: `run`"],"issue_id":"CVE-2019-19781","tool_download_url":null,"is_safe":true,"modification_date":"2022-01-23T15:28:32Z","tool_visibility":"public","tool_references":["CVE-2019-19781","URL-https://web.archive.org/web/20200111095223/https://support.citrix.com/article/CTX267027/","URL-https://swarm.ptsecurity.com/remote-code-execution-in-citrix-adc/"],"relation_type":"validation","tool_description":"This module exploits a directory traversal vulnerability (CVE-2019-19781) within Citrix ADC (NetScaler). It requests the smb.conf file located in the /vpns/cfg directory by issuing the request /vpn/../vpns/cfg/smb.conf. It then checks if the server is vulnerable by looking for the presence of a \"[global]\" directive in smb.conf, which this file should always contain.","tool_id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal"}]'
+                  underground-activity:
+                    description: A history or summary of how the vulnerability on a particular issue has been exploited in the real world. This property is available only for customers using Exploit Intelligence.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+  /v1/issues/issue/{issue_instance_id}/investigation-status:
+    put:
+      description: 'Adjust the specified issue''s investigation status:
+
+        - **Investigated** – The issue has been investigated.
+
+        - **Investigating** – The issue is currently undergoing investigation by someone in your team.
+
+        - **Uninvestigated** – The issue has not been investigated yet.'
+      security:
+      - apiAuth: []
+      summary: Update issue's investigation status
+      tags:
+      - Issues
+      parameters:
+      - name: issue_instance_id
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Unique identifier for a specific issue occurrence on an asset. This is the `id` value from the response, excluding the `issue/` prefix.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                investigation-status:
+                  description: "Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.  \n   \n*Supported values:* `investigating`, `investigated`, `uninvestigated`"
+                  type: string
+                  enum:
+                  - investigating
+                  - investigated
+                  - uninvestigated
+              required:
+              - investigation-status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/issues/actions/add/comment:
+    put:
+      description: Allows you to add comments to multiple issues identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content.
+      security:
+      - apiAuth: []
+      summary: Add comments to issues
+      tags:
+      - Issues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list of unique issue identifiers. Each ID corresponds to the `id` field from the *Search issues* response and should be formatted as `issue/&lt;affected_asset&gt;-&lt;issue_id&gt;`.\n   \n*Example:* `issue/1.1.1.1-cve-2023-12345`, `issue/CYC-ISSUE-NAME`, `issue/WLD-ABCD1234EFGH5678`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - issue/CVE-1234-56789
+                  - issue/CYC-ISSUE-NAME
+                  - issue/WLD-ABCD1234EFGH5678
+                comment:
+                  description: The content of the comment to be added to the specified issues.
+                  type: string
+                  example: This is a new comment on the issue
+              required:
+              - entity-ids
+              - comment
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/issues/actions/{action}/tags:
+    put:
+      description: Add or remove custom tags from specified issues.
+      security:
+      - apiAuth: []
+      summary: Handle issue tags
+      tags:
+      - Issues
+      parameters:
+      - name: action
+        in: path
+        schema:
+          type: string
+          enum:
+          - add
+          - remove
+          - replace
+          - remove-all
+        required: true
+        description: "Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list in which each item contains the unique ID for the issues whose custom tags you would like to modify. The unique ID corresponds to the `id` field (from the *Search issues* response) and should be in the format `issue/&lt;affected_asset&gt;-&lt;issue_id&gt;`.  \n   \n*Example:* `issue/1.1.1.1-cve-2023-12345`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - issue/CVE-1234-56789
+                  - issue/CYC-ISSUE-NAME
+                  - issue/WLD-ABCD1234EFGH5678
+                tags:
+                  description: A comma-separated list of custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - My tag
+                  - Another tag
+              required:
+              - entity-ids
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/issues/actions/archive:
+    put:
+      description: Move issues to an archived state, distinguishing them from open and resolved issues.
+      security:
+      - apiAuth: []
+      summary: Archive issues
+      tags:
+      - Issues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list in which each item contains the unique ID for the issues you would like to archive. The unique ID corresponds to the `id` field (from the *Search issues* response) and should be in the format `issue/&lt;affected_asset&gt;-&lt;issue_id&gt;`.  \n   \n*Example:* `issue/1.1.1.1-cve-2023-12345`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - issue/CVE-1234-56789
+                  - issue/CYC-ISSUE-NAME
+                  - issue/WLD-ABCD1234EFGH5678
+                reporting-reason:
+                  description: "The reason you are archiving the specified issues.  \n *Supported values:*  \n * The issue is a false positive.  \n * This issue has already been resolved.  \n * The issue is irrelevant.  \n * The asset is not related to my organization.  \n * The risk posed by this issue is acceptable.  \n * The issue’s affected asset has been removed by a user.  \n * Other"
+                  type: string
+                  enum:
+                  - The issue is a false positive.
+                  - This issue has already been resolved.
+                  - The issue is irrelevant.
+                  - The asset is not related to my organization.
+                  - The risk posed by this issue is acceptable.
+                  - The issue’s affected asset has been removed by a user.
+                  - Other
+                  example: This issue has already been resolved.
+                comment:
+                  description: If the `reporting-reason` is *Other*, enter a comment explaining the reason you are archiving the issue.
+                  type: string
+                  example: We resolved this issue following last month's triage.
+              required:
+              - entity-ids
+              - reporting-reason
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/issues/actions/snooze:
+    put:
+      description: Snooze issues for a specified duration, hiding them from your open issues list until the snooze period expires. This enables automated lifecycle control from external workflows while maintaining accurate attack surface metrics.
+      security:
+      - apiAuth: []
+      summary: Snooze issues
+      tags:
+      - Issues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity-ids:
+                  description: "A comma-separated list of unique issue identifiers. Each ID corresponds to the `id` field from the *Search issues* response and should be formatted as `issue/&lt;affected_asset&gt;-&lt;issue_id&gt;`.\n   \n*Example:* `issue/1.1.1.1-cve-2023-12345`, `issue/CYC-ISSUE-NAME`, `issue/WLD-ABCD1234EFGH5678`"
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - issue/CVE-1234-56789
+                  - issue/CYC-ISSUE-NAME
+                  - issue/WLD-ABCD1234EFGH5678
+                snooze-duration:
+                  description: The number of days the issues will be snoozed.
+                  allOf:
+                  - type: number
+                  - type: number
+                    exclusiveMinimum: 0
+                  example: 45
+              required:
+              - entity-ids
+              - snooze-duration
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  failed:
+                    description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    uniqueItems: true
+                  updated:
+                    description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
+                    type: array
+                    items:
+                      type: string
+                    uniqueItems: true
+                required:
+                - failed
+                - updated
+  /v1/archived-issues:
+    post:
+      description: Retrieve archived issues based on set criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      security:
+      - apiAuth: []
+      summary: Search archived issues
+      tags:
+      - Issues
+      parameters:
+      - name: count
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000.
+      - name: advanced-search
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name="kb-advanced-search-link">Advanced Search</span> documentation for more details.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: 'Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99.'
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies a search term for conducting a keyword-based search and retrieving data that matches your query.
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema.
+      - name: sort-by
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies the field by which the results should be sorted.
+      - name: sort-order
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        required: false
+        description: Sorts the specified field in ascending or descending order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: status
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: in
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - new
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    advisories:
+                      description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              advisory:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - advisory
+                            - url
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"entity_id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"ti_severity_score\": 10,\n        \"confidence\": 100,\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"realm_id\": \"acme-corporation\",\n        \"id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"type\": \"issue\",\n        \"url\": \"https://www.cisa.gov/known-exploited-vulnerabilities-catalog\"\n      }\n    ]"
+                    affected-asset:
+                      description: The unique ID of the asset with which the issue is associated.
+                      type: string
+                      example: webapp/1.1.1.1
+                    affected-asset-tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    affected-ptr-domains:
+                      description: The PTR record associated with an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: r2.acme.net
+                    asset-status:
+                      description: The most recent status of an asset—e.g., Changed (was modified since the previous scan), New (was discovered during the most recent scan), Normal (nothing has changed since the previous scan), Removed (was not discovered in the most recent scan).
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: changed
+                    attacker-interest:
+                      description: A measurement of how attractive an issue's affected asset may be to a potential attacker. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: High
+                    attractiveness:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '4'
+                    attractiveness-label:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    base-severity:
+                      description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it. This property is available only for customers using Exploit Intelligence.
+
+                        *Supported values:* `low`, `medium`, `high`, `critical`'
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: high
+                    base-severity-score:
+                      description: The severity score, which is mostly inherited from the CVSS method for measuring of severity, and is the basis (about 80%) for the majority of the Enhanced Severity Score calculation. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '10'
+                    business-units:
+                      description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Marketing\"\n    ]"
+                    cis-controls:
+                      description: Refers to the compliance control number of the CIS framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                    comment:
+                      description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                      anyOf:
+                      - type: object
+                        properties:
+                          content:
+                            type: string
+                          last-update:
+                            anyOf:
+                            - type: string
+                              format: date-time
+                            - type: 'null'
+                        required:
+                        - content
+                        - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    comments:
+                      description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            content:
+                              type: string
+                            created-by-name:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            last-update:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - content
+                          - created-by-name
+                          - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    compliance-violations:
+                      description: Refers to specific compliance frameworks that have been violated.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                    confidence:
+                      description: Refers to the probability that an issue is valid and relevant on a scale of 0 to 100, where 0 indicates no confidence, and 100 indicates absolute confidence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '90'
+                    confidence-level:
+                      description: “Refers to the probability that an issue is valid and relevant. Possible values (from most probable to the least) are Confirmed, Likely, Potential, and Inconclusive.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: confirmed
+                    continent:
+                      description: The geographical continent in which the asset or issue is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Americas
+                    cve-ids:
+                      description: Refers to the specific CVE-ID number of the issue as established by the Mitre Corporation.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"CVE-2019-19781\"\n    ]"
+                    detection-complexity:
+                      description: 'Measures the difficulty at which a vulnerable asset can be detected by a potential attacker.
+
+                        *Supported values:* `easy`, `moderate`, `hard`'
+                      type: string
+                      example: easy
+                    detection-method:
+                      description: 'Indicates the method used to detect the issue.
+
+                        *Supported values:* `active`, `passive`'
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: active
+                    enhanced-severity:
+                      description: The severity grade (enhanced by CyCognito's Exploit Intelligence) that represents the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: critical
+                    enhanced-severity-score:
+                      description: The severity score of an issue (enhanced by CyCognito's Exploit Intelligence) that quantifies the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '10'
+                    environments:
+                      description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                    evidence:
+                      description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
+                    exploitation-availability:
+                      description: Indicates how easily an issue can be exploited. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: High
+                    exploitation-complexity:
+                      description: "Measures the difficulty at which a vulnerable asset can be assessed and consequently exploited by a potential attacker, based on the complexity of the required exploitation methods. \n*Supported values:* `very easy`, `easy`, `moderate`, `hard`, `extreme`"
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: easy
+                    exploitation-method:
+                      description: A practical method or series of methods by which an attacker can compromise or exploit an issue on a particular asset which they have detected.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: No PoC
+                    exploitation-score:
+                      description: Specifies how difficult it would be for an attacker to exploit an asset upon detecting the issue, based on the method or methods that would be required to perform the attack. For example, a simple action like a brute-force exploitation would be considered a relatively easy exploitation method.
+                      type: integer
+                      example: '5'
+                    first-detected:
+                      description: The date and time at which CyCognito first detected the issue.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-01-26T13:12:57.253Z'
+                    id:
+                      description: A unique ID for the instance of a particular issue on a specific asset. This is equivalent to the `issue_instance_id` value.
+                      type: string
+                      example: issue/webapp-1.1.1.1-cyc-js-jquery-2
+                    investigating-since:
+                      description: "The date at which investigation on a specific issue began. \n*Format:* `YYYY-MM-DD`"
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-08-21T13:12:57.253Z'
+                    investigation-status:
+                      description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                      anyOf:
+                      - type: string
+                        enum:
+                        - investigating
+                        - investigated
+                        - uninvestigated
+                      - type: 'null'
+                      example: investigating
+                    is-snoozed:
+                      description: Indicates whether an issue has been snoozed—i.e., it has been hidden from view until a later date.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    iso27001-controls:
+                      description: Refers to the compliance control number of the ISO 27001 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    iso27002-controls:
+                      description: Refers to the compliance control number of the ISO 27002 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    issue-id:
+                      description: An ID that identifies a particular issue—e.g., *CYC-TLS-HSTS-INSECURE*, *CVE-2022-33915*.
+                      type: string
+                      example: CYC-TLS-HSTS-INSECURE
+                    issue-status:
+                      description: "Refers to the current status of the issue following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The issue was first detected up to 30 days before your latest data update. \n * `normal` – The issue is still outstanding. \n * `issue-removed` – The issue was not detected in the latest data update. \n * `asset-removed` – The issue's affected asset was not seen in the latest data update. \n * `asset-not-alive` – The issue's affected asset is not alive."
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: new
+                    issue-type:
+                      description: The type of issue as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                      type: string
+                      example: Vulnerable Software
+                    issue-types:
+                      description: A list of issue types as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Unsafe Authentication\",\n      \"Misconfiguration\",\n      \"Network Security\"\n    ]"
+                    last-detected:
+                      description: The date and time at which CyCognito most recently detected the issue.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    locations:
+                      description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"USA\"\n    ]"
+                    mitre-attack-next-technique-name:
+                      description: The MITRE ATT&CK technique that attackers are likely to use to continue their attack on a vulnerability.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'Credential Access: Steal Web Session Cookie'
+                    mitre-attack-next-technique-subtitle:
+                      description: Details the likely method or action under the next tactic from the MITRE ATT&CK Enterprise Matrix.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Steal Web Session Cookie
+                    mitre-attack-next-technique-title:
+                      description: Points to the subsequent tactic in the MITRE ATT&CK Enterprise Matrix that an adversary might pursue after successfully employing the current technique.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Credential Access
+                    mitre-attack-technique-name:
+                      description: The MITRE ATT&CK technique that is currently being used by attackers to exploit a vulnerability.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'Initial Access: Exploit Public-Facing Application'
+                    mitre-attack-technique-subtitle:
+                      description: Highlights the specific technique or method under the identified tactic in the MITRE ATT&CK Enterprise Matrix—e.g., *Spearphishing Attachment* under *Initial Access*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Exploit Public-Facing Application
+                    mitre-attack-technique-title:
+                      description: Indicates the currently prevailing tactic from the MITRE ATT&CK Enterprise Matrix that an attacker could potentially employ to exploit this issue—e.g., *Initial Access*, *Execution*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Initial Access
+                    nist-800-171-controls:
+                      description: Refers to the compliance control number of the NIST 800-171 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                    nist-800-53-controls:
+                      description: Refers to the compliance control number of the NIST 800-53 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                    organizations:
+                      description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Gardens\"\n    ]"
+                    package:
+                      description: Indicates package of the issue id.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: AST
+                    pci-dss-controls:
+                      description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                    platforms:
+                      description: A list of platforms associated with an asset or issue.
+                      type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                    port:
+                      description: Indicates the number of an open TCP port on the issue's affected IP asset.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '443'
+                    potential-impact:
+                      description: A list of categories that describe what might happen if the issue is exploited—e.g., loss of integrity, loss of confidentiality, privacy violation, credential theft, etc.
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Loss of Confidentiality\",\n      \"Data Compromise\",\n      \"Network Breach\"\n    ]"
+                    potential-threat:
+                      description: The threat that the issue might cause—e.g., *Authentication Bypass*, *Denial of Service*, *Exposed Data*, *Phishing Threat*, *Unsafe Authentication*, *Vulnerable Software*, etc.
+                      type: string
+                      example: Authentication Bypass
+                    references:
+                      description: A set of hyperlinks and accompanying text that help the user understand and validate the issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"https://support.citrix.com/article/CTX267027\",\n      \"https://nvd.nist.gov/vuln/detail/CVE-2019-19781\",\n      \"https://www.us-cert.gov/ncas/alerts/aa20-031a\",\n      \"https://www.nsa.gov/News-Features/Feature-Stories/Article-View/Article/2573391/russian-foreign-intelligence-service-exploiting-five-publicly-known-vulnerabili/\"\n    ]"
+                    region:
+                      description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Central Asia
+                    remediation-effort:
+                      description: Refers to the type of effort required in order to remediate a particular issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Certificate Deployment
+                    remediation-method:
+                      description: The primary approach or strategy recommended to address a specific issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Patch
+                    remediation-steps:
+                      description: A list of instructions that describe how to resolve the issue.
+                      type: array
+                      items:
+                        type: string
+                      example: '["Patch the NetScaler to the latest version.","If a patch is not feasible, perform \"work-around\" mitigations per Citrix''s instructions.","Apply the necessary security patches provided by Citrix to fix the directory traversal vulnerability."]'
+                    resolved-at:
+                      description: 'The date at which an issue was resolved.
+
+                        *Format:* `YYYY-MM-DD`'
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-08-03T15:18:48.452Z'
+                    revalidation-request-time:
+                      description: Indicates the date and time at which an issue revalidation was requested.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-08-03T15:18:48.452Z'
+                    revalidation-requested:
+                      description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    severity:
+                      description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it.
+
+                        *Supported values:* `low`, `medium`, `high`, `critical`.'
+                      type: string
+                      example: critical
+                    severity-change-reason:
+                      description: The user-entered reason for changing an issue's severity.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: This issue is not actually considered severe by our team.
+                    severity-score:
+                      description: The severity score of an issue that quantifies the potential damage that can be caused were an attacker to exploit this issue.
+                      type: number
+                      example: '10'
+                    snooze-expiration:
+                      description: The date at which a snoozed issue is set to expire.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-09-05T00:00:00.000Z'
+                    summary:
+                      description: A brief description that summarizes the issue.
+                      type: string
+                      example: The website is using a vulnerable version of open source JS library
+                    tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    teams:
+                      description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                    tech-owners:
+                      description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            org-name:
+                              type: string
+                          required:
+                          - name
+                          - email
+                          - org-name
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                    title:
+                      description: A name that briefly describes the issue—e.g., *HTTP Redirection Phishing Threat*, *Bruteforce and dictionary attacks allowed*, etc.
+                      type: string
+                      example: HTTP Redirection Phishing Threat
+                    tools:
+                      description: Provides a breakdown of all of the known validation and exploitation tools associated with an issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              modification-date:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              tool-download-url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-description:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              is-safe:
+                                anyOf:
+                                - type: boolean
+                                - type: 'null'
+                              tool-references:
+                                $ref: '#/components/schemas/json.any?'
+                              tool-visibility:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              source-url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-type:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              relation-type:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-name:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-title:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-framework:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              issue-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-instructions:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    type: string
+                                - type: 'null'
+                            required:
+                            - modification-date
+                            - tool-download-url
+                            - tool-id
+                            - tool-description
+                            - is-safe
+                            - tool-references
+                            - tool-visibility
+                            - source-url
+                            - tool-type
+                            - id
+                            - relation-type
+                            - tool-name
+                            - tool-title
+                            - tool-framework
+                            - issue-id
+                            - tool-instructions
+                            additionalProperties: false
+                          - type: 'null'
+                      - type: 'null'
+                      example: '[{"tool_title":"Citrix ADC (NetScaler) Directory Traversal Scanner","tool_framework":"metasploit","source_url":"https%3A%2F%2Fgithub.com%2Frapid7%2Fmetasploit-framework%2Fblob%2Fmaster%2Fmodules%2Fauxiliary%2Fscanner%2Fhttp%2Fcitrix_dir_traversal.rb","tool_name":"auxiliary_scanner/http/citrix_dir_traversal","tool_type":"security","id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal","tool_instructions":["Install the module as usual","Start msfconsole","Do: `use auxiliary/scanner/http/citrix_dir_traversal`","Do: `set RHOSTS [IP]`","Do: `run`"],"issue_id":"CVE-2019-19781","tool_download_url":null,"is_safe":true,"modification_date":"2022-01-23T15:28:32Z","tool_visibility":"public","tool_references":["CVE-2019-19781","URL-https://web.archive.org/web/20200111095223/https://support.citrix.com/article/CTX267027/","URL-https://swarm.ptsecurity.com/remote-code-execution-in-citrix-adc/"],"relation_type":"validation","tool_description":"This module exploits a directory traversal vulnerability (CVE-2019-19781) within Citrix ADC (NetScaler). It requests the smb.conf file located in the /vpns/cfg directory by issuing the request /vpn/../vpns/cfg/smb.conf. It then checks if the server is vulnerable by looking for the presence of a \"[global]\" directive in smb.conf, which this file should always contain.","tool_id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal"}]'
+                    underground-activity:
+                      description: A history or summary of how the vulnerability on a particular issue has been exploited in the real world. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+  /v1/resolved-issues:
+    post:
+      description: Retrieve resolved issues based on set criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      security:
+      - apiAuth: []
+      summary: Search resolved issues
+      tags:
+      - Issues
+      parameters:
+      - name: count
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000.
+      - name: advanced-search
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name="kb-advanced-search-link">Advanced Search</span> documentation for more details.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: 'Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99.'
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies a search term for conducting a keyword-based search and retrieving data that matches your query.
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema.
+      - name: sort-by
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Specifies the field by which the results should be sorted.
+      - name: sort-order
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        required: false
+        description: Sorts the specified field in ascending or descending order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    description: Field to apply the filter on. Typically, any field present in the response can be used.
+                    allOf:
+                    - type: string
+                    example: status
+                  op:
+                    description: "Specifies the operation to apply on the desired field.\n            \n*Supported values:*  \n            \n* `is` – Searches for values that match the specified text exactly.  \n            \n* `not` – Searches for values that **do not** match the specified text exactly.  \n            \n* `in` – Filters entities for values that include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `not-in` – Filters entities for values that do not include the specified strings. Note that these should be *full strings* and not *substrings*—see `contains`.  \n            \n* `only-in` – Filters **exclusively** so that only entities with the values specified will be searched. This operator is currently available only for the `organizations` and `tags` properties for assets and issues.  \n            \n* `between` – Searches by dates that are in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `not-between` – Searches by dates that are **not** in between two specified values. Each date range should be placed in square brackets `[]`, in the format `<YYYY>-<MM>-<DD>T<HH>:<mm>:<ss>.<SSS>Z`, and separated by a comma—e.g., `[\"2022-01-01T00:00:00.000Z\", \"2022-12-31T23:59:59.999Z\"]`.  \n            \n* `within-range` – Searches by number values that are in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[60,75]`.\n            \n* `not-within-range` – Searches by number values that are **not** in between a specified range. Each range should be placed in square brackets `[]` and separated by a comma—e.g., `[10,59]`.\n            \n* `within-last` – Searches for date values that are within the specified time frame in days—e.g., `64` is the value for 64 days.\n            \n* `not-within-last` – Searches for date values that are **not** within the specified time frame in days—e.g., `128` is the value for 128 days.\n            \n* `contains` – Searches for a specific substring within a string value."
+                    allOf:
+                    - type: string
+                      enum:
+                      - is
+                      - not
+                      - in
+                      - not-in
+                      - only-in
+                      - key-of
+                      - not-key-of
+                      - between
+                      - not-between
+                      - within-range
+                      - not-within-range
+                      - contains
+                      - within-last
+                      - not-within-last
+                    example: in
+                  values:
+                    description: Specifies the value or values for the field.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/json.any?'
+                    example:
+                    - new
+                required:
+                - field
+                - op
+                - values
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    advisories:
+                      description: A list of curated pieces of threat intelligence that highlight vulnerabilities actively exploited by attackers in the wild. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              advisory:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                            required:
+                            - advisory
+                            - url
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      {\n        \"entity_id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"ti_severity_score\": 10,\n        \"confidence\": 100,\n        \"advisory\": \"CISA | Known Exploited Vulnerabilities (KEV) catalog\",\n        \"realm_id\": \"acme-corporation\",\n        \"id\": \"issue/1.1.1.1-cve-2019-19781\",\n        \"type\": \"issue\",\n        \"url\": \"https://www.cisa.gov/known-exploited-vulnerabilities-catalog\"\n      }\n    ]"
+                    affected-asset:
+                      description: The unique ID of the asset with which the issue is associated.
+                      type: string
+                      example: webapp/1.1.1.1
+                    affected-asset-tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    affected-ptr-domains:
+                      description: The PTR record associated with an IP address.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: r2.acme.net
+                    asset-status:
+                      description: The most recent status of an asset—e.g., Changed (was modified since the previous scan), New (was discovered during the most recent scan), Normal (nothing has changed since the previous scan), Removed (was not discovered in the most recent scan).
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: changed
+                    attacker-interest:
+                      description: A measurement of how attractive an issue's affected asset may be to a potential attacker. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: High
+                    attractiveness:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '4'
+                    attractiveness-label:
+                      description: A measurement of how attractive a particular asset may be to a potential attacker. For example, a server with an exposed RDP service is a higher-priority target for attackers, regardless of any issues it has.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: extreme
+                    base-severity:
+                      description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it. This property is available only for customers using Exploit Intelligence.
+
+                        *Supported values:* `low`, `medium`, `high`, `critical`'
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: high
+                    base-severity-score:
+                      description: The severity score, which is mostly inherited from the CVSS method for measuring of severity, and is the basis (about 80%) for the majority of the Enhanced Severity Score calculation. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '10'
+                    business-units:
+                      description: '[DEPRECATED] - The functional areas of the business that use the assets or the platform, or are affected by the issue.'
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Marketing\"\n    ]"
+                    cis-controls:
+                      description: Refers to the compliance control number of the CIS framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"7.6\",\n      \"3.11\",\n      \"7.5\",\n      \"16.7\"\n    ]"
+                    comment:
+                      description: Custom text that can be added to the details of an asset or issue. Comments are typically used to make notes or personal descriptions regarding the significance of a particular asset or issue.
+                      anyOf:
+                      - type: object
+                        properties:
+                          content:
+                            type: string
+                          last-update:
+                            anyOf:
+                            - type: string
+                              format: date-time
+                            - type: 'null'
+                        required:
+                        - content
+                        - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    comments:
+                      description: Comments is a collection of custom text entries, providing the ability to record multiple notes or personal descriptions related to an asset or issue. Unlike the single 'comment' field, this allows for a running log or more detailed commentary over time.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            content:
+                              type: string
+                            created-by-name:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                            last-update:
+                              anyOf:
+                              - type: string
+                              - type: 'null'
+                          required:
+                          - content
+                          - created-by-name
+                          - last-update
+                      - type: 'null'
+                      example: Reviewed by Gary
+                    compliance-violations:
+                      description: Refers to specific compliance frameworks that have been violated.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"NIST-800-171\",\n      \"CIS\",\n      \"ISO27001\"\n    ]"
+                    confidence:
+                      description: Refers to the probability that an issue is valid and relevant on a scale of 0 to 100, where 0 indicates no confidence, and 100 indicates absolute confidence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '90'
+                    confidence-level:
+                      description: “Refers to the probability that an issue is valid and relevant. Possible values (from most probable to the least) are Confirmed, Likely, Potential, and Inconclusive.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: confirmed
+                    continent:
+                      description: The geographical continent in which the asset or issue is located.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Americas
+                    cve-ids:
+                      description: Refers to the specific CVE-ID number of the issue as established by the Mitre Corporation.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"CVE-2019-19781\"\n    ]"
+                    detection-complexity:
+                      description: 'Measures the difficulty at which a vulnerable asset can be detected by a potential attacker.
+
+                        *Supported values:* `easy`, `moderate`, `hard`'
+                      type: string
+                      example: easy
+                    detection-method:
+                      description: 'Indicates the method used to detect the issue.
+
+                        *Supported values:* `active`, `passive`'
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: active
+                    enhanced-severity:
+                      description: The severity grade (enhanced by CyCognito's Exploit Intelligence) that represents the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: critical
+                    enhanced-severity-score:
+                      description: The severity score of an issue (enhanced by CyCognito's Exploit Intelligence) that quantifies the potential damage that can be caused were an attacker to exploit this issue. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '10'
+                    environments:
+                      description: Refers to IT environments, or the different hardware, software, infrastructure, and networks in which your assets are found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"Cryptographic Protocols\",\n      \"Operating Systems\",\n      \"Web Servers\"\n    ]"
+                    evidence:
+                      description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
+                      anyOf:
+                      - $ref: '#/components/schemas/json.any?'
+                      - type: 'null'
+                      example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
+                    exploitation-availability:
+                      description: Indicates how easily an issue can be exploited. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: High
+                    exploitation-complexity:
+                      description: "Measures the difficulty at which a vulnerable asset can be assessed and consequently exploited by a potential attacker, based on the complexity of the required exploitation methods. \n*Supported values:* `very easy`, `easy`, `moderate`, `hard`, `extreme`"
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: easy
+                    exploitation-method:
+                      description: A practical method or series of methods by which an attacker can compromise or exploit an issue on a particular asset which they have detected.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: No PoC
+                    exploitation-score:
+                      description: Specifies how difficult it would be for an attacker to exploit an asset upon detecting the issue, based on the method or methods that would be required to perform the attack. For example, a simple action like a brute-force exploitation would be considered a relatively easy exploitation method.
+                      type: integer
+                      example: '5'
+                    first-detected:
+                      description: The date and time at which CyCognito first detected the issue.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-01-26T13:12:57.253Z'
+                    id:
+                      description: A unique ID for the instance of a particular issue on a specific asset. This is equivalent to the `issue_instance_id` value.
+                      type: string
+                      example: issue/webapp-1.1.1.1-cyc-js-jquery-2
+                    investigating-since:
+                      description: "The date at which investigation on a specific issue began. \n*Format:* `YYYY-MM-DD`"
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2023-08-21T13:12:57.253Z'
+                    investigation-status:
+                      description: Indicates whether or not an asset or issue has undergone investigation by you or someone on your team.
+                      anyOf:
+                      - type: string
+                        enum:
+                        - investigating
+                        - investigated
+                        - uninvestigated
+                      - type: 'null'
+                      example: investigating
+                    is-snoozed:
+                      description: Indicates whether an issue has been snoozed—i.e., it has been hidden from view until a later date.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    iso27001-controls:
+                      description: Refers to the compliance control number of the ISO 27001 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    iso27002-controls:
+                      description: Refers to the compliance control number of the ISO 27002 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                    issue-id:
+                      description: An ID that identifies a particular issue—e.g., *CYC-TLS-HSTS-INSECURE*, *CVE-2022-33915*.
+                      type: string
+                      example: CYC-TLS-HSTS-INSECURE
+                    issue-status:
+                      description: "Refers to the current status of the issue following the most recent data update (or \"scan\"). The following are the supported statuses and their definitions: \n * `new` – The issue was first detected up to 30 days before your latest data update. \n * `normal` – The issue is still outstanding. \n * `issue-removed` – The issue was not detected in the latest data update. \n * `asset-removed` – The issue's affected asset was not seen in the latest data update. \n * `asset-not-alive` – The issue's affected asset is not alive."
+                      anyOf:
+                      - type: string
+                      - type: string
+                      - type: 'null'
+                      example: new
+                    issue-type:
+                      description: The type of issue as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                      type: string
+                      example: Vulnerable Software
+                    issue-types:
+                      description: A list of issue types as classified by CyCognito—e.g., *abandoned asset*, *cryptographic vulnerability*, *exposed data*, *phishing threat*, *weak credentials*, etc.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Unsafe Authentication\",\n      \"Misconfiguration\",\n      \"Network Security\"\n    ]"
+                    last-detected:
+                      description: The date and time at which CyCognito most recently detected the issue.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-06-17T07:02:04.181Z'
+                    locations:
+                      description: The geographic locations (i.e., countries or regions) where the asset or issue is found.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"USA\"\n    ]"
+                    mitre-attack-next-technique-name:
+                      description: The MITRE ATT&CK technique that attackers are likely to use to continue their attack on a vulnerability.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'Credential Access: Steal Web Session Cookie'
+                    mitre-attack-next-technique-subtitle:
+                      description: Details the likely method or action under the next tactic from the MITRE ATT&CK Enterprise Matrix.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Steal Web Session Cookie
+                    mitre-attack-next-technique-title:
+                      description: Points to the subsequent tactic in the MITRE ATT&CK Enterprise Matrix that an adversary might pursue after successfully employing the current technique.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Credential Access
+                    mitre-attack-technique-name:
+                      description: The MITRE ATT&CK technique that is currently being used by attackers to exploit a vulnerability.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: 'Initial Access: Exploit Public-Facing Application'
+                    mitre-attack-technique-subtitle:
+                      description: Highlights the specific technique or method under the identified tactic in the MITRE ATT&CK Enterprise Matrix—e.g., *Spearphishing Attachment* under *Initial Access*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Exploit Public-Facing Application
+                    mitre-attack-technique-title:
+                      description: Indicates the currently prevailing tactic from the MITRE ATT&CK Enterprise Matrix that an attacker could potentially employ to exploit this issue—e.g., *Initial Access*, *Execution*.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Initial Access
+                    nist-800-171-controls:
+                      description: Refers to the compliance control number of the NIST 800-171 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"3.3.5\",\n      \"3.12.2\",\n      \"3.11.2\"\n    ]"
+                    nist-800-53-controls:
+                      description: Refers to the compliance control number of the NIST 800-53 framework.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"CM-8\",\n      \"SI-2(3)\",\n      \"SI-4(16)\"\n    ]"
+                    organizations:
+                      description: Specifies the organizations to whom the asset belongs, or those that are affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Gardens\"\n    ]"
+                    package:
+                      description: Indicates package of the issue id.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: AST
+                    pci-dss-controls:
+                      description: Refers to the compliance control number of the PCI DSS, which is an information security standard used to handle credit card information.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                        uniqueItems: true
+                      - type: 'null'
+                      example: "[\n      \"10.2.2\",\n      \"8.3.1\",\n      \"1.2.4\"\n    ]"
+                    platforms:
+                      description: A list of platforms associated with an asset or issue.
+                      type: array
+                      items:
+                        anyOf:
+                        - type: string
+                        - type: 'null'
+                      example: "[\n      \"Apache\",\n      \"CentOS\",\n      \"HTTP Protocol\",\n      \"TLS Protocol\"\n    ]"
+                    port:
+                      description: Indicates the number of an open TCP port on the issue's affected IP asset.
+                      anyOf:
+                      - type: number
+                      - type: 'null'
+                      example: '443'
+                    potential-impact:
+                      description: A list of categories that describe what might happen if the issue is exploited—e.g., loss of integrity, loss of confidentiality, privacy violation, credential theft, etc.
+                      type: array
+                      items:
+                        type: string
+                      example: "[\n      \"Loss of Confidentiality\",\n      \"Data Compromise\",\n      \"Network Breach\"\n    ]"
+                    potential-threat:
+                      description: The threat that the issue might cause—e.g., *Authentication Bypass*, *Denial of Service*, *Exposed Data*, *Phishing Threat*, *Unsafe Authentication*, *Vulnerable Software*, etc.
+                      type: string
+                      example: Authentication Bypass
+                    references:
+                      description: A set of hyperlinks and accompanying text that help the user understand and validate the issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: "[\n      \"https://support.citrix.com/article/CTX267027\",\n      \"https://nvd.nist.gov/vuln/detail/CVE-2019-19781\",\n      \"https://www.us-cert.gov/ncas/alerts/aa20-031a\",\n      \"https://www.nsa.gov/News-Features/Feature-Stories/Article-View/Article/2573391/russian-foreign-intelligence-service-exploiting-five-publicly-known-vulnerabili/\"\n    ]"
+                    region:
+                      description: 'Refers to the regional location of the asset or issue. *Examples: Northern Africa*, *South-eastern Asia*, *Central America*, etc.'
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: string
+                          - type: 'null'
+                      - type: 'null'
+                      example: Central Asia
+                    remediation-effort:
+                      description: Refers to the type of effort required in order to remediate a particular issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Certificate Deployment
+                    remediation-method:
+                      description: The primary approach or strategy recommended to address a specific issue.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: Patch
+                    remediation-steps:
+                      description: A list of instructions that describe how to resolve the issue.
+                      type: array
+                      items:
+                        type: string
+                      example: '["Patch the NetScaler to the latest version.","If a patch is not feasible, perform \"work-around\" mitigations per Citrix''s instructions.","Apply the necessary security patches provided by Citrix to fix the directory traversal vulnerability."]'
+                    resolved-at:
+                      description: 'The date at which an issue was resolved.
+
+                        *Format:* `YYYY-MM-DD`'
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2022-08-03T15:18:48.452Z'
+                    revalidation-request-time:
+                      description: Indicates the date and time at which an issue revalidation was requested.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-08-03T15:18:48.452Z'
+                    revalidation-requested:
+                      description: Indicates whether a revalidation request is currently in progress on a specific issue.
+                      anyOf:
+                      - type: boolean
+                      - type: 'null'
+                      example: 'true'
+                    severity:
+                      description: 'Refers to an issue''s seriousness, indicating how urgently it should be remediated, based on the potential damage that can be caused were an attacker to exploit it.
+
+                        *Supported values:* `low`, `medium`, `high`, `critical`.'
+                      type: string
+                      example: critical
+                    severity-change-reason:
+                      description: The user-entered reason for changing an issue's severity.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: This issue is not actually considered severe by our team.
+                    severity-score:
+                      description: The severity score of an issue that quantifies the potential damage that can be caused were an attacker to exploit this issue.
+                      type: number
+                      example: '10'
+                    snooze-expiration:
+                      description: The date at which a snoozed issue is set to expire.
+                      anyOf:
+                      - type: string
+                        format: date-time
+                      - type: 'null'
+                      example: '2024-09-05T00:00:00.000Z'
+                    summary:
+                      description: A brief description that summarizes the issue.
+                      type: string
+                      example: The website is using a vulnerable version of open source JS library
+                    tags:
+                      description: Custom keywords or phrases added as metadata to an asset or issue by a user, which can be used to navigate, filter, and group assets and issues.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"My tag\",\n      \"Another tag\"\n    ]"
+                    teams:
+                      description: Lists the teams associated with the queried asset, issue, or organization. This property is available only in realms where the Teams feature is enabled.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: string
+                      - type: 'null'
+                      example: "[\n      \"Acme Homes IT team\",\n      \"Onboarding IT\",\n      \"Project managers\"\n    ]"
+                    tech-owners:
+                      description: The names of the technical owners of a specific asset or organization, or of an asset or organization affected by a specific issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            org-name:
+                              type: string
+                          required:
+                          - name
+                          - email
+                          - org-name
+                      - type: 'null'
+                      example: "[\n      {\n        \"name\": \"Marty McFly\",\n        \"email\": \"marty@acme.com\",\n        \"org_id\": \"org/acme.org\",\n        \"org_name\": \"Acme Corporation\"\n      }\n    ]"
+                    title:
+                      description: A name that briefly describes the issue—e.g., *HTTP Redirection Phishing Threat*, *Bruteforce and dictionary attacks allowed*, etc.
+                      type: string
+                      example: HTTP Redirection Phishing Threat
+                    tools:
+                      description: Provides a breakdown of all of the known validation and exploitation tools associated with an issue.
+                      anyOf:
+                      - type: array
+                        items:
+                          anyOf:
+                          - type: object
+                            properties:
+                              modification-date:
+                                anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: 'null'
+                              tool-download-url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-description:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              is-safe:
+                                anyOf:
+                                - type: boolean
+                                - type: 'null'
+                              tool-references:
+                                $ref: '#/components/schemas/json.any?'
+                              tool-visibility:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              source-url:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-type:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              relation-type:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-name:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-title:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-framework:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              issue-id:
+                                anyOf:
+                                - type: string
+                                - type: 'null'
+                              tool-instructions:
+                                anyOf:
+                                - type: array
+                                  items:
+                                    type: string
+                                - type: 'null'
+                            required:
+                            - modification-date
+                            - tool-download-url
+                            - tool-id
+                            - tool-description
+                            - is-safe
+                            - tool-references
+                            - tool-visibility
+                            - source-url
+                            - tool-type
+                            - id
+                            - relation-type
+                            - tool-name
+                            - tool-title
+                            - tool-framework
+                            - issue-id
+                            - tool-instructions
+                            additionalProperties: false
+                          - type: 'null'
+                      - type: 'null'
+                      example: '[{"tool_title":"Citrix ADC (NetScaler) Directory Traversal Scanner","tool_framework":"metasploit","source_url":"https%3A%2F%2Fgithub.com%2Frapid7%2Fmetasploit-framework%2Fblob%2Fmaster%2Fmodules%2Fauxiliary%2Fscanner%2Fhttp%2Fcitrix_dir_traversal.rb","tool_name":"auxiliary_scanner/http/citrix_dir_traversal","tool_type":"security","id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal","tool_instructions":["Install the module as usual","Start msfconsole","Do: `use auxiliary/scanner/http/citrix_dir_traversal`","Do: `set RHOSTS [IP]`","Do: `run`"],"issue_id":"CVE-2019-19781","tool_download_url":null,"is_safe":true,"modification_date":"2022-01-23T15:28:32Z","tool_visibility":"public","tool_references":["CVE-2019-19781","URL-https://web.archive.org/web/20200111095223/https://support.citrix.com/article/CTX267027/","URL-https://swarm.ptsecurity.com/remote-code-execution-in-citrix-adc/"],"relation_type":"validation","tool_description":"This module exploits a directory traversal vulnerability (CVE-2019-19781) within Citrix ADC (NetScaler). It requests the smb.conf file located in the /vpns/cfg directory by issuing the request /vpn/../vpns/cfg/smb.conf. It then checks if the server is vulnerable by looking for the presence of a \"[global]\" directive in smb.conf, which this file should always contain.","tool_id":"metasploit:auxiliary/scanner/http/citrix_dir_traversal"}]'
+                    underground-activity:
+                      description: A history or summary of how the vulnerability on a particular issue has been exploited in the real world. This property is available only for customers using Exploit Intelligence.
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                      example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+components:
+  schemas:
+    json.any?:
+      anyOf:
+      - type: string
+      - type: boolean
+      - type: number
+      - type: string
+        format: dateTime
+      - type: string
+        format: byte
+      - type: array
+        items:
+          $ref: '#/components/schemas/json.any?'
+      - type: object
+        additionalProperties:
+          $ref: '#/components/schemas/json.any?'
+      - type: 'null'
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

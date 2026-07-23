@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Realm API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Realm
+paths:
+  /v1/realm:
+    get:
+      description: Retrieve the date of the last data update, as well as the data update cadence (weekly, bi-weekly, monthly, or daily).
+      security:
+      - apiAuth: []
+      summary: Last data update
+      tags:
+      - Realm
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    description: A unique identifier for the realm.
+                    type: string
+                    example: 12312-3213-12341
+                  full-scan-cadence:
+                    description: Indicates the frequency at which realm data is being updated.
+                    type: string
+                    enum:
+                    - bi-weekly
+                    - weekly
+                    - monthly
+                    - daily
+                    - N/A
+                    example: bi-weekly
+                  last-full-update:
+                    description: Indicates the date and time at which the realm received a data update.
+                    type: string
+                    example: Jun 21, 2024
+                  last-daily-update:
+                    description: Indicates the date and time at which the realm received the last data update.
+                    type: string
+                    example: Jun 21, 2024
+                  assets-added-in-latest-baseline-update:
+                    description: Indicates assets added in the latest baseline update. This data available for realms with Daily ports and services and without continuous updates
+                    type: integer
+                    example: '300'
+                  ips-with-new-ports-in-last-day:
+                    description: Indicates ips with new ports in last day. This data available for realms with Daily ports and services and without continuous updates
+                    type: integer
+                    example: '100'
+                  assets-discovered-in-last-day:
+                    description: Indicates assets discovered in the last day. This data available only for realms with continuous updates
+                    type: integer
+                    example: '200'
+                  issues-detected-in-last-day:
+                    description: Indicates on issues detected in the last day. This data available only for realms with continuous updates
+                    type: integer
+                    example: '100'
+                required:
+                - id
+                - full-scan-cadence
+                - last-full-update
+                - last-daily-update
+  /v1/realm/asset-summary:
+    get:
+      description: Returns asset summary data for the current realm, including ASM package asset count, AST & EI active asset count, and number of performed rescans.
+      security:
+      - apiAuth: []
+      summary: Get asset summary for the realm (customer entitlements)
+      tags:
+      - Realm
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  realm-id:
+                    description: The unique identifier of the realm.
+                    type: string
+                  asm-package-asset-count:
+                    description: Total number of assets in the ASM package (IPs, Domains, Certificates, Web Applications).
+                    type: integer
+                  ast-ei-active-asset-count:
+                    description: Total number of active assets in the AST & EI package (Active IPs and Active Web Applications).
+                    type: integer
+                  revalidations-count:
+                    description: Number of performed revalidations for this realm.
+                    type: integer
+                required:
+                - realm-id
+                - asm-package-asset-count
+                - ast-ei-active-asset-count
+                - revalidations-count
+components:
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header

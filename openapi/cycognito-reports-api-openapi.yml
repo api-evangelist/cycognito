@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  version: 0.0.1
+  title: CyCognito API V1 Reference Assets Reports API
+  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
+
+    | Code | Name | Description |
+
+    |------|------|-------------|
+
+    | 200 | OK | Success |
+
+    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
+
+    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
+
+    | 404 | Not Found | The provided resource was not found. |
+
+    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
+
+    | 415 | Unsupported Media Type | The request content type is not supported. |
+
+    | 5XX | | Server failure |  |
+
+    '
+tags:
+- name: Reports
+paths:
+  /v1/reports/executive-report/request:
+    post:
+      description: Initiate the generation of Executive Summary reports. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The report can be either an Enhanced Executive Report or First-Time Executive Report.
+      security:
+      - apiAuth: []
+      summary: Initiate executive report
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                report-type:
+                  description: The type of executive report to generate.
+                  type: string
+                  enum:
+                  - enhanced-executive-report
+                  - first-time-executive-report
+                  example: enhanced-executive-report
+                start-date:
+                  description: Report start date
+                  type: string
+                  example: '2024-01-01'
+                end-date:
+                  description: Report end date
+                  type: string
+                  example: '2024-03-31'
+                team:
+                  description: An optional team name. When provided, the report will be generated from the perspective of that sub-team.
+                  type: string
+                  example: Example Sub-Team
+              required:
+              - report-type
+              - start-date
+              - end-date
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report-id:
+                    description: Unique identifier for the export.
+                    type: string
+                    example: a123456b-cd78-910e-1f2g-34h56i789j10
+                required:
+                - report-id
+  /v1/reports/executive-report/get/{report_id}:
+    get:
+      description: Check the status of your executive report export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report.
+      security:
+      - apiAuth: []
+      summary: Fetch executive report link
+      tags:
+      - Reports
+      parameters:
+      - name: report_id
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Unique identifier for the export.
+      responses:
+        '200':
+          description: Returns the generated link that enables you to access and download the PDF file containing the executive report, as well as the status of the export task.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  export-status:
+                    description: Indicates the status of the export task. When the response status is 200, it reflects the current task status, which can be *done* or other applicable values. When the response status is 400, the export status is *bad-request*.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: done
+                  export-date:
+                    description: The date and time at which the export and subsequent download link were generated.
+                    anyOf:
+                    - type: string
+                      format: date-time
+                    - type: 'null'
+                    example: '2024-05-18T12:24:34.990Z'
+                  download-link:
+                    description: A generated link that enables you to access and download a CSV file containing detailed asset data.
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                    example: https://link-to-download-export/1234
+                required:
+                - export-status
+                - export-date
+components:
+  securitySchemes:
+    apiAuth:
+      type: apiKey
+      name: Authorization
+      in: header
