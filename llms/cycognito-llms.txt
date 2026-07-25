@@ -1,0 +1,36 @@
+# CyCognito
+
+> CyCognito is a cybersecurity company providing an external attack surface management (EASM) and exposure management platform. Its cloud-native platform continuously discovers, maps, and tests an organization's internet-exposed assets—domains, IPs, web apps, APIs, and cloud environments—to surface and validate critical exposures before attackers exploit them. The CyCognito API V1 is a REST API (API-key authenticated) for querying assets and issues, managing attack-surface scope, attributing assets to organizations, managing users and cloud connectors, running exports and executive reports, and verifying scanner IPs.
+
+## APIs
+
+- [CyCognito API V1 Reference](https://api.platform.cycognito.com/v1/docs/index.html): REST API over /v1 (US host https://api.platform.cycognito.com); API-key auth via the Authorization header. Entities: assets, issues, organizations, users, cloud environments, realm, exports, reports.
+
+## Specs
+
+- [OpenAPI 3.0.3 (V1)](https://api.platform.cycognito.com/v1/docs/openapi.json): 37 paths / 43 operations across Assets, Issues, Organizations, Cloud Connectors, Realm, Users, Export Data, Reports, Scope Management, Revalidation, Audit Logs, and Verify IPs.
+- [Legacy V0 Reference (PDF, deprecating)](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf)
+
+## Docs
+
+- [API V1 Reference](https://api.platform.cycognito.com/v1/docs/index.html)
+- [Platform login](https://platform.cycognito.com/)
+- [Postman workspace](https://www.postman.com/joint-operations-participant-24342014/workspace/cycognito)
+- [Pricing](https://www.cycognito.com/platform/pricing.php)
+- [Blog](https://www.cycognito.com/blog/)
+- [Learning Center](https://www.cycognito.com/learn/)
+- [Privacy, Compliance & Trust Center](https://www.cycognito.com/company/trust.php): SOC 2 Type II, ISO/IEC 27001, GDPR.
+- [GitHub organization](https://github.com/CyCognito)
+
+## Auth
+
+- API key in the `Authorization` header (securityScheme `apiAuth`, type apiKey).
+- Platform SSO is handled separately by an Auth0 tenant at https://auth.cycognito.com (OpenID Connect); this is the login layer, not the API-key surface.
+
+## Conventions
+
+- Pagination: offset-based via `count` and `offset` query params.
+- Search: free-text `q` plus an `advanced-search` filter expression.
+- Field selection: `fields` (sparse fields) and `truncate-fields`; sorting via `sort-by` / `sort-order`.
+- Errors: documented as a global HTTP status-code table (200/400/403/404/405/415/5XX).
+- No documented idempotency key or public rate-limit headers.

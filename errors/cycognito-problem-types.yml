@@ -1,0 +1,32 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/cycognito-v1-openapi-original.json (API V1 Reference status-code table)
+format: http-status-table
+note: >-
+  CyCognito API V1 documents a single global HTTP status-code table in the API
+  description rather than per-operation problem+json schemas. Codes below are captured
+  verbatim from that reference table.
+problems:
+- status: 200
+  title: OK
+  detail: Success.
+- status: 400
+  title: Bad Request
+  detail: >-
+    The request is malformed—e.g., the body cannot be properly parsed, expected
+    fields are not included in the body, or unsupported request header values.
+- status: 403
+  title: Access Restricted
+  detail: There are insufficient permissions or a valid API key was not provided.
+- status: 404
+  title: Not Found
+  detail: The provided resource was not found.
+- status: 405
+  title: Method Not Allowed
+  detail: The HTTP method is not allowed for the given resource.
+- status: 415
+  title: Unsupported Media Type
+  detail: The request content type is not supported.
+- status: 5XX
+  title: Server Error
+  detail: Server failure.

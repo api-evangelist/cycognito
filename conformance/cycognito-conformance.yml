@@ -1,0 +1,31 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/cycognito-v1-openapi-original.json + https://www.cycognito.com/company/trust.php
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: OpenAPI 3.0.3 document published at https://api.platform.cycognito.com/v1/docs/openapi.json
+- id: rest
+  conforms: true
+  evidence: resource-oriented HTTP API over /v1 with GET/POST/PUT/DELETE
+- id: api-key-auth
+  conforms: true
+  evidence: securitySchemes apiAuth type apiKey in header (Authorization)
+- id: oauth2
+  conforms: false
+  evidence: API V1 is API-key authenticated; OAuth2/OIDC is used only for platform SSO via Auth0 (auth.cycognito.com)
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: error responses documented as a status-code table in the API description, not application/problem+json
+- id: pagination
+  conforms: true
+  evidence: offset-based pagination via count and offset query parameters on collection endpoints
+- id: soc2-type-ii
+  conforms: true
+  evidence: SOC 2 Type II attestation (BARR Advisory), published at https://www.cycognito.com/company/trust.php
+- id: iso-27001
+  conforms: true
+  evidence: ISO/IEC 27001 certification, published at https://www.cycognito.com/company/trust.php
+- id: gdpr
+  conforms: true
+  evidence: GDPR data-processing compliance stated at https://www.cycognito.com/company/trust.php

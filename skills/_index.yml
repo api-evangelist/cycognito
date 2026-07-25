@@ -1,0 +1,27 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/cycognito-v1-openapi-original.json
+skills:
+- file: cycognito-triage-exposures.md
+  name: Triage validated exposures with CyCognito
+  api: openapi/cycognito-v1-openapi-original.json
+  operations:
+  - POST /v1/issues
+  - GET /v1/issues/issue/{issue_instance_id}
+  - PUT /v1/issues/issue/{issue_instance_id}/investigation-status
+  - PUT /v1/issues/actions/add/comment
+  - PUT /v1/issues/actions/{action}/tags
+  - PUT /v1/issues/actions/snooze
+  - PUT /v1/issues/actions/archive
+- file: cycognito-inventory-attack-surface.md
+  name: Inventory and scope the CyCognito attack surface
+  api: openapi/cycognito-v1-openapi-original.json
+  operations:
+  - POST /v1/assets
+  - POST /v1/assets/{asset_type}
+  - GET /v1/assets/{asset_type}/{asset_id}
+  - PUT /v1/assets/{asset_type}/{asset_id}/investigation-status
+  - PUT /v1/assets/actions/add/comment
+  - PUT /v1/assets/actions/{action}/tags
+  - POST /v1/include-assets
+  - GET /v1/realm/asset-summary

@@ -1,0 +1,19 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for CyCognito API V1
+  version: 1.0.0
+extends: openapi/cycognito-v1-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: true
+    x-apievangelist-generated: '2026-07-18'
+    x-api-base-url: https://api.platform.cycognito.com
+    x-auth-style: api-key (Authorization header)
+    x-pagination: offset (count + offset query params)
+- target: $
+  description: Spec omits servers[]; add the documented US production host.
+  update:
+    servers:
+    - url: https://api.platform.cycognito.com
+      description: US region production

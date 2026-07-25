@@ -1,0 +1,18 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/cycognito-v1-openapi-original.json + https://api.platform.cycognito.com/v1/docs/index.html
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://api.platform.cycognito.com/v1/docs/index.html
+deprecation:
+  deprecated_version: v0
+  status: V0 (legacy) is still supported but undergoing deprecation
+  legacy_docs: https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf
+  notice_source: API V1 Reference description
+sla:
+  url: null
+  note: no public SLA / uptime commitment page found
+status_page: null
+status_page_note: no public status page (status.cycognito.com does not resolve)
+deprecated_operations: []

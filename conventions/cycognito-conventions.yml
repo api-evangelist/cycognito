@@ -1,0 +1,36 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/cycognito-v1-openapi-original.json + API V1 Reference
+authentication:
+  style: api-key
+  location: header
+  parameter: Authorization
+  see: authentication/cycognito-authentication.yml
+base_url: https://api.platform.cycognito.com
+version_prefix: /v1
+pagination:
+  style: offset
+  params:
+    limit: count
+    offset: offset
+  note: collection endpoints (e.g. POST /v1/assets, POST /v1/issues) page with count + offset query params
+search:
+  free_text: q
+  advanced: advanced-search
+  note: assets and issues support a free-text q parameter and an advanced-search filter expression
+field_selection:
+  sparse_fields: fields
+  truncation: truncate-fields
+  note: fields selects which attributes are returned; truncate-fields controls value truncation
+sorting:
+  by: sort-by
+  order: sort-order
+idempotency:
+  supported: false
+  note: no idempotency-key header or parameter documented in the API V1 spec
+error_envelope:
+  style: http-status-table
+  see: errors/cycognito-problem-types.yml
+rate_limiting:
+  documented: false
+  note: no public rate-limit headers or policy documented

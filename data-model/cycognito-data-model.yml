@@ -1,0 +1,59 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/cycognito-v1-openapi-original.json
+note: >-
+  Entity graph derived from the CyCognito API V1 path structure and identifier
+  parameters (asset_type/asset_id, issue_instance_id, cloud-env-id, email, report_id).
+  The spec defines only one shared component schema, so relationships are inferred
+  from path segments and id-reference parameters rather than $ref links.
+entities:
+- name: Asset
+  key: asset_id
+  qualifier: asset_type
+  paths: ['/v1/assets', '/v1/assets/{asset_type}', '/v1/assets/{asset_type}/{asset_id}']
+  description: A discovered internet-exposed asset (domain, IP, web app, cert, etc.).
+- name: Issue
+  key: issue_instance_id
+  paths: ['/v1/issues', '/v1/issues/issue/{issue_instance_id}', '/v1/archived-issues', '/v1/resolved-issues']
+  description: A validated security exposure / finding on an asset.
+- name: Organization
+  paths: ['/v1/orgs', '/v1/orgs/org-mgmt']
+  description: An organization that assets are attributed to (scope/attribution).
+- name: User
+  key: email
+  paths: ['/v1/users', '/v1/users/{email}']
+  description: A platform user account.
+- name: CloudEnvironment
+  key: cloud-env-id
+  paths: ['/v1/cloud-environments', '/v1/cloud-environments/{cloud-env-id}']
+  description: A connected cloud environment / cloud connector.
+- name: Realm
+  paths: ['/v1/realm', '/v1/realm/asset-summary']
+  description: The tenant realm and its aggregate asset summary.
+- name: Report
+  key: report_id
+  paths: ['/v1/export/get/{report_id}', '/v1/reports/executive-report/get/{report_id}']
+  description: An asynchronously generated export or executive report.
+relationships:
+- from: Issue
+  to: Asset
+  type: belongs_to
+  note: an issue is a finding on an asset
+- from: Asset
+  to: Organization
+  type: belongs_to
+  via: attribution
+  note: assets are attributed to organizations (scope management)
+- from: Asset
+  to: Issue
+  type: has_many
+- from: Organization
+  to: Asset
+  type: has_many
+- from: CloudEnvironment
+  to: Asset
+  type: has_many
+  note: assets discovered via a connected cloud environment
+- from: Realm
+  to: Organization
+  type: has_many

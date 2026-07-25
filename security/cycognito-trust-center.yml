@@ -1,0 +1,16 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cycognito.com/company/trust.php
+url: https://www.cycognito.com/company/trust.php
+name: CyCognito Privacy, Compliance and Trust Center
+certifications:
+- SOC 2 Type II
+- ISO/IEC 27001
+- GDPR
+auditor: BARR Advisory
+report_request: security@cycognito.com
+evidence:
+- source: https://www.cycognito.com/company/trust.php
+  keywords: [soc 2 type ii, iso 27001, gdpr, trust center]
+- source: https://www.cycognito.com/news/press-releases/cycognito-achieves-soc-2-type-ii-and-iso-27001-security-certifications.php
+  keywords: [soc 2 type ii, iso 27001, barr advisory]

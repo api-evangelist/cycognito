@@ -1,0 +1,26 @@
+generated: '2026-07-18'
+method: searched
+source: probed /.well-known/ on CyCognito API and auth hosts
+hosts:
+- host: https://auth.cycognito.com
+  note: Auth0 tenant powering CyCognito platform SSO (platform login), not the API-key surface
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: cycognito-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: cycognito-oauth-authorization-server.json
+- host: https://api.platform.cycognito.com
+  note: CyCognito API V1 host (API-key auth, no OAuth surface)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: returns the platform SPA HTML shell (soft-404), not a real RFC 9116 document
+  - path: /.well-known/api-catalog
+    status: 200
+    note: returns the platform SPA HTML shell (soft-404), not a real RFC 9727 catalog
+- host: https://www.cycognito.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404

@@ -1,0 +1,36 @@
+{
+  "provider": "cycognito",
+  "sources": [
+    "cycognito-assets-api-openapi.yml",
+    "cycognito-audit-logs-api-openapi.yml",
+    "cycognito-cloud-connectors-api-openapi.yml",
+    "cycognito-export-data-api-openapi.yml",
+    "cycognito-issues-api-openapi.yml",
+    "cycognito-organizations-api-openapi.yml",
+    "cycognito-realm-api-openapi.yml",
+    "cycognito-reports-api-openapi.yml",
+    "cycognito-revalidation-api-openapi.yml",
+    "cycognito-scope-management-api-openapi.yml",
+    "cycognito-users-api-openapi.yml",
+    "cycognito-verify-ips-api-openapi.yml"
+  ],
+  "outputs": [
+    "cycognito-assets-api-openapi.yml",
+    "cycognito-audit-logs-api-openapi.yml",
+    "cycognito-cloud-connectors-api-openapi.yml",
+    "cycognito-export-data-api-openapi.yml",
+    "cycognito-issues-api-openapi.yml",
+    "cycognito-organizations-api-openapi.yml",
+    "cycognito-realm-api-openapi.yml",
+    "cycognito-reports-api-openapi.yml",
+    "cycognito-revalidation-api-openapi.yml",
+    "cycognito-scope-management-api-openapi.yml",
+    "cycognito-users-api-openapi.yml",
+    "cycognito-verify-ips-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,0 +1,141 @@
+generated: '2026-07-18'
+method: derived
+status: candidate
+source: openapi/cycognito-v1-openapi-original.json
+note: Candidate MCP tool surface derived one-per-operation from the CyCognito API V1 OpenAPI. No official
+  CyCognito MCP server was found; this is a governance starting point, not a published server.
+server:
+  name: cycognito
+  transport: http
+  auth: api-key (Authorization header)
+  url: null
+tools:
+- name: post_v1_assets
+  description: Retrieve unified assets
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/assets
+- name: delete_v1_assets
+  description: Remove assets in bulk
+  source_operation: openapi/cycognito-v1-openapi-original.json#DELETE /v1/assets
+- name: post_v1_assets_asset_type
+  description: Retrieve assets
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/assets/{asset_type}
+- name: get_v1_assets_asset_type_asset_id
+  description: Fetch asset details
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/assets/{asset_type}/{asset_id}
+- name: delete_v1_assets_asset_type_asset_id
+  description: Remove asset
+  source_operation: openapi/cycognito-v1-openapi-original.json#DELETE /v1/assets/{asset_type}/{asset_id}
+- name: put_v1_assets_asset_type_asset_id_investigation_status
+  description: Update asset's investigation status
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/assets/{asset_type}/{asset_id}/investigation-status
+- name: put_v1_assets_actions_add_comment
+  description: Add comments to assets
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/assets/actions/add/comment
+- name: put_v1_assets_actions_action_tags
+  description: Handle asset tags
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/assets/actions/{action}/tags
+- name: post_v1_issues
+  description: Search issues
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/issues
+- name: get_v1_issues_issue_issue_instance_id
+  description: Fetch issue details
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/issues/issue/{issue_instance_id}
+- name: put_v1_issues_issue_issue_instance_id_investigation_status
+  description: Update issue's investigation status
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/issues/issue/{issue_instance_id}/investigation-status
+- name: put_v1_issues_actions_add_comment
+  description: Add comments to issues
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/issues/actions/add/comment
+- name: put_v1_issues_actions_action_tags
+  description: Handle issue tags
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/issues/actions/{action}/tags
+- name: put_v1_issues_actions_archive
+  description: Archive issues
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/issues/actions/archive
+- name: put_v1_issues_actions_snooze
+  description: Snooze issues
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/issues/actions/snooze
+- name: post_v1_archived_issues
+  description: Search archived issues
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/archived-issues
+- name: post_v1_resolved_issues
+  description: Search resolved issues
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/resolved-issues
+- name: post_v1_orgs
+  description: Retrieve organizations
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/orgs
+- name: post_v1_orgs_org_mgmt
+  description: Adjust organization attributions
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/orgs/org-mgmt
+- name: get_v1_cloud_environments
+  description: Retrieve multiple cloud environment data
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/cloud-environments
+- name: post_v1_cloud_environments
+  description: Add new AWS connector
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/cloud-environments
+- name: post_v1_cloud_environments_script
+  description: Get YAML for AWS
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/cloud-environments/script
+- name: get_v1_cloud_environments_cloud_env_id
+  description: Retrieve single cloud environment data
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/cloud-environments/{cloud-env-id}
+- name: put_v1_cloud_environments_cloud_env_id_test_connector
+  description: Test connector
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/cloud-environments/{cloud-env-id}/test-connector
+- name: get_v1_realm
+  description: Last data update
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/realm
+- name: get_v1_realm_asset_summary
+  description: Get asset summary for the realm (customer entitlements)
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/realm/asset-summary
+- name: get_v1_users
+  description: Get all user data
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/users
+- name: post_v1_users
+  description: Create user
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/users
+- name: get_v1_users_email
+  description: Get individual user data
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/users/{email}
+- name: put_v1_users_email
+  description: Edit single user teams or roles
+  source_operation: openapi/cycognito-v1-openapi-original.json#PUT /v1/users/{email}
+- name: delete_v1_users_email
+  description: Delete user
+  source_operation: openapi/cycognito-v1-openapi-original.json#DELETE /v1/users/{email}
+- name: post_v1_export_request_type
+  description: Initiate export
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/export/request/{type}
+- name: get_v1_export_get_report_id
+  description: Fetch export link
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/export/get/{report_id}
+- name: post_v1_export_issue_to_pdf_request
+  description: Initiate issue PDF export
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/export/issue-to-pdf/request
+- name: get_v1_export_issue_to_pdf_get_report_id
+  description: Fetch issue PDF export link
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/export/issue-to-pdf/get/{report_id}
+- name: post_v1_export_assets_to_pdf_request
+  description: Initiate asset PDF export
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/export/assets-to-pdf/request
+- name: get_v1_export_assets_to_pdf_get_report_id
+  description: Fetch asset PDF export link
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/export/assets-to-pdf/get/{report_id}
+- name: post_v1_reports_executive_report_request
+  description: Initiate executive report
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/reports/executive-report/request
+- name: get_v1_reports_executive_report_get_report_id
+  description: Fetch executive report link
+  source_operation: openapi/cycognito-v1-openapi-original.json#GET /v1/reports/executive-report/get/{report_id}
+- name: post_v1_include_assets
+  description: Include new assets
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/include-assets
+- name: post_v1_revalidate
+  description: Initiate revalidation
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/revalidate
+- name: post_v1_audit_log
+  description: Retrieve audit logs
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/audit-log
+- name: post_v1_is_scanner_ips
+  description: Verify IP ownership
+  source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/is-scanner-ips
