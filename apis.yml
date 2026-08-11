@@ -240,7 +240,7 @@ common:
 - type: Postman
   url: https://www.postman.com/joint-operations-participant-24342014/workspace/cycognito
 - type: OpenAPI
-  url: openapi/cycognito-v1-openapi-original.json
+  url: openapi/_original/cycognito-v1-openapi-original.json
 - type: Authentication
   url: authentication/cycognito-authentication.yml
 - type: WellKnown
