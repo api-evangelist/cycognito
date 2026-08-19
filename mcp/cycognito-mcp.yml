@@ -139,3 +139,9 @@ tools:
 - name: post_v1_is_scanner_ips
   description: Verify IP ownership
   source_operation: openapi/cycognito-v1-openapi-original.json#POST /v1/is-scanner-ips
+deployment:
+  mode: none
+  verified: derived
+  tools: 43
+  checked: '2026-08-12'
+  source: catalog MCP census

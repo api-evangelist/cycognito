@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Revalidation API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Revalidation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate revalidation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/revalidate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Trigger a revalidation on selected assets or asset groups (and by association, on their related issues)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

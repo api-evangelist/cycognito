@@ -1,0 +1,1349 @@
+{
+  "item": [
+    {
+      "id": "762e018a-fbd3-4095-8b70-16f3ccfbbd8a",
+      "name": "Issues",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7072e891-e395-42d3-a136-6ffe9f81676b",
+          "name": "Search issues",
+          "request": {
+            "name": "Search issues",
+            "description": {
+              "content": "Retrieve a list of issues based on given filter criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "advanced-search",
+                  "value": "<string>",
+                  "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-by",
+                  "value": "<string>",
+                  "description": "Specifies the field by which the results should be sorted."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-order",
+                  "value": "<string>",
+                  "description": "Sorts the specified field in ascending or descending order."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3c44c965-9a3b-498b-8608-b360154d5448",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "advanced-search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  },\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"advisories\": [\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"affected-asset\": \"webapp/1.1.1.1\",\n    \"affected-asset-tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"affected-ptr-domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asset-status\": \"string\",\n    \"attacker-interest\": \"string\",\n    \"attractiveness\": 8278.289849992667,\n    \"attractiveness-label\": \"string\",\n    \"base-severity\": \"string\",\n    \"base-severity-score\": 8010.468819685463,\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"1966-06-28T05:54:08.060Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"confidence\": 2242.627909154412,\n    \"confidence-level\": \"string\",\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cve-ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detection-complexity\": \"easy\",\n    \"detection-method\": \"string\",\n    \"enhanced-severity\": \"string\",\n    \"enhanced-severity-score\": 3576.7224994638946,\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"evidence\": \"<string>\",\n    \"exploitation-availability\": \"string\",\n    \"exploitation-complexity\": \"string\",\n    \"exploitation-method\": \"string\",\n    \"exploitation-score\": 1130,\n    \"first-detected\": \"1973-07-03T01:46:09.546Z\",\n    \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n    \"investigating-since\": \"1992-07-13T21:40:47.596Z\",\n    \"investigation-status\": \"uninvestigated\",\n    \"is-snoozed\": true,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n    \"issue-status\": \"string\",\n    \"issue-type\": \"Vulnerable Software\",\n    \"issue-types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-detected\": \"2012-08-30T23:45:02.598Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"mitre-attack-next-technique-name\": \"string\",\n    \"mitre-attack-next-technique-subtitle\": \"string\",\n    \"mitre-attack-next-technique-title\": \"string\",\n    \"mitre-attack-technique-name\": \"string\",\n    \"mitre-attack-technique-subtitle\": \"string\",\n    \"mitre-attack-technique-title\": \"string\",\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"package\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"port\": 4835.713204671844,\n    \"potential-impact\": [\n      \"string\",\n      \"string\"\n    ],\n    \"potential-threat\": \"Authentication Bypass\",\n    \"references\": [\n      \"string\",\n      \"string\"\n    ],\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"remediation-effort\": \"string\",\n    \"remediation-method\": \"string\",\n    \"remediation-steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"resolved-at\": \"2005-01-25T03:33:01.137Z\",\n    \"revalidation-request-time\": \"1994-12-26T08:47:08.839Z\",\n    \"revalidation-requested\": false,\n    \"severity\": \"critical\",\n    \"severity-change-reason\": \"string\",\n    \"severity-score\": 4617.901869074722,\n    \"snooze-expiration\": \"1966-06-12T17:39:23.110Z\",\n    \"summary\": \"The website is using a vulnerable version of open source JS library\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"title\": \"HTTP Redirection Phishing Threat\",\n    \"tools\": [\n      {\n        \"modification-date\": \"1954-12-04T18:31:17.293Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": true,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"modification-date\": \"1960-09-01T07:44:34.079Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": true,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"underground-activity\": \"string\"\n  },\n  {\n    \"advisories\": [\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"affected-asset\": \"webapp/1.1.1.1\",\n    \"affected-asset-tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"affected-ptr-domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asset-status\": \"string\",\n    \"attacker-interest\": \"string\",\n    \"attractiveness\": 200.73332866304528,\n    \"attractiveness-label\": \"string\",\n    \"base-severity\": \"string\",\n    \"base-severity-score\": 6520.210107240238,\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"2023-06-14T10:10:53.028Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"confidence\": 9325.622149248855,\n    \"confidence-level\": \"string\",\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cve-ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detection-complexity\": \"easy\",\n    \"detection-method\": \"string\",\n    \"enhanced-severity\": \"string\",\n    \"enhanced-severity-score\": 2953.8929460826766,\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"evidence\": \"<string>\",\n    \"exploitation-availability\": \"string\",\n    \"exploitation-complexity\": \"string\",\n    \"exploitation-method\": \"string\",\n    \"exploitation-score\": 2358,\n    \"first-detected\": \"1962-05-25T22:00:21.684Z\",\n    \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n    \"investigating-since\": \"1973-07-09T11:23:26.812Z\",\n    \"investigation-status\": \"uninvestigated\",\n    \"is-snoozed\": false,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n    \"issue-status\": \"string\",\n    \"issue-type\": \"Vulnerable Software\",\n    \"issue-types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-detected\": \"1955-06-20T11:30:30.057Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"mitre-attack-next-technique-name\": \"string\",\n    \"mitre-attack-next-technique-subtitle\": \"string\",\n    \"mitre-attack-next-technique-title\": \"string\",\n    \"mitre-attack-technique-name\": \"string\",\n    \"mitre-attack-technique-subtitle\": \"string\",\n    \"mitre-attack-technique-title\": \"string\",\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"package\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"port\": 5713.715694924065,\n    \"potential-impact\": [\n      \"string\",\n      \"string\"\n    ],\n    \"potential-threat\": \"Authentication Bypass\",\n    \"references\": [\n      \"string\",\n      \"string\"\n    ],\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"remediation-effort\": \"string\",\n    \"remediation-method\": \"string\",\n    \"remediation-steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"resolved-at\": \"1957-04-27T20:27:46.621Z\",\n    \"revalidation-request-time\": \"1948-05-11T08:30:35.887Z\",\n    \"revalidation-requested\": false,\n    \"severity\": \"critical\",\n    \"severity-change-reason\": \"string\",\n    \"severity-score\": 3717.1171103585352,\n    \"snooze-expiration\": \"2013-04-21T04:06:55.160Z\",\n    \"summary\": \"The website is using a vulnerable version of open source JS library\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"title\": \"HTTP Redirection Phishing Threat\",\n    \"tools\": [\n      {\n        \"modification-date\": \"1952-07-30T00:31:58.912Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": false,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"modification-date\": \"1955-08-19T03:21:45.863Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": false,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"underground-activity\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb4aae1c-da3c-44cc-9dcd-da2a4ecbd4f4",
+          "name": "Fetch issue details",
+          "request": {
+            "name": "Fetch issue details",
+            "description": {
+              "content": "Obtain details of a specific issue using its identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues",
+                "issue",
+                ":issue_instance_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issue_instance_id",
+                  "description": "(Required) Unique identifier for a specific issue occurrence on an asset. This is the `id` value from the response, excluding the `issue/` prefix."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f4ba9059-7475-4821-8755-4710933652a2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues",
+                    "issue",
+                    ":issue_instance_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issue_instance_id",
+                      "description": "(Required) Unique identifier for a specific issue occurrence on an asset. This is the `id` value from the response, excluding the `issue/` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"advisories\": [\n    {\n      \"advisory\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"advisory\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"affected-asset\": \"webapp/1.1.1.1\",\n  \"affected-asset-tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"affected-ptr-domains\": [\n    \"string\",\n    \"string\"\n  ],\n  \"asset-status\": \"string\",\n  \"attacker-interest\": \"string\",\n  \"attractiveness\": 3934.7244862874963,\n  \"attractiveness-label\": \"string\",\n  \"base-severity\": \"string\",\n  \"base-severity-score\": 3062.1428514986846,\n  \"business-units\": [\n    \"string\",\n    \"string\"\n  ],\n  \"cis-controls\": [\n    \"string\"\n  ],\n  \"comment\": {\n    \"content\": \"string\",\n    \"last-update\": \"1964-06-16T00:53:23.070Z\"\n  },\n  \"comments\": [\n    {\n      \"content\": \"string\",\n      \"created-by-name\": \"string\",\n      \"last-update\": \"string\"\n    },\n    {\n      \"content\": \"string\",\n      \"created-by-name\": \"string\",\n      \"last-update\": \"string\"\n    }\n  ],\n  \"compliance-violations\": [\n    \"string\"\n  ],\n  \"confidence\": 6631.82913010923,\n  \"confidence-level\": \"string\",\n  \"continent\": [\n    \"string\",\n    \"string\"\n  ],\n  \"cve-ids\": [\n    \"string\",\n    \"string\"\n  ],\n  \"detection-complexity\": \"easy\",\n  \"detection-method\": \"string\",\n  \"enhanced-severity\": \"string\",\n  \"enhanced-severity-score\": 4530.858500322571,\n  \"environments\": [\n    \"string\",\n    \"string\"\n  ],\n  \"evidence\": \"<string>\",\n  \"exploitation-availability\": \"string\",\n  \"exploitation-complexity\": \"string\",\n  \"exploitation-method\": \"string\",\n  \"exploitation-score\": 3188,\n  \"first-detected\": \"1970-04-23T11:12:11.555Z\",\n  \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n  \"investigating-since\": \"1956-04-10T17:42:20.243Z\",\n  \"investigation-status\": \"investigated\",\n  \"is-snoozed\": true,\n  \"iso27001-controls\": [\n    \"string\"\n  ],\n  \"iso27002-controls\": [\n    \"string\"\n  ],\n  \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n  \"issue-status\": \"string\",\n  \"issue-type\": \"Vulnerable Software\",\n  \"issue-types\": [\n    \"string\",\n    \"string\"\n  ],\n  \"last-detected\": \"1996-01-18T13:05:10.569Z\",\n  \"locations\": [\n    \"string\"\n  ],\n  \"mitre-attack-next-technique-name\": \"string\",\n  \"mitre-attack-next-technique-subtitle\": \"string\",\n  \"mitre-attack-next-technique-title\": \"string\",\n  \"mitre-attack-technique-name\": \"string\",\n  \"mitre-attack-technique-subtitle\": \"string\",\n  \"mitre-attack-technique-title\": \"string\",\n  \"nist-800-171-controls\": [\n    \"string\"\n  ],\n  \"nist-800-53-controls\": [\n    \"string\"\n  ],\n  \"organizations\": [\n    \"string\",\n    \"string\"\n  ],\n  \"package\": \"string\",\n  \"pci-dss-controls\": [\n    \"string\"\n  ],\n  \"platforms\": [\n    \"string\",\n    \"string\"\n  ],\n  \"port\": 5627.745715756387,\n  \"potential-impact\": [\n    \"string\",\n    \"string\"\n  ],\n  \"potential-threat\": \"Authentication Bypass\",\n  \"references\": [\n    \"string\",\n    \"string\"\n  ],\n  \"region\": [\n    \"string\",\n    \"string\"\n  ],\n  \"remediation-effort\": \"string\",\n  \"remediation-method\": \"string\",\n  \"remediation-steps\": [\n    \"string\",\n    \"string\"\n  ],\n  \"resolved-at\": \"1961-01-18T12:15:29.695Z\",\n  \"revalidation-request-time\": \"1985-03-07T11:33:21.732Z\",\n  \"revalidation-requested\": false,\n  \"severity\": \"critical\",\n  \"severity-change-reason\": \"string\",\n  \"severity-score\": 6498.262542339077,\n  \"snooze-expiration\": \"1951-02-03T05:44:29.274Z\",\n  \"summary\": \"The website is using a vulnerable version of open source JS library\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"teams\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tech-owners\": [\n    {\n      \"name\": \"string\",\n      \"email\": \"string\",\n      \"org-name\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"email\": \"string\",\n      \"org-name\": \"string\"\n    }\n  ],\n  \"title\": \"HTTP Redirection Phishing Threat\",\n  \"tools\": [\n    {\n      \"modification-date\": \"2015-06-17T19:43:32.802Z\",\n      \"tool-download-url\": \"string\",\n      \"tool-id\": \"string\",\n      \"tool-description\": \"string\",\n      \"is-safe\": false,\n      \"tool-references\": \"<string>\",\n      \"tool-visibility\": \"string\",\n      \"source-url\": \"string\",\n      \"tool-type\": \"string\",\n      \"id\": \"string\",\n      \"relation-type\": \"string\",\n      \"tool-name\": \"string\",\n      \"tool-title\": \"string\",\n      \"tool-framework\": \"string\",\n      \"issue-id\": \"string\",\n      \"tool-instructions\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    {\n      \"modification-date\": \"1970-01-15T20:46:44.990Z\",\n      \"tool-download-url\": \"string\",\n      \"tool-id\": \"string\",\n      \"tool-description\": \"string\",\n      \"is-safe\": true,\n      \"tool-references\": \"<string>\",\n      \"tool-visibility\": \"string\",\n      \"source-url\": \"string\",\n      \"tool-type\": \"string\",\n      \"id\": \"string\",\n      \"relation-type\": \"string\",\n      \"tool-name\": \"string\",\n      \"tool-title\": \"string\",\n      \"tool-framework\": \"string\",\n      \"issue-id\": \"string\",\n      \"tool-instructions\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  ],\n  \"underground-activity\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eef4b99e-7654-4ddd-a3bc-a4dc92a0c353",
+          "name": "Update issue's investigation status",
+          "request": {
+            "name": "Update issue's investigation status",
+            "description": {
+              "content": "Adjust the specified issue's investigation status:\n- **Investigated** – The issue has been investigated.\n- **Investigating** – The issue is currently undergoing investigation by someone in your team.\n- **Uninvestigated** – The issue has not been investigated yet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues",
+                "issue",
+                ":issue_instance_id",
+                "investigation-status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "issue_instance_id",
+                  "description": "(Required) Unique identifier for a specific issue occurrence on an asset. This is the `id` value from the response, excluding the `issue/` prefix."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"investigation-status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b8c57b20-2138-4faa-b203-fa3dd0ebe399",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues",
+                    "issue",
+                    ":issue_instance_id",
+                    "investigation-status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "issue_instance_id",
+                      "description": "(Required) Unique identifier for a specific issue occurrence on an asset. This is the `id` value from the response, excluding the `issue/` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investigation-status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b49e87e-3003-430d-9b01-45ffbb60704a",
+          "name": "Add comments to issues",
+          "request": {
+            "name": "Add comments to issues",
+            "description": {
+              "content": "Allows you to add comments to multiple issues identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues",
+                "actions",
+                "add",
+                "comment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"comment\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "61d8815f-f04f-4cbb-a858-4d740f009dfc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues",
+                    "actions",
+                    "add",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"issue/CVE-1234-56789\",\n    \"issue/CYC-ISSUE-NAME\",\n    \"issue/WLD-ABCD1234EFGH5678\"\n  ],\n  \"comment\": \"This is a new comment on the issue\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2829bb31-e61e-48cb-9b81-1d4b3f9ad7f5",
+          "name": "Handle issue tags",
+          "request": {
+            "name": "Handle issue tags",
+            "description": {
+              "content": "Add or remove custom tags from specified issues.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues",
+                "actions",
+                ":action",
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "action",
+                  "description": "(Required) Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "652d54e5-0f11-4807-bdaa-c2b195cbc1df",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues",
+                    "actions",
+                    ":action",
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"issue/CVE-1234-56789\",\n    \"issue/CYC-ISSUE-NAME\",\n    \"issue/WLD-ABCD1234EFGH5678\"\n  ],\n  \"tags\": [\n    \"My tag\",\n    \"Another tag\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "56f6c943-a967-4aa5-a86e-e70e88cedddf",
+          "name": "Archive issues",
+          "request": {
+            "name": "Archive issues",
+            "description": {
+              "content": "Move issues to an archived state, distinguishing them from open and resolved issues.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues",
+                "actions",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reporting-reason\": \"<string>\",\n  \"comment\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d4b48897-e41b-4a2c-9bd9-c567afe38586",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues",
+                    "actions",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"issue/CVE-1234-56789\",\n    \"issue/CYC-ISSUE-NAME\",\n    \"issue/WLD-ABCD1234EFGH5678\"\n  ],\n  \"reporting-reason\": \"This issue has already been resolved.\",\n  \"comment\": \"We resolved this issue following last month's triage.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "efc396f3-4463-4f34-a894-fe58e6e97748",
+          "name": "Snooze issues",
+          "request": {
+            "name": "Snooze issues",
+            "description": {
+              "content": "Snooze issues for a specified duration, hiding them from your open issues list until the snooze period expires. This enables automated lifecycle control from external workflows while maintaining accurate attack surface metrics.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "issues",
+                "actions",
+                "snooze"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"snooze-duration\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "909725bf-9475-4102-9b23-b555fb62188f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "issues",
+                    "actions",
+                    "snooze"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"issue/CVE-1234-56789\",\n    \"issue/CYC-ISSUE-NAME\",\n    \"issue/WLD-ABCD1234EFGH5678\"\n  ],\n  \"snooze-duration\": 45\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c89abf37-d86a-400d-b9bf-b1cd7a29e84f",
+          "name": "Search archived issues",
+          "request": {
+            "name": "Search archived issues",
+            "description": {
+              "content": "Retrieve archived issues based on set criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "archived-issues"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "advanced-search",
+                  "value": "<string>",
+                  "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-by",
+                  "value": "<string>",
+                  "description": "Specifies the field by which the results should be sorted."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-order",
+                  "value": "<string>",
+                  "description": "Sorts the specified field in ascending or descending order."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "27ba090d-651e-4cbe-bb21-fdb999133a72",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "archived-issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "advanced-search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  },\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"advisories\": [\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"affected-asset\": \"webapp/1.1.1.1\",\n    \"affected-asset-tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"affected-ptr-domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asset-status\": \"string\",\n    \"attacker-interest\": \"string\",\n    \"attractiveness\": 8278.289849992667,\n    \"attractiveness-label\": \"string\",\n    \"base-severity\": \"string\",\n    \"base-severity-score\": 8010.468819685463,\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"1966-06-28T05:54:08.060Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"confidence\": 2242.627909154412,\n    \"confidence-level\": \"string\",\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cve-ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detection-complexity\": \"easy\",\n    \"detection-method\": \"string\",\n    \"enhanced-severity\": \"string\",\n    \"enhanced-severity-score\": 3576.7224994638946,\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"evidence\": \"<string>\",\n    \"exploitation-availability\": \"string\",\n    \"exploitation-complexity\": \"string\",\n    \"exploitation-method\": \"string\",\n    \"exploitation-score\": 1130,\n    \"first-detected\": \"1973-07-03T01:46:09.546Z\",\n    \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n    \"investigating-since\": \"1992-07-13T21:40:47.596Z\",\n    \"investigation-status\": \"uninvestigated\",\n    \"is-snoozed\": true,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n    \"issue-status\": \"string\",\n    \"issue-type\": \"Vulnerable Software\",\n    \"issue-types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-detected\": \"2012-08-30T23:45:02.598Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"mitre-attack-next-technique-name\": \"string\",\n    \"mitre-attack-next-technique-subtitle\": \"string\",\n    \"mitre-attack-next-technique-title\": \"string\",\n    \"mitre-attack-technique-name\": \"string\",\n    \"mitre-attack-technique-subtitle\": \"string\",\n    \"mitre-attack-technique-title\": \"string\",\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"package\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"port\": 4835.713204671844,\n    \"potential-impact\": [\n      \"string\",\n      \"string\"\n    ],\n    \"potential-threat\": \"Authentication Bypass\",\n    \"references\": [\n      \"string\",\n      \"string\"\n    ],\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"remediation-effort\": \"string\",\n    \"remediation-method\": \"string\",\n    \"remediation-steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"resolved-at\": \"2005-01-25T03:33:01.137Z\",\n    \"revalidation-request-time\": \"1994-12-26T08:47:08.839Z\",\n    \"revalidation-requested\": false,\n    \"severity\": \"critical\",\n    \"severity-change-reason\": \"string\",\n    \"severity-score\": 4617.901869074722,\n    \"snooze-expiration\": \"1966-06-12T17:39:23.110Z\",\n    \"summary\": \"The website is using a vulnerable version of open source JS library\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"title\": \"HTTP Redirection Phishing Threat\",\n    \"tools\": [\n      {\n        \"modification-date\": \"1954-12-04T18:31:17.293Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": true,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"modification-date\": \"1960-09-01T07:44:34.079Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": true,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"underground-activity\": \"string\"\n  },\n  {\n    \"advisories\": [\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"affected-asset\": \"webapp/1.1.1.1\",\n    \"affected-asset-tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"affected-ptr-domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asset-status\": \"string\",\n    \"attacker-interest\": \"string\",\n    \"attractiveness\": 200.73332866304528,\n    \"attractiveness-label\": \"string\",\n    \"base-severity\": \"string\",\n    \"base-severity-score\": 6520.210107240238,\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"2023-06-14T10:10:53.028Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"confidence\": 9325.622149248855,\n    \"confidence-level\": \"string\",\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cve-ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detection-complexity\": \"easy\",\n    \"detection-method\": \"string\",\n    \"enhanced-severity\": \"string\",\n    \"enhanced-severity-score\": 2953.8929460826766,\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"evidence\": \"<string>\",\n    \"exploitation-availability\": \"string\",\n    \"exploitation-complexity\": \"string\",\n    \"exploitation-method\": \"string\",\n    \"exploitation-score\": 2358,\n    \"first-detected\": \"1962-05-25T22:00:21.684Z\",\n    \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n    \"investigating-since\": \"1973-07-09T11:23:26.812Z\",\n    \"investigation-status\": \"uninvestigated\",\n    \"is-snoozed\": false,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n    \"issue-status\": \"string\",\n    \"issue-type\": \"Vulnerable Software\",\n    \"issue-types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-detected\": \"1955-06-20T11:30:30.057Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"mitre-attack-next-technique-name\": \"string\",\n    \"mitre-attack-next-technique-subtitle\": \"string\",\n    \"mitre-attack-next-technique-title\": \"string\",\n    \"mitre-attack-technique-name\": \"string\",\n    \"mitre-attack-technique-subtitle\": \"string\",\n    \"mitre-attack-technique-title\": \"string\",\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"package\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"port\": 5713.715694924065,\n    \"potential-impact\": [\n      \"string\",\n      \"string\"\n    ],\n    \"potential-threat\": \"Authentication Bypass\",\n    \"references\": [\n      \"string\",\n      \"string\"\n    ],\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"remediation-effort\": \"string\",\n    \"remediation-method\": \"string\",\n    \"remediation-steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"resolved-at\": \"1957-04-27T20:27:46.621Z\",\n    \"revalidation-request-time\": \"1948-05-11T08:30:35.887Z\",\n    \"revalidation-requested\": false,\n    \"severity\": \"critical\",\n    \"severity-change-reason\": \"string\",\n    \"severity-score\": 3717.1171103585352,\n    \"snooze-expiration\": \"2013-04-21T04:06:55.160Z\",\n    \"summary\": \"The website is using a vulnerable version of open source JS library\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"title\": \"HTTP Redirection Phishing Threat\",\n    \"tools\": [\n      {\n        \"modification-date\": \"1952-07-30T00:31:58.912Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": false,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"modification-date\": \"1955-08-19T03:21:45.863Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": false,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"underground-activity\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ddfed92b-2026-4ce4-9f3e-97be623fbae8",
+          "name": "Search resolved issues",
+          "request": {
+            "name": "Search resolved issues",
+            "description": {
+              "content": "Retrieve resolved issues based on set criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "resolved-issues"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "advanced-search",
+                  "value": "<string>",
+                  "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-by",
+                  "value": "<string>",
+                  "description": "Specifies the field by which the results should be sorted."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-order",
+                  "value": "<string>",
+                  "description": "Sorts the specified field in ascending or descending order."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2c13120e-aba4-4b86-a3c2-7ef9ebf0f008",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "resolved-issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "advanced-search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  },\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"advisories\": [\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"affected-asset\": \"webapp/1.1.1.1\",\n    \"affected-asset-tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"affected-ptr-domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asset-status\": \"string\",\n    \"attacker-interest\": \"string\",\n    \"attractiveness\": 8278.289849992667,\n    \"attractiveness-label\": \"string\",\n    \"base-severity\": \"string\",\n    \"base-severity-score\": 8010.468819685463,\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"1966-06-28T05:54:08.060Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"confidence\": 2242.627909154412,\n    \"confidence-level\": \"string\",\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cve-ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detection-complexity\": \"easy\",\n    \"detection-method\": \"string\",\n    \"enhanced-severity\": \"string\",\n    \"enhanced-severity-score\": 3576.7224994638946,\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"evidence\": \"<string>\",\n    \"exploitation-availability\": \"string\",\n    \"exploitation-complexity\": \"string\",\n    \"exploitation-method\": \"string\",\n    \"exploitation-score\": 1130,\n    \"first-detected\": \"1973-07-03T01:46:09.546Z\",\n    \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n    \"investigating-since\": \"1992-07-13T21:40:47.596Z\",\n    \"investigation-status\": \"uninvestigated\",\n    \"is-snoozed\": true,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n    \"issue-status\": \"string\",\n    \"issue-type\": \"Vulnerable Software\",\n    \"issue-types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-detected\": \"2012-08-30T23:45:02.598Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"mitre-attack-next-technique-name\": \"string\",\n    \"mitre-attack-next-technique-subtitle\": \"string\",\n    \"mitre-attack-next-technique-title\": \"string\",\n    \"mitre-attack-technique-name\": \"string\",\n    \"mitre-attack-technique-subtitle\": \"string\",\n    \"mitre-attack-technique-title\": \"string\",\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"package\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"port\": 4835.713204671844,\n    \"potential-impact\": [\n      \"string\",\n      \"string\"\n    ],\n    \"potential-threat\": \"Authentication Bypass\",\n    \"references\": [\n      \"string\",\n      \"string\"\n    ],\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"remediation-effort\": \"string\",\n    \"remediation-method\": \"string\",\n    \"remediation-steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"resolved-at\": \"2005-01-25T03:33:01.137Z\",\n    \"revalidation-request-time\": \"1994-12-26T08:47:08.839Z\",\n    \"revalidation-requested\": false,\n    \"severity\": \"critical\",\n    \"severity-change-reason\": \"string\",\n    \"severity-score\": 4617.901869074722,\n    \"snooze-expiration\": \"1966-06-12T17:39:23.110Z\",\n    \"summary\": \"The website is using a vulnerable version of open source JS library\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"title\": \"HTTP Redirection Phishing Threat\",\n    \"tools\": [\n      {\n        \"modification-date\": \"1954-12-04T18:31:17.293Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": true,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"modification-date\": \"1960-09-01T07:44:34.079Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": true,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"underground-activity\": \"string\"\n  },\n  {\n    \"advisories\": [\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"advisory\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"affected-asset\": \"webapp/1.1.1.1\",\n    \"affected-asset-tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"affected-ptr-domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asset-status\": \"string\",\n    \"attacker-interest\": \"string\",\n    \"attractiveness\": 200.73332866304528,\n    \"attractiveness-label\": \"string\",\n    \"base-severity\": \"string\",\n    \"base-severity-score\": 6520.210107240238,\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"2023-06-14T10:10:53.028Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"confidence\": 9325.622149248855,\n    \"confidence-level\": \"string\",\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cve-ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detection-complexity\": \"easy\",\n    \"detection-method\": \"string\",\n    \"enhanced-severity\": \"string\",\n    \"enhanced-severity-score\": 2953.8929460826766,\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"evidence\": \"<string>\",\n    \"exploitation-availability\": \"string\",\n    \"exploitation-complexity\": \"string\",\n    \"exploitation-method\": \"string\",\n    \"exploitation-score\": 2358,\n    \"first-detected\": \"1962-05-25T22:00:21.684Z\",\n    \"id\": \"issue/webapp-1.1.1.1-cyc-js-jquery-2\",\n    \"investigating-since\": \"1973-07-09T11:23:26.812Z\",\n    \"investigation-status\": \"uninvestigated\",\n    \"is-snoozed\": false,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issue-id\": \"CYC-TLS-HSTS-INSECURE\",\n    \"issue-status\": \"string\",\n    \"issue-type\": \"Vulnerable Software\",\n    \"issue-types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-detected\": \"1955-06-20T11:30:30.057Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"mitre-attack-next-technique-name\": \"string\",\n    \"mitre-attack-next-technique-subtitle\": \"string\",\n    \"mitre-attack-next-technique-title\": \"string\",\n    \"mitre-attack-technique-name\": \"string\",\n    \"mitre-attack-technique-subtitle\": \"string\",\n    \"mitre-attack-technique-title\": \"string\",\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"package\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"port\": 5713.715694924065,\n    \"potential-impact\": [\n      \"string\",\n      \"string\"\n    ],\n    \"potential-threat\": \"Authentication Bypass\",\n    \"references\": [\n      \"string\",\n      \"string\"\n    ],\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"remediation-effort\": \"string\",\n    \"remediation-method\": \"string\",\n    \"remediation-steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"resolved-at\": \"1957-04-27T20:27:46.621Z\",\n    \"revalidation-request-time\": \"1948-05-11T08:30:35.887Z\",\n    \"revalidation-requested\": false,\n    \"severity\": \"critical\",\n    \"severity-change-reason\": \"string\",\n    \"severity-score\": 3717.1171103585352,\n    \"snooze-expiration\": \"2013-04-21T04:06:55.160Z\",\n    \"summary\": \"The website is using a vulnerable version of open source JS library\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"title\": \"HTTP Redirection Phishing Threat\",\n    \"tools\": [\n      {\n        \"modification-date\": \"1952-07-30T00:31:58.912Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": false,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"modification-date\": \"1955-08-19T03:21:45.863Z\",\n        \"tool-download-url\": \"string\",\n        \"tool-id\": \"string\",\n        \"tool-description\": \"string\",\n        \"is-safe\": false,\n        \"tool-references\": \"<string>\",\n        \"tool-visibility\": \"string\",\n        \"source-url\": \"string\",\n        \"tool-type\": \"string\",\n        \"id\": \"string\",\n        \"relation-type\": \"string\",\n        \"tool-name\": \"string\",\n        \"tool-title\": \"string\",\n        \"tool-framework\": \"string\",\n        \"issue-id\": \"string\",\n        \"tool-instructions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"underground-activity\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4ea4a1ff-63a3-4ac2-9a44-26f6c23051d9",
+    "name": "CyCognito API V1 Reference Assets Issues API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

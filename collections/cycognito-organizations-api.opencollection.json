@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Organizations API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/orgs",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of desired organization attributes. For more information, view the response example and schema."
+              },
+              {
+                "name": "advanced-search",
+                "value": "",
+                "type": "query",
+                "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch organizations based on given criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default."
+        },
+        {
+          "info": {
+            "name": "Adjust organization attributions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/orgs/org-mgmt",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Attribute or unattribute assets from specified organizations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

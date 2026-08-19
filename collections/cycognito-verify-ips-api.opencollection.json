@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Verify IPs API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Verify IPs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verify IP ownership",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/is-scanner-ips",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Determine if an IP address is associated with CyCognito. This check focuses on a specific 24-hour window, which is set by a provided date-time or defaults to the day of the request. Verification data is retained for 166 days, after which any requests will return as negative."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Scope Management API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scope Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Include new assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/include-assets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Bulk addition of new assets to your attack surface, with details such as value, asset type, organization, propagation preference, and optional description). \n*Note:* To attribute an asset to multiple organizations, you will need to create separate list entries."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,270 @@
+{
+  "item": [
+    {
+      "id": "b783c8e3-a818-4939-a5f2-794fb181425b",
+      "name": "Reports",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "36149aa2-eb53-4ca2-bdcb-5103c9d9fc9d",
+          "name": "Initiate executive report",
+          "request": {
+            "name": "Initiate executive report",
+            "description": {
+              "content": "Initiate the generation of Executive Summary reports. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The report can be either an Enhanced Executive Report or First-Time Executive Report.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "reports",
+                "executive-report",
+                "request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"report-type\": \"<string>\",\n  \"start-date\": \"<string>\",\n  \"end-date\": \"<string>\",\n  \"team\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b9abab9a-df27-46fa-ab18-e4fda24d3b20",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "reports",
+                    "executive-report",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"report-type\": \"enhanced-executive-report\",\n  \"start-date\": \"2024-01-01\",\n  \"end-date\": \"2024-03-31\",\n  \"team\": \"Example Sub-Team\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"report-id\": \"a123456b-cd78-910e-1f2g-34h56i789j10\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "746f9773-dd19-4efe-8962-a65109257279",
+          "name": "Fetch executive report link",
+          "request": {
+            "name": "Fetch executive report link",
+            "description": {
+              "content": "Check the status of your executive report export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "reports",
+                "executive-report",
+                "get",
+                ":report_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "report_id",
+                  "description": "(Required) Unique identifier for the export."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "af25156b-bb83-4ad6-8df2-1da250479f31",
+              "name": "Returns the generated link that enables you to access and download the PDF file containing the executive report, as well as the status of the export task.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "reports",
+                    "executive-report",
+                    "get",
+                    ":report_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "report_id",
+                      "description": "(Required) Unique identifier for the export."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"export-status\": \"string\",\n  \"export-date\": \"1970-05-10T17:52:31.158Z\",\n  \"download-link\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b9d34a54-f943-4e8c-81b0-993622a232bf",
+    "name": "CyCognito API V1 Reference Assets Reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

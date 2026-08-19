@@ -1,0 +1,148 @@
+{
+  "item": [
+    {
+      "id": "777542c9-0bf1-4bb6-8162-702870c55e10",
+      "name": "Scope Management",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "30ea8960-aa5d-4736-93af-01266d99caf0",
+          "name": "Include new assets",
+          "request": {
+            "name": "Include new assets",
+            "description": {
+              "content": "Bulk addition of new assets to your attack surface, with details such as value, asset type, organization, propagation preference, and optional description). \n*Note:* To attribute an asset to multiple organizations, you will need to create separate list entries.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "include-assets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"asset-type\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"value\": \"<string>\",\n    \"description\": \"<string>\",\n    \"propagate\": \"<boolean>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"asset-type\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"value\": \"<string>\",\n    \"description\": \"<string>\",\n    \"propagate\": \"<boolean>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6a3aefc1-8849-41bd-af0b-d1316c681347",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "include-assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"asset-type\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"value\": \"<string>\",\n    \"description\": \"<string>\",\n    \"propagate\": \"<boolean>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"asset-type\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"value\": \"<string>\",\n    \"description\": \"<string>\",\n    \"propagate\": \"<boolean>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "139d407d-1ced-4b6b-805e-1aa3d3ca6107",
+    "name": "CyCognito API V1 Reference Assets Scope Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

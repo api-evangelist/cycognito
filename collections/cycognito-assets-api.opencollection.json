@@ -1,0 +1,326 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve unified assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/assets",
+            "params": [
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+              },
+              {
+                "name": "advanced-search",
+                "value": "",
+                "type": "query",
+                "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+              },
+              {
+                "name": "sort-by",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the field by which the results should be sorted."
+              },
+              {
+                "name": "sort-order",
+                "value": "",
+                "type": "query",
+                "description": "Sorts the specified field in ascending or descending order."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query assets across all asset types (IPs, domains, certificates, web applications, IP ranges) simultaneously in a single API call. This unified endpoint simplifies asset management by allowing you to retrieve and filter multiple asset types at once, rather than querying each type separately. Returns results in a consistent format with fields set to `null` when not applicable to a specific asset type."
+        },
+        {
+          "info": {
+            "name": "Remove assets in bulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/assets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove multiple assets from your attack surface in a single request. CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again."
+        },
+        {
+          "info": {
+            "name": "Retrieve assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/assets/:asset_type",
+            "params": [
+              {
+                "name": "asset_type",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the category of the asset."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+              },
+              {
+                "name": "advanced-search",
+                "value": "",
+                "type": "query",
+                "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+              },
+              {
+                "name": "sort-by",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the field by which the results should be sorted."
+              },
+              {
+                "name": "sort-order",
+                "value": "",
+                "type": "query",
+                "description": "Sorts the specified field in ascending or descending order."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch assets based on given criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default."
+        },
+        {
+          "info": {
+            "name": "Fetch asset details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/assets/:asset_type/:asset_id",
+            "params": [
+              {
+                "name": "asset_type",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the category of the asset."
+              },
+              {
+                "name": "asset_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the asset (e.g., IP address, domain name)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Obtain specific asset details by type and ID."
+        },
+        {
+          "info": {
+            "name": "Remove asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/assets/:asset_type/:asset_id",
+            "params": [
+              {
+                "name": "asset_type",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the category of the asset."
+              },
+              {
+                "name": "asset_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the asset (e.g., IP address, domain name)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove an asset from your attack surface. Note that CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again."
+        },
+        {
+          "info": {
+            "name": "Update asset's investigation status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/v1/assets/:asset_type/:asset_id/investigation-status",
+            "params": [
+              {
+                "name": "asset_type",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the category of the asset."
+              },
+              {
+                "name": "asset_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the asset (e.g., IP address, domain name)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adjust the specified asset's investigation status:\n- **Investigated** – The asset has been investigated.\n- **Investigating** – The asset is currently undergoing investigation by someone in your team.\n- **Uninvestigated** – The asset has not been investigated yet. "
+        },
+        {
+          "info": {
+            "name": "Add comments to assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/v1/assets/actions/add/comment",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Allows you to add comments to multiple assets identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content."
+        },
+        {
+          "info": {
+            "name": "Handle asset tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/v1/assets/actions/:action/tags",
+            "params": [
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Add or remove custom tags from specified assets."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

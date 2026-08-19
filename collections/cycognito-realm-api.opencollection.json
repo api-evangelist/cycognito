@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Realm API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Realm",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Last data update",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/realm",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the date of the last data update, as well as the data update cadence (weekly, bi-weekly, monthly, or daily)."
+        },
+        {
+          "info": {
+            "name": "Get asset summary for the realm (customer entitlements)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/realm/asset-summary",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns asset summary data for the current realm, including ASM package asset count, AST & EI active asset count, and number of performed rescans."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

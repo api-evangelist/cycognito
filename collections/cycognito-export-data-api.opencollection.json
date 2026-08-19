@@ -1,0 +1,166 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Export Data API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Export Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/export/request/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "The type of the entity whose data you want to export."
+              },
+              {
+                "name": "truncate-fields",
+                "value": "",
+                "type": "query",
+                "description": "Caps the number of returned fields to a maximum of 32000 characters."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Select a desired asset type to initiate a data export. The resulting *report_ID* can be subsequently used with the **Fetch export link** method (below) to fetch a download link for the complete asset data in CSV format."
+        },
+        {
+          "info": {
+            "name": "Fetch export link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/export/get/:report_id",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the export."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Use the *report_ID* obtained from the **Initiate export** method (above) to generate a download link. Once acquired, this link enables you to access and download a CSV file containing detailed data of the assets by the initially chosen asset type."
+        },
+        {
+          "info": {
+            "name": "Initiate issue PDF export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/export/issue-to-pdf/request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate the generation of a PDF report for a specified issue. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The `truncate_long_fields` parameter (default: true) controls whether long field values are truncated in the PDF for improved readability."
+        },
+        {
+          "info": {
+            "name": "Fetch issue PDF export link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/export/issue-to-pdf/get/:report_id",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the export."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check the status of your issue PDF export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report."
+        },
+        {
+          "info": {
+            "name": "Initiate asset PDF export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/export/assets-to-pdf/request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate the generation of a PDF report for a list of assets. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The `truncate_long_fields` parameter (default: true) controls whether long field values are truncated in the PDF for improved readability."
+        },
+        {
+          "info": {
+            "name": "Fetch asset PDF export link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/export/assets-to-pdf/get/:report_id",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the export."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check the status of your asset PDF export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1233 @@
+{
+  "item": [
+    {
+      "id": "df6ba27e-1561-4df1-bb24-51fafaf93bc2",
+      "name": "Assets",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "196e6074-9385-46ba-b3ad-d832004151e3",
+          "name": "Retrieve unified assets",
+          "request": {
+            "name": "Retrieve unified assets",
+            "description": {
+              "content": "Query assets across all asset types (IPs, domains, certificates, web applications, IP ranges) simultaneously in a single API call. This unified endpoint simplifies asset management by allowing you to retrieve and filter multiple asset types at once, rather than querying each type separately. Returns results in a consistent format with fields set to `null` when not applicable to a specific asset type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "advanced-search",
+                  "value": "<string>",
+                  "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-by",
+                  "value": "<string>",
+                  "description": "Specifies the field by which the results should be sorted."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-order",
+                  "value": "<string>",
+                  "description": "Sorts the specified field in ascending or descending order."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aa184fce-923b-4e29-b545-275e1b59636f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "advanced-search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  },\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"active\": false,\n    \"additional-properties\": \"<string>\",\n    \"advisories\": [\n      {\n        \"last-verified\": \"2021-05-28T16:51:27.008Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1947-04-26T14:32:42.851Z\",\n        \"vulnerable\": false,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      },\n      {\n        \"last-verified\": \"1953-04-21T12:32:29.740Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"2008-12-17T06:49:32.424Z\",\n        \"vulnerable\": true,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      }\n    ],\n    \"alive\": false,\n    \"alive-evidence\": \"string\",\n    \"as-list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asns\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"attractiveness\": 2588.1693463057063,\n    \"attractiveness-label\": \"string\",\n    \"attribution-certainty\": \"string\",\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"certificate-subject-key-id\": \"string\",\n    \"certification-authority-key-id\": \"string\",\n    \"cidr\": \"string\",\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"closed-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 2249,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 5346,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      }\n    ],\n    \"cloud-env\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cloud-env-metadata\": [\n      {\n        \"key_0\": \"string\"\n      },\n      {\n        \"key_0\": \"string\"\n      }\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"1956-02-01T23:33:19.325Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"country-code\": \"string\",\n    \"created\": \"2026-01-27T18:56:37.360Z\",\n    \"discoverability\": \"string\",\n    \"discovery-path\": [\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      },\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      }\n    ],\n    \"dns-rcode\": \"string\",\n    \"dns-records\": \"<string>\",\n    \"domain\": \"string\",\n    \"domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dynamic-dns\": \"string\",\n    \"dynamically-resolved\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expiration\": \"1991-09-16T14:55:24.542Z\",\n    \"first-detected\": \"1987-10-14T12:21:12.099Z\",\n    \"first-seen\": \"2026-06-05T10:09:49.641Z\",\n    \"formats\": [\n      \"string\",\n      \"string\"\n    ],\n    \"has-form\": false,\n    \"has-login\": true,\n    \"home-page-description\": \"string\",\n    \"home-page-status-code\": 85.37190844354004,\n    \"home-page-title\": \"string\",\n    \"home-page-url\": \"string\",\n    \"hosting-type\": \"string\",\n    \"id\": \"string\",\n    \"investigation-status\": \"investigated\",\n    \"ip\": \"string\",\n    \"ip-addresses\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ip-ranges\": [\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      },\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      }\n    ],\n    \"ips-count\": 2397.746590145918,\n    \"is-encrypted\": \"string\",\n    \"is-subdomain\": false,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issuer-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"issuer-common-name\": \"string\",\n    \"issuer-country\": \"string\",\n    \"issuer-locality\": \"string\",\n    \"issuer-organization\": \"string\",\n    \"issuer-organization-unit\": \"string\",\n    \"issuer-state\": \"string\",\n    \"issues-count\": 3318,\n    \"known-status\": \"string\",\n    \"last-detected\": \"1955-10-11T05:55:56.991Z\",\n    \"last-seen\": \"2009-11-07T19:34:29.183Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"name-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"open-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 290,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 9702,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      }\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"parent-domain\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ptr-domains\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"public-key-length\": 2954.2336381735436,\n    \"public-key-type\": \"string\",\n    \"range\": \"string\",\n    \"range-description\": \"string\",\n    \"range-name\": \"string\",\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"registered-org-name\": \"string\",\n    \"registrant\": \"string\",\n    \"registrar\": \"string\",\n    \"related\": \"string\",\n    \"related-asset-ids\": \"<string>\",\n    \"related-screenshot-urls\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"revalidation-request-time\": \"2008-11-19T12:31:22.283Z\",\n    \"revalidation-requested\": true,\n    \"security-grade\": \"string\",\n    \"security-score\": 3006.3211180764706,\n    \"serial-number\": \"string\",\n    \"services\": [\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1979-06-15T04:54:34.668Z\",\n        \"last-seen\": \"1991-08-17T18:32:51.029Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1997-11-25T07:01:23.999Z\",\n        \"last-seen\": \"1983-08-01T16:15:15.381Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    ],\n    \"serving-machines\": \"<string>\",\n    \"severe-issues\": 1597,\n    \"signature\": \"string\",\n    \"signature-algorithm\": \"string\",\n    \"source\": \"string\",\n    \"sni-hosts\": [\n      {\n        \"ip\": \"string\",\n        \"port\": 1011,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      },\n      {\n        \"ip\": \"string\",\n        \"port\": 2839,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      }\n    ],\n    \"status\": \"string\",\n    \"subject-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subject-common-name\": \"string\",\n    \"subject-country\": \"string\",\n    \"subject-locality\": \"string\",\n    \"subject-organization\": \"string\",\n    \"subject-organization-unit\": \"string\",\n    \"subject-state\": \"string\",\n    \"supported-protocols\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"type\": \"string\",\n    \"web-pages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-resources-urls\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"webapp-address\": \"string\"\n  },\n  {\n    \"active\": true,\n    \"additional-properties\": \"<string>\",\n    \"advisories\": [\n      {\n        \"last-verified\": \"1973-10-23T05:34:25.477Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1994-03-30T02:44:27.142Z\",\n        \"vulnerable\": true,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      },\n      {\n        \"last-verified\": \"1949-05-23T17:02:30.782Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1949-03-20T01:32:12.956Z\",\n        \"vulnerable\": false,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      }\n    ],\n    \"alive\": false,\n    \"alive-evidence\": \"string\",\n    \"as-list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asns\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"attractiveness\": 6139.683877177148,\n    \"attractiveness-label\": \"string\",\n    \"attribution-certainty\": \"string\",\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"certificate-subject-key-id\": \"string\",\n    \"certification-authority-key-id\": \"string\",\n    \"cidr\": \"string\",\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"closed-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 8067,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 4765,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      }\n    ],\n    \"cloud-env\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cloud-env-metadata\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      }\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"1964-12-29T00:22:15.771Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"country-code\": \"string\",\n    \"created\": \"1983-09-04T10:38:54.313Z\",\n    \"discoverability\": \"string\",\n    \"discovery-path\": [\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      },\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      }\n    ],\n    \"dns-rcode\": \"string\",\n    \"dns-records\": \"<string>\",\n    \"domain\": \"string\",\n    \"domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dynamic-dns\": \"string\",\n    \"dynamically-resolved\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expiration\": \"2025-12-03T12:16:27.177Z\",\n    \"first-detected\": \"1957-11-28T21:09:40.946Z\",\n    \"first-seen\": \"2016-01-04T18:07:08.235Z\",\n    \"formats\": [\n      \"string\",\n      \"string\"\n    ],\n    \"has-form\": true,\n    \"has-login\": false,\n    \"home-page-description\": \"string\",\n    \"home-page-status-code\": 3752.103498566429,\n    \"home-page-title\": \"string\",\n    \"home-page-url\": \"string\",\n    \"hosting-type\": \"string\",\n    \"id\": \"string\",\n    \"investigation-status\": \"uninvestigated\",\n    \"ip\": \"string\",\n    \"ip-addresses\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ip-ranges\": [\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      },\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      }\n    ],\n    \"ips-count\": 1722.9928182149013,\n    \"is-encrypted\": \"string\",\n    \"is-subdomain\": true,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issuer-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"issuer-common-name\": \"string\",\n    \"issuer-country\": \"string\",\n    \"issuer-locality\": \"string\",\n    \"issuer-organization\": \"string\",\n    \"issuer-organization-unit\": \"string\",\n    \"issuer-state\": \"string\",\n    \"issues-count\": 7271,\n    \"known-status\": \"string\",\n    \"last-detected\": \"1987-09-19T16:19:33.677Z\",\n    \"last-seen\": \"1983-04-29T01:13:09.839Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"name-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"open-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 9400,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 23,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      }\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"parent-domain\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ptr-domains\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"public-key-length\": 5811.169289964142,\n    \"public-key-type\": \"string\",\n    \"range\": \"string\",\n    \"range-description\": \"string\",\n    \"range-name\": \"string\",\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"registered-org-name\": \"string\",\n    \"registrant\": \"string\",\n    \"registrar\": \"string\",\n    \"related\": \"string\",\n    \"related-asset-ids\": \"<string>\",\n    \"related-screenshot-urls\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"revalidation-request-time\": \"1967-04-25T23:02:49.201Z\",\n    \"revalidation-requested\": true,\n    \"security-grade\": \"string\",\n    \"security-score\": 255.8095369756741,\n    \"serial-number\": \"string\",\n    \"services\": [\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1977-02-23T07:18:52.555Z\",\n        \"last-seen\": \"1977-04-18T23:01:06.110Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1990-01-21T19:03:40.742Z\",\n        \"last-seen\": \"1977-11-16T03:29:13.586Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    ],\n    \"serving-machines\": \"<string>\",\n    \"severe-issues\": 9608,\n    \"signature\": \"string\",\n    \"signature-algorithm\": \"string\",\n    \"source\": \"string\",\n    \"sni-hosts\": [\n      {\n        \"ip\": \"string\",\n        \"port\": 5581,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      },\n      {\n        \"ip\": \"string\",\n        \"port\": 1585,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      }\n    ],\n    \"status\": \"string\",\n    \"subject-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subject-common-name\": \"string\",\n    \"subject-country\": \"string\",\n    \"subject-locality\": \"string\",\n    \"subject-organization\": \"string\",\n    \"subject-organization-unit\": \"string\",\n    \"subject-state\": \"string\",\n    \"supported-protocols\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"type\": \"string\",\n    \"web-pages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-resources-urls\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"webapp-address\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1644edb9-b527-49ba-b63d-b15742c7a442",
+          "name": "Remove assets in bulk",
+          "request": {
+            "name": "Remove assets in bulk",
+            "description": {
+              "content": "Remove multiple assets from your attack surface in a single request. CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"comment\": \"<string>\",\n  \"removal-type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dc32c4fb-ef67-4034-b115-6982ae84e0a8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"ip/1.1.1.1\",\n    \"ip/2.2.2.2\",\n    \"domain/acme.com\",\n    \"webapp/acme.com\",\n    \"iprange/1.1.1.1-1.2.3.4\"\n  ],\n  \"comment\": \"The asset is no longer relevant.\",\n  \"removal-type\": \"block-discovery\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"Asset successfully removed.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "85bf7a37-d6bd-496b-a26c-59e17d8bd49e",
+          "name": "Retrieve assets",
+          "request": {
+            "name": "Retrieve assets",
+            "description": {
+              "content": "Fetch assets based on given criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets",
+                ":asset_type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "advanced-search",
+                  "value": "<string>",
+                  "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Specifies a search term for conducting a keyword-based search and retrieving data that matches your query."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "A comma-separated list specifying the desired entity properties to appear in the response. For more information, view the response example and schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-by",
+                  "value": "<string>",
+                  "description": "Specifies the field by which the results should be sorted."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-order",
+                  "value": "<string>",
+                  "description": "Sorts the specified field in ascending or descending order."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_type",
+                  "description": "(Required) Specifies the category of the asset."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "82613088-78df-4132-9235-746966b1591a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets",
+                    ":asset_type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "advanced-search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_type",
+                      "description": "(Required) Specifies the category of the asset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  },\n  {\n    \"field\": \"status\",\n    \"op\": \"in\",\n    \"values\": [\n      \"new\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"active\": false,\n    \"additional-properties\": \"<string>\",\n    \"advisories\": [\n      {\n        \"last-verified\": \"1948-07-02T16:08:39.658Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1962-03-03T03:51:51.195Z\",\n        \"vulnerable\": true,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      },\n      {\n        \"last-verified\": \"1956-06-08T01:41:07.897Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1955-09-16T20:59:31.312Z\",\n        \"vulnerable\": false,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      }\n    ],\n    \"alive\": false,\n    \"alive-evidence\": \"string\",\n    \"as-list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asns\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"attractiveness\": 1873.2769887194102,\n    \"attractiveness-label\": \"string\",\n    \"attribution-certainty\": \"string\",\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"certificate-subject-key-id\": \"string\",\n    \"certification-authority-key-id\": \"string\",\n    \"cidr\": \"string\",\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"closed-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 4093,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 5838,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      }\n    ],\n    \"cloud-env\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cloud-env-metadata\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"2024-09-23T00:43:19.557Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"country-code\": \"string\",\n    \"created\": \"1963-09-10T06:03:55.185Z\",\n    \"discoverability\": \"string\",\n    \"discovery-path\": [\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      },\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      }\n    ],\n    \"dns-rcode\": \"string\",\n    \"dns-records\": \"<string>\",\n    \"domain\": \"www.foobar.com\",\n    \"domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dynamic-dns\": \"string\",\n    \"dynamically-resolved\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expiration\": \"1994-08-24T18:07:08.713Z\",\n    \"first-detected\": \"2011-08-19T21:46:24.899Z\",\n    \"first-seen\": \"1974-07-03T11:20:54.616Z\",\n    \"formats\": [\n      \"string\",\n      \"string\"\n    ],\n    \"has-form\": false,\n    \"has-login\": false,\n    \"home-page-description\": \"string\",\n    \"home-page-status-code\": 4817.385685281178,\n    \"home-page-title\": \"string\",\n    \"home-page-url\": \"string\",\n    \"hosting-type\": \"undetermined\",\n    \"id\": \"ip/192.168.0.0\",\n    \"investigation-status\": \"uninvestigated\",\n    \"ip\": \"1.1.1.1\",\n    \"ip-addresses\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ip-ranges\": [\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      },\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      }\n    ],\n    \"ips-count\": 1204.8066720597183,\n    \"is-encrypted\": \"string\",\n    \"is-subdomain\": true,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issuer-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"issuer-common-name\": \"string\",\n    \"issuer-country\": \"string\",\n    \"issuer-locality\": \"string\",\n    \"issuer-organization\": \"string\",\n    \"issuer-organization-unit\": \"string\",\n    \"issuer-state\": \"string\",\n    \"issues-count\": 378,\n    \"known-status\": \"string\",\n    \"last-detected\": \"1984-09-09T19:27:28.531Z\",\n    \"last-seen\": \"1985-04-18T11:30:07.991Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"name-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"open-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 5190,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 2909,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      }\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"parent-domain\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ptr-domains\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"public-key-length\": 1408.950747756309,\n    \"public-key-type\": \"string\",\n    \"range\": \"1.1.1.1-2.2.2.2\",\n    \"range-description\": \"string\",\n    \"range-name\": \"string\",\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"registered-org-name\": \"string\",\n    \"registrant\": \"string\",\n    \"registrar\": \"string\",\n    \"related\": \"string\",\n    \"related-asset-ids\": \"<string>\",\n    \"related-screenshot-urls\": {\n      \"key_0\": \"string\"\n    },\n    \"revalidation-request-time\": \"2009-02-14T19:15:16.322Z\",\n    \"revalidation-requested\": true,\n    \"security-grade\": \"string\",\n    \"security-score\": 4715.493283761356,\n    \"serial-number\": \"string\",\n    \"services\": [\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1987-03-04T05:51:35.210Z\",\n        \"last-seen\": \"1969-10-14T22:04:12.953Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"2023-05-03T01:59:35.258Z\",\n        \"last-seen\": \"2020-07-07T16:47:06.860Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    ],\n    \"serving-machines\": \"<string>\",\n    \"severe-issues\": 2511,\n    \"signature\": \"qwert56789ghjkl2345fghjyuio90cvb345cvbghjtyu\",\n    \"signature-algorithm\": \"string\",\n    \"source\": \"string\",\n    \"sni-hosts\": [\n      {\n        \"ip\": \"string\",\n        \"port\": 5792,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      },\n      {\n        \"ip\": \"string\",\n        \"port\": 4622,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      }\n    ],\n    \"status\": \"string\",\n    \"subject-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subject-common-name\": \"string\",\n    \"subject-country\": \"string\",\n    \"subject-locality\": \"string\",\n    \"subject-organization\": \"string\",\n    \"subject-organization-unit\": \"string\",\n    \"subject-state\": \"string\",\n    \"supported-protocols\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"type\": \"ip\",\n    \"web-pages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-resources-urls\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"webapp-address\": \"webapp.acme.com\"\n  },\n  {\n    \"active\": true,\n    \"additional-properties\": \"<string>\",\n    \"advisories\": [\n      {\n        \"last-verified\": \"2018-06-02T15:29:40.068Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1972-12-03T19:27:34.064Z\",\n        \"vulnerable\": true,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      },\n      {\n        \"last-verified\": \"1962-05-23T01:24:10.218Z\",\n        \"evidence-id\": \"string\",\n        \"evidence-last-seen\": \"1962-10-31T00:18:07.508Z\",\n        \"vulnerable\": true,\n        \"advisory\": \"string\",\n        \"issue-id\": \"string\"\n      }\n    ],\n    \"alive\": true,\n    \"alive-evidence\": \"string\",\n    \"as-list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"asns\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"attractiveness\": 2586.501634333386,\n    \"attractiveness-label\": \"string\",\n    \"attribution-certainty\": \"string\",\n    \"business-units\": [\n      \"string\",\n      \"string\"\n    ],\n    \"certificate-subject-key-id\": \"string\",\n    \"certification-authority-key-id\": \"string\",\n    \"cidr\": \"string\",\n    \"cis-controls\": [\n      \"string\"\n    ],\n    \"closed-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 2869,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 4249,\n        \"first-seen\": \"string\",\n        \"protocol\": \"tcp\"\n      }\n    ],\n    \"cloud-env\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cloud-env-metadata\": [\n      {\n        \"key_0\": \"string\"\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      }\n    ],\n    \"comment\": {\n      \"content\": \"string\",\n      \"last-update\": \"2006-07-29T23:56:01.350Z\"\n    },\n    \"comments\": [\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      },\n      {\n        \"content\": \"string\",\n        \"created-by-name\": \"string\",\n        \"last-update\": \"string\"\n      }\n    ],\n    \"compliance-violations\": [\n      \"string\"\n    ],\n    \"continent\": [\n      \"string\",\n      \"string\"\n    ],\n    \"country-code\": \"string\",\n    \"created\": \"1980-06-06T13:35:49.328Z\",\n    \"discoverability\": \"string\",\n    \"discovery-path\": [\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      },\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      }\n    ],\n    \"dns-rcode\": \"string\",\n    \"dns-records\": \"<string>\",\n    \"domain\": \"www.foobar.com\",\n    \"domains\": [\n      \"string\",\n      \"string\"\n    ],\n    \"dynamic-dns\": \"string\",\n    \"dynamically-resolved\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"environments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"expiration\": \"2018-07-11T14:43:41.852Z\",\n    \"first-detected\": \"1997-09-26T20:21:54.112Z\",\n    \"first-seen\": \"1987-04-05T21:45:59.977Z\",\n    \"formats\": [\n      \"string\",\n      \"string\"\n    ],\n    \"has-form\": true,\n    \"has-login\": true,\n    \"home-page-description\": \"string\",\n    \"home-page-status-code\": 9306.588677822725,\n    \"home-page-title\": \"string\",\n    \"home-page-url\": \"string\",\n    \"hosting-type\": \"undetermined\",\n    \"id\": \"ip/192.168.0.0\",\n    \"investigation-status\": \"investigated\",\n    \"ip\": \"1.1.1.1\",\n    \"ip-addresses\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ip-ranges\": [\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      },\n      {\n        \"inetnum\": \"string\",\n        \"owner\": \"string\"\n      }\n    ],\n    \"ips-count\": 289.1798466792905,\n    \"is-encrypted\": \"string\",\n    \"is-subdomain\": true,\n    \"iso27001-controls\": [\n      \"string\"\n    ],\n    \"iso27002-controls\": [\n      \"string\"\n    ],\n    \"issuer-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"issuer-common-name\": \"string\",\n    \"issuer-country\": \"string\",\n    \"issuer-locality\": \"string\",\n    \"issuer-organization\": \"string\",\n    \"issuer-organization-unit\": \"string\",\n    \"issuer-state\": \"string\",\n    \"issues-count\": 9045,\n    \"known-status\": \"string\",\n    \"last-detected\": \"2025-03-12T09:33:25.602Z\",\n    \"last-seen\": \"2016-02-11T04:10:02.226Z\",\n    \"locations\": [\n      \"string\"\n    ],\n    \"name-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"nist-800-171-controls\": [\n      \"string\"\n    ],\n    \"nist-800-53-controls\": [\n      \"string\"\n    ],\n    \"open-ports\": [\n      {\n        \"status\": \"string\",\n        \"port\": 9458,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      },\n      {\n        \"status\": \"string\",\n        \"port\": 781,\n        \"first-seen\": \"string\",\n        \"protocol\": \"udp\"\n      }\n    ],\n    \"organizations\": [\n      \"string\",\n      \"string\"\n    ],\n    \"parent-domain\": \"string\",\n    \"pci-dss-controls\": [\n      \"string\"\n    ],\n    \"platforms\": [\n      \"string\",\n      \"string\"\n    ],\n    \"ptr-domains\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"public-key-length\": 4772.258171055916,\n    \"public-key-type\": \"string\",\n    \"range\": \"1.1.1.1-2.2.2.2\",\n    \"range-description\": \"string\",\n    \"range-name\": \"string\",\n    \"region\": [\n      \"string\",\n      \"string\"\n    ],\n    \"registered-org-name\": \"string\",\n    \"registrant\": \"string\",\n    \"registrar\": \"string\",\n    \"related\": \"string\",\n    \"related-asset-ids\": \"<string>\",\n    \"related-screenshot-urls\": {\n      \"key_0\": \"string\"\n    },\n    \"revalidation-request-time\": \"2020-03-14T17:41:36.594Z\",\n    \"revalidation-requested\": true,\n    \"security-grade\": \"string\",\n    \"security-score\": 9409.00557212081,\n    \"serial-number\": \"string\",\n    \"services\": [\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1981-05-03T23:12:42.732Z\",\n        \"last-seen\": \"1988-06-01T00:55:29.639Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      {\n        \"id\": \"string\",\n        \"scan-status\": \"string\",\n        \"ports\": [\n          \"string\",\n          \"string\"\n        ],\n        \"first-seen\": \"1976-12-31T11:55:29.160Z\",\n        \"last-seen\": \"1997-05-08T09:10:41.531Z\",\n        \"evidence\": \"<string>\",\n        \"banners\": [\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"port\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"banner\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    ],\n    \"serving-machines\": \"<string>\",\n    \"severe-issues\": 9802,\n    \"signature\": \"qwert56789ghjkl2345fghjyuio90cvb345cvbghjtyu\",\n    \"signature-algorithm\": \"string\",\n    \"source\": \"string\",\n    \"sni-hosts\": [\n      {\n        \"ip\": \"string\",\n        \"port\": 8623,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      },\n      {\n        \"ip\": \"string\",\n        \"port\": 9017,\n        \"protocol\": \"string\",\n        \"sni\": \"string\",\n        \"time\": \"string\"\n      }\n    ],\n    \"status\": \"string\",\n    \"subject-alt-names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"subject-common-name\": \"string\",\n    \"subject-country\": \"string\",\n    \"subject-locality\": \"string\",\n    \"subject-organization\": \"string\",\n    \"subject-organization-unit\": \"string\",\n    \"subject-state\": \"string\",\n    \"supported-protocols\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ],\n    \"type\": \"ip\",\n    \"web-pages\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-resources-urls\": [\n      \"string\",\n      \"string\"\n    ],\n    \"web-servers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"webapp-address\": \"webapp.acme.com\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b6ce09a-d10e-443b-9111-2fe58e7fe2ca",
+          "name": "Fetch asset details",
+          "request": {
+            "name": "Fetch asset details",
+            "description": {
+              "content": "Obtain specific asset details by type and ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets",
+                ":asset_type",
+                ":asset_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_type",
+                  "description": "(Required) Specifies the category of the asset."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_id",
+                  "description": "(Required) Unique identifier for the asset (e.g., IP address, domain name)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4554951b-e175-41b3-8692-6830d37dfec2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets",
+                    ":asset_type",
+                    ":asset_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_type",
+                      "description": "(Required) Specifies the category of the asset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_id",
+                      "description": "(Required) Unique identifier for the asset (e.g., IP address, domain name)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"active\": true,\n  \"additional-properties\": \"<string>\",\n  \"advisories\": [\n    {\n      \"last-verified\": \"1966-03-27T23:34:26.702Z\",\n      \"evidence-id\": \"string\",\n      \"evidence-last-seen\": \"2001-12-07T05:07:25.135Z\",\n      \"vulnerable\": true,\n      \"advisory\": \"string\",\n      \"issue-id\": \"string\"\n    },\n    {\n      \"last-verified\": \"2004-09-05T09:26:45.980Z\",\n      \"evidence-id\": \"string\",\n      \"evidence-last-seen\": \"1963-04-18T00:25:44.906Z\",\n      \"vulnerable\": true,\n      \"advisory\": \"string\",\n      \"issue-id\": \"string\"\n    }\n  ],\n  \"alive\": true,\n  \"alive-evidence\": \"string\",\n  \"as-list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"asns\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"attractiveness\": 2774.333565670958,\n  \"attractiveness-label\": \"string\",\n  \"attribution-certainty\": \"string\",\n  \"business-units\": [\n    \"string\",\n    \"string\"\n  ],\n  \"certificate-subject-key-id\": \"string\",\n  \"certification-authority-key-id\": \"string\",\n  \"cidr\": \"string\",\n  \"cis-controls\": [\n    \"string\"\n  ],\n  \"closed-ports\": [\n    {\n      \"status\": \"string\",\n      \"port\": 8402,\n      \"first-seen\": \"string\",\n      \"protocol\": \"udp\"\n    },\n    {\n      \"status\": \"string\",\n      \"port\": 1542,\n      \"first-seen\": \"string\",\n      \"protocol\": \"udp\"\n    }\n  ],\n  \"cloud-env\": [\n    \"string\",\n    \"string\"\n  ],\n  \"cloud-env-metadata\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ],\n  \"comment\": {\n    \"content\": \"string\",\n    \"last-update\": \"1991-08-08T21:54:57.367Z\"\n  },\n  \"comments\": [\n    {\n      \"content\": \"string\",\n      \"created-by-name\": \"string\",\n      \"last-update\": \"string\"\n    },\n    {\n      \"content\": \"string\",\n      \"created-by-name\": \"string\",\n      \"last-update\": \"string\"\n    }\n  ],\n  \"compliance-violations\": [\n    \"string\"\n  ],\n  \"continent\": [\n    \"string\",\n    \"string\"\n  ],\n  \"country-code\": \"string\",\n  \"created\": \"1982-07-27T09:12:42.441Z\",\n  \"discoverability\": \"string\",\n  \"discovery-path\": [\n    {\n      \"src\": \"string\",\n      \"dest\": \"string\",\n      \"movement-type\": \"<string>\",\n      \"movement-data\": \"<string>\"\n    },\n    {\n      \"src\": \"string\",\n      \"dest\": \"string\",\n      \"movement-type\": \"<string>\",\n      \"movement-data\": \"<string>\"\n    }\n  ],\n  \"dns-rcode\": \"string\",\n  \"dns-records\": \"<string>\",\n  \"domain\": \"www.foobar.com\",\n  \"domains\": [\n    \"string\",\n    \"string\"\n  ],\n  \"dynamic-dns\": \"string\",\n  \"dynamically-resolved\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"environments\": [\n    \"string\",\n    \"string\"\n  ],\n  \"expiration\": \"2003-06-01T21:59:30.029Z\",\n  \"first-detected\": \"2020-07-10T00:30:03.113Z\",\n  \"first-seen\": \"1984-04-27T11:39:01.544Z\",\n  \"formats\": [\n    \"string\",\n    \"string\"\n  ],\n  \"has-form\": true,\n  \"has-login\": false,\n  \"home-page-description\": \"string\",\n  \"home-page-status-code\": 6720.142388761688,\n  \"home-page-title\": \"string\",\n  \"home-page-url\": \"string\",\n  \"hosting-type\": \"undetermined\",\n  \"id\": \"ip/192.168.0.0\",\n  \"investigation-status\": \"investigated\",\n  \"ip\": \"1.1.1.1\",\n  \"ip-addresses\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ip-ranges\": [\n    {\n      \"inetnum\": \"string\",\n      \"owner\": \"string\"\n    },\n    {\n      \"inetnum\": \"string\",\n      \"owner\": \"string\"\n    }\n  ],\n  \"ips-count\": 4785.83186786111,\n  \"is-encrypted\": \"string\",\n  \"is-subdomain\": true,\n  \"iso27001-controls\": [\n    \"string\"\n  ],\n  \"iso27002-controls\": [\n    \"string\"\n  ],\n  \"issuer-alt-names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"issuer-common-name\": \"string\",\n  \"issuer-country\": \"string\",\n  \"issuer-locality\": \"string\",\n  \"issuer-organization\": \"string\",\n  \"issuer-organization-unit\": \"string\",\n  \"issuer-state\": \"string\",\n  \"issues-count\": 6321,\n  \"known-status\": \"string\",\n  \"last-detected\": \"2008-03-21T18:39:37.587Z\",\n  \"last-seen\": \"2009-02-07T00:38:57.339Z\",\n  \"locations\": [\n    \"string\"\n  ],\n  \"name-servers\": [\n    \"string\",\n    \"string\"\n  ],\n  \"nist-800-171-controls\": [\n    \"string\"\n  ],\n  \"nist-800-53-controls\": [\n    \"string\"\n  ],\n  \"open-ports\": [\n    {\n      \"status\": \"string\",\n      \"port\": 8260,\n      \"first-seen\": \"string\",\n      \"protocol\": \"tcp\"\n    },\n    {\n      \"status\": \"string\",\n      \"port\": 8411,\n      \"first-seen\": \"string\",\n      \"protocol\": \"udp\"\n    }\n  ],\n  \"organizations\": [\n    \"string\",\n    \"string\"\n  ],\n  \"parent-domain\": \"string\",\n  \"pci-dss-controls\": [\n    \"string\"\n  ],\n  \"platforms\": [\n    \"string\",\n    \"string\"\n  ],\n  \"ptr-domains\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"public-key-length\": 8254.398660668852,\n  \"public-key-type\": \"string\",\n  \"range\": \"1.1.1.1-2.2.2.2\",\n  \"range-description\": \"string\",\n  \"range-name\": \"string\",\n  \"region\": [\n    \"string\",\n    \"string\"\n  ],\n  \"registered-org-name\": \"string\",\n  \"registrant\": \"string\",\n  \"registrar\": \"string\",\n  \"related\": \"string\",\n  \"related-asset-ids\": \"<string>\",\n  \"related-screenshot-urls\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  },\n  \"revalidation-request-time\": \"1985-03-11T00:03:03.942Z\",\n  \"revalidation-requested\": true,\n  \"security-grade\": \"string\",\n  \"security-score\": 4901.214926189772,\n  \"serial-number\": \"string\",\n  \"services\": [\n    {\n      \"id\": \"string\",\n      \"scan-status\": \"string\",\n      \"ports\": [\n        \"string\",\n        \"string\"\n      ],\n      \"first-seen\": \"2024-09-21T05:07:54.387Z\",\n      \"last-seen\": \"1962-04-07T09:19:10.163Z\",\n      \"evidence\": \"<string>\",\n      \"banners\": [\n        {\n          \"port\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"banner\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"port\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"banner\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"scan-status\": \"string\",\n      \"ports\": [\n        \"string\",\n        \"string\"\n      ],\n      \"first-seen\": \"1981-02-17T08:24:07.254Z\",\n      \"last-seen\": \"1995-04-25T14:53:31.126Z\",\n      \"evidence\": \"<string>\",\n      \"banners\": [\n        {\n          \"port\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"banner\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"port\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"banner\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"serving-machines\": \"<string>\",\n  \"severe-issues\": 2882,\n  \"signature\": \"qwert56789ghjkl2345fghjyuio90cvb345cvbghjtyu\",\n  \"signature-algorithm\": \"string\",\n  \"source\": \"string\",\n  \"sni-hosts\": [\n    {\n      \"ip\": \"string\",\n      \"port\": 8236,\n      \"protocol\": \"string\",\n      \"sni\": \"string\",\n      \"time\": \"string\"\n    },\n    {\n      \"ip\": \"string\",\n      \"port\": 1294,\n      \"protocol\": \"string\",\n      \"sni\": \"string\",\n      \"time\": \"string\"\n    }\n  ],\n  \"status\": \"string\",\n  \"subject-alt-names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"subject-common-name\": \"string\",\n  \"subject-country\": \"string\",\n  \"subject-locality\": \"string\",\n  \"subject-organization\": \"string\",\n  \"subject-organization-unit\": \"string\",\n  \"subject-state\": \"string\",\n  \"supported-protocols\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"teams\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tech-owners\": [\n    {\n      \"name\": \"string\",\n      \"email\": \"string\",\n      \"org-name\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"email\": \"string\",\n      \"org-name\": \"string\"\n    }\n  ],\n  \"type\": \"ip\",\n  \"web-pages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"web-resources-urls\": [\n    \"string\",\n    \"string\"\n  ],\n  \"web-servers\": [\n    \"string\",\n    \"string\"\n  ],\n  \"webapp-address\": \"webapp.acme.com\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e547b01-9a23-4749-bba1-f58dd0bc591d",
+          "name": "Remove asset",
+          "request": {
+            "name": "Remove asset",
+            "description": {
+              "content": "Remove an asset from your attack surface. Note that CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets",
+                ":asset_type",
+                ":asset_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_type",
+                  "description": "(Required) Specifies the category of the asset."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_id",
+                  "description": "(Required) Unique identifier for the asset (e.g., IP address, domain name)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"<string>\",\n  \"removal-type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fa269d94-27ae-4c74-a2b4-d08835272794",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets",
+                    ":asset_type",
+                    ":asset_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_type",
+                      "description": "(Required) Specifies the category of the asset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_id",
+                      "description": "(Required) Unique identifier for the asset (e.g., IP address, domain name)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment\": \"The asset is no longer relevant.\",\n  \"removal-type\": \"block-discovery\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"Asset successfully removed.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dd0d5c59-bbc0-4458-a68e-b0bbb04173a9",
+          "name": "Update asset's investigation status",
+          "request": {
+            "name": "Update asset's investigation status",
+            "description": {
+              "content": "Adjust the specified asset's investigation status:\n- **Investigated** – The asset has been investigated.\n- **Investigating** – The asset is currently undergoing investigation by someone in your team.\n- **Uninvestigated** – The asset has not been investigated yet. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets",
+                ":asset_type",
+                ":asset_id",
+                "investigation-status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_type",
+                  "description": "(Required) Specifies the category of the asset."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "asset_id",
+                  "description": "(Required) Unique identifier for the asset (e.g., IP address, domain name)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"investigation-status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37de0731-eaa1-4195-a6c8-798060bb49a0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets",
+                    ":asset_type",
+                    ":asset_id",
+                    "investigation-status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_type",
+                      "description": "(Required) Specifies the category of the asset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "asset_id",
+                      "description": "(Required) Unique identifier for the asset (e.g., IP address, domain name)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investigation-status\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "03815c8c-1cc8-41a9-9fd1-7b4fc0865999",
+          "name": "Add comments to assets",
+          "request": {
+            "name": "Add comments to assets",
+            "description": {
+              "content": "Allows you to add comments to multiple assets identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets",
+                "actions",
+                "add",
+                "comment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"comment\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4cf4c21e-3fb6-461a-8a94-d45bb1bf50b2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets",
+                    "actions",
+                    "add",
+                    "comment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"ip/1.1.1.1\",\n    \"domain/acme.com\"\n  ],\n  \"comment\": \"This is a new comment on the asset\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b4b1b03-e0c4-4f4b-a5f3-ed21ab009ed4",
+          "name": "Handle asset tags",
+          "request": {
+            "name": "Handle asset tags",
+            "description": {
+              "content": "Add or remove custom tags from specified assets.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "assets",
+                "actions",
+                ":action",
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "action",
+                  "description": "(Required) Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2e07699b-c0e0-4756-b3b9-55a145c4ecd8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "assets",
+                    "actions",
+                    ":action",
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "action",
+                      "description": "(Required) Choose an action to apply to the tags on the specified entities: \n * **add** – Apply new tags in addition to the existing tags on the specified entities. \n * **remove** – Clears only the indicated tags from the specified entities. \n * **replace** – Replaces *all* of the current tags on *all* of the specified entities with the indicated tags. \n * **remove-all** – Clears *all* of the existing tags from the specified entities."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity-ids\": [\n    \"ip/1.1.1.1\",\n    \"ip/2.2.2.2\",\n    \"domain/acme.com\",\n    \"webapp/acme.com\",\n    \"iprange/1.1.1.1-1.2.3.4\"\n  ],\n  \"tags\": [\n    \"My tag\",\n    \"Another tag\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"failed\": [\n    \"<string>\"\n  ],\n  \"updated\": [\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ccfe56bd-8605-4f17-84f9-4b256c43aafa",
+    "name": "CyCognito API V1 Reference Assets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "item": [
+    {
+      "id": "4bb6915f-1142-4a5f-84e5-5b70b35c357a",
+      "name": "Organizations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9623cb50-19a7-4cc1-84f7-cbe6a8e8ace4",
+          "name": "Retrieve organizations",
+          "request": {
+            "name": "Retrieve organizations",
+            "description": {
+              "content": "Fetch organizations based on given criteria. If you are comparing search results with the CyCognito app, note that <span name=\"kb-predefined-filters-api-explanation\">Predefined Filters</span> are not applied to data queried via the API by default.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "orgs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "Comma-separated list of desired organization attributes. For more information, view the response example and schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "advanced-search",
+                  "value": "<string>",
+                  "description": "Allows you to input raw CyQL in order to query assets, issues, or organizations. See our <span name=\"kb-advanced-search-link\">Advanced Search</span> documentation for more details."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dacf37da-9b16-4f1c-b8c8-4337ca21ba44",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "orgs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "advanced-search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"origin\",\n    \"op\": \"in\",\n    \"values\": [\n      \"discovered\"\n    ]\n  },\n  {\n    \"field\": \"origin\",\n    \"op\": \"in\",\n    \"values\": [\n      \"discovered\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"assets-count\": 4339,\n    \"assets-count-by-security-grade\": {\n      \"a\": 9575,\n      \"b\": 2483,\n      \"c\": 2312,\n      \"d\": 6838,\n      \"f\": 1915\n    },\n    \"attractiveness-label\": \"string\",\n    \"country\": \"string\",\n    \"discoverability\": \"string\",\n    \"discovery-path\": [\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      },\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      }\n    ],\n    \"domain\": \"string\",\n    \"first-seen\": \"2013-10-17T19:29:04.358Z\",\n    \"id\": \"<string>\",\n    \"issues-count\": 3275,\n    \"issues-count-by-severity\": {\n      \"critical\": 1871,\n      \"high\": 5419,\n      \"medium\": 3573,\n      \"low\": 3810\n    },\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-seen\": \"1979-07-07T11:44:45.099Z\",\n    \"name\": \"string\",\n    \"origin\": \"string\",\n    \"probability\": 5188.832446962239,\n    \"references\": [\n      {\n        \"type\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"type\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"security-grade\": \"string\",\n    \"security-score\": 5504.929887252982,\n    \"severe-issues-count\": 7262,\n    \"sources\": [\n      {\n        \"type\": \"string\",\n        \"name\": \"<string>\",\n        \"value\": \"string\"\n      },\n      {\n        \"type\": \"string\",\n        \"name\": \"<string>\",\n        \"value\": \"string\"\n      }\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ]\n  },\n  {\n    \"assets-count\": 8415,\n    \"assets-count-by-security-grade\": {\n      \"a\": 9334,\n      \"b\": 6826,\n      \"c\": 2497,\n      \"d\": 1029,\n      \"f\": 587\n    },\n    \"attractiveness-label\": \"string\",\n    \"country\": \"string\",\n    \"discoverability\": \"string\",\n    \"discovery-path\": [\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      },\n      {\n        \"src\": \"string\",\n        \"dest\": \"string\",\n        \"movement-type\": \"<string>\",\n        \"movement-data\": \"<string>\"\n      }\n    ],\n    \"domain\": \"string\",\n    \"first-seen\": \"2014-06-06T01:42:05.978Z\",\n    \"id\": \"<string>\",\n    \"issues-count\": 3054,\n    \"issues-count-by-severity\": {\n      \"critical\": 7548,\n      \"high\": 1418,\n      \"medium\": 8457,\n      \"low\": 2349\n    },\n    \"labels\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last-seen\": \"1985-09-27T05:05:55.273Z\",\n    \"name\": \"string\",\n    \"origin\": \"string\",\n    \"probability\": 2514.128724514626,\n    \"references\": [\n      {\n        \"type\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"type\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"security-grade\": \"string\",\n    \"security-score\": 4451.700865567194,\n    \"severe-issues-count\": 9903,\n    \"sources\": [\n      {\n        \"type\": \"string\",\n        \"name\": \"<string>\",\n        \"value\": \"string\"\n      },\n      {\n        \"type\": \"string\",\n        \"name\": \"<string>\",\n        \"value\": \"string\"\n      }\n    ],\n    \"teams\": [\n      \"string\",\n      \"string\"\n    ],\n    \"tech-owners\": [\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"org-name\": \"string\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c2c240f-b10a-4c9f-98e1-8bdf8d2cb9cd",
+          "name": "Adjust organization attributions",
+          "request": {
+            "name": "Adjust organization attributions",
+            "description": {
+              "content": "Attribute or unattribute assets from specified organizations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "orgs",
+                "org-mgmt"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"asset-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orgs-to-add\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orgs-to-remove\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"propagate\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "19973a28-9426-420f-a1f4-42503c5b86bc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "orgs",
+                    "org-mgmt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"asset-ids\": [\n    \"ip/1.2.3.4\",\n    \"ip/127.0.0.1\",\n    \"domain/example.com\"\n  ],\n  \"orgs-to-add\": [\n    \"org1\",\n    \"org4\"\n  ],\n  \"orgs-to-remove\": [\n    \"org2\",\n    \"org3\"\n  ],\n  \"propagate\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"User action submitted\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "80355376-2360-412a-a3f4-52d9c9684a6d",
+    "name": "CyCognito API V1 Reference Assets Organizations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

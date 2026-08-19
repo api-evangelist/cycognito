@@ -1,0 +1,751 @@
+{
+  "item": [
+    {
+      "id": "652ce8a0-42c7-492a-b547-02295bd9f3e8",
+      "name": "Export Data",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1702ece7-238b-421b-a14e-a36e649147b0",
+          "name": "Initiate export",
+          "request": {
+            "name": "Initiate export",
+            "description": {
+              "content": "Select a desired asset type to initiate a data export. The resulting *report_ID* can be subsequently used with the **Fetch export link** method (below) to fetch a download link for the complete asset data in CSV format.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "export",
+                "request",
+                ":type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "truncate-fields",
+                  "value": "true",
+                  "description": "Caps the number of returned fields to a maximum of 32000 characters."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "type",
+                  "description": "(Required) The type of the entity whose data you want to export."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9c6962ec-9aeb-471b-b3ff-b65d75829c8d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "export",
+                    "request",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "truncate-fields",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) The type of the entity whose data you want to export."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"report-id\": \"a123456b-cd78-910e-1f2g-34h56i789j10\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2aafd0a7-cded-4853-9a5f-58d1dc59ace3",
+          "name": "Fetch export link",
+          "request": {
+            "name": "Fetch export link",
+            "description": {
+              "content": "Use the *report_ID* obtained from the **Initiate export** method (above) to generate a download link. Once acquired, this link enables you to access and download a CSV file containing detailed data of the assets by the initially chosen asset type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "export",
+                "get",
+                ":report_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "report_id",
+                  "description": "(Required) Unique identifier for the export."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ecb70f66-f7a5-412d-8ab5-672aa54d8d13",
+              "name": "Returns the download link of the export (if any) and the export status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "export",
+                    "get",
+                    ":report_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "report_id",
+                      "description": "(Required) Unique identifier for the export."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"export-status\": \"string\",\n  \"export-date\": \"1988-10-21T16:59:39.807Z\",\n  \"download-link\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1d926712-73ec-4a2b-91ef-d8e50d3d6dbb",
+          "name": "Initiate issue PDF export",
+          "request": {
+            "name": "Initiate issue PDF export",
+            "description": {
+              "content": "Initiate the generation of a PDF report for a specified issue. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The `truncate_long_fields` parameter (default: true) controls whether long field values are truncated in the PDF for improved readability.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "export",
+                "issue-to-pdf",
+                "request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"team\": \"<string>\",\n  \"truncate-long-fields\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "79a732fd-4d25-40e0-9a6e-ab324bd419f5",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "export",
+                    "issue-to-pdf",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"issue/1.1.1.1-cve-2023-12345\",\n  \"team\": \"Example Team\",\n  \"truncate-long-fields\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"report-id\": \"a123456b-cd78-910e-1f2g-34h56i789j10\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0cc99c7-ddd4-4ee3-be24-423304fc3976",
+          "name": "Fetch issue PDF export link",
+          "request": {
+            "name": "Fetch issue PDF export link",
+            "description": {
+              "content": "Check the status of your issue PDF export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "export",
+                "issue-to-pdf",
+                "get",
+                ":report_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "report_id",
+                  "description": "(Required) Unique identifier for the export."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "441895f2-4abb-4c59-b888-6aaf678707cc",
+              "name": "Returns the generated link that enables you to access and download the PDF file containing the detailed issue data, as well as the status of the export task.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "export",
+                    "issue-to-pdf",
+                    "get",
+                    ":report_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "report_id",
+                      "description": "(Required) Unique identifier for the export."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"export-status\": \"string\",\n  \"export-date\": \"1988-10-21T16:59:39.807Z\",\n  \"download-link\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90998e3f-9392-40c8-a659-dc564fb01556",
+          "name": "Initiate asset PDF export",
+          "request": {
+            "name": "Initiate asset PDF export",
+            "description": {
+              "content": "Initiate the generation of a PDF report for a list of assets. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The `truncate_long_fields` parameter (default: true) controls whether long field values are truncated in the PDF for improved readability.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "export",
+                "assets-to-pdf",
+                "request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"asset-ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncate-long-fields\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "baa8aed1-483f-4d7a-9fda-4d51a7f2dcd6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "export",
+                    "assets-to-pdf",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"asset-ids\": [\n    \"ip/1.2.3.4\",\n    \"ip/127.0.0.1\",\n    \"domain/example.com\"\n  ],\n  \"truncate-long-fields\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"report-id\": \"a123456b-cd78-910e-1f2g-34h56i789j10\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9510dc1-d17b-4340-936a-aced1f787da8",
+          "name": "Fetch asset PDF export link",
+          "request": {
+            "name": "Fetch asset PDF export link",
+            "description": {
+              "content": "Check the status of your asset PDF export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "export",
+                "assets-to-pdf",
+                "get",
+                ":report_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "report_id",
+                  "description": "(Required) Unique identifier for the export."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7ffeeeb7-dde3-4afb-a3b7-fcb4e8d2ae50",
+              "name": "Returns the generated link that enables you to access and download the PDF file containing the detailed asset data, as well as the status of the export task.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "export",
+                    "assets-to-pdf",
+                    "get",
+                    ":report_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "report_id",
+                      "description": "(Required) Unique identifier for the export."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"export-status\": \"string\",\n  \"export-date\": \"1988-10-21T16:59:39.807Z\",\n  \"download-link\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bb5897cd-9412-421b-9ef5-2ddd5a41394a",
+    "name": "CyCognito API V1 Reference Assets Export Data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "item": [
+    {
+      "id": "ffc783fc-aee5-4663-86a8-e18325eacaac",
+      "name": "Audit Logs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6a97b1f3-1756-4ae1-b932-c3866718a814",
+          "name": "Retrieve audit logs",
+          "request": {
+            "name": "Retrieve audit logs",
+            "description": {
+              "content": "Access events and activities from the audit log within defined timeframes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "audit-log"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Defines the number of results to be retrieved. Defaults to 10 with a max limit of 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Sets the starting index for result retrieval, influenced by the `count` parameter. By default, `offset` is 0. Example: `offset` 3 with `count` 25 fetches results from index 75 to 99."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"<string>\",\n    \"op\": \"<string>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "14f85d06-bef5-4331-9886-98e0a6d3b8bb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "audit-log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"field\": \"created-at\",\n    \"op\": \"between\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  {\n    \"field\": \"created-at\",\n    \"op\": \"between\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"attached-file-id\": \"string\",\n    \"created-at\": \"2024-05-18T13:09:08.557Z\",\n    \"details\": \"string\",\n    \"event\": \"Asset tags added\",\n    \"target-ids\": [\n      \"string\"\n    ],\n    \"target-type\": \"string\",\n    \"team-id\": \"string\",\n    \"team-name\": \"string\",\n    \"user-email\": \"string\",\n    \"user-id\": \"asdf1234qwer5678\",\n    \"user-name\": \"string\",\n    \"user-role\": \"string\"\n  },\n  {\n    \"attached-file-id\": \"string\",\n    \"created-at\": \"2024-05-18T13:09:08.557Z\",\n    \"details\": \"string\",\n    \"event\": \"Asset tags added\",\n    \"target-ids\": [\n      \"string\"\n    ],\n    \"target-type\": \"string\",\n    \"team-id\": \"string\",\n    \"team-name\": \"string\",\n    \"user-email\": \"string\",\n    \"user-id\": \"asdf1234qwer5678\",\n    \"user-name\": \"string\",\n    \"user-role\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b7c35396-fb51-43e8-8953-7c55c8dca438",
+    "name": "CyCognito API V1 Reference Assets Audit Logs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.\n| Code | Name | Description |\n|------|------|-------------|\n| 200 | OK | Success |\n| 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |\n| 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |\n| 404 | Not Found | The provided resource was not found. |\n| 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |\n| 415 | Unsupported Media Type | The request content type is not supported. |\n| 5XX | | Server failure |  |\n",
+      "type": "text/plain"
+    }
+  }
+}

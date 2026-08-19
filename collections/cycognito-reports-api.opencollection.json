@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CyCognito API V1 Reference Assets Reports API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate executive report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/reports/executive-report/request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate the generation of Executive Summary reports. This endpoint triggers the creation process and returns a unique report identifier for status tracking and retrieval. The report can be either an Enhanced Executive Report or First-Time Executive Report."
+        },
+        {
+          "info": {
+            "name": "Fetch executive report link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/reports/executive-report/get/:report_id",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the export."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check the status of your executive report export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
