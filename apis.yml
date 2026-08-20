@@ -119,6 +119,8 @@ apis:
   humanURL: https://api.platform.cycognito.com/v1/docs/index.html
   baseURL: https://api.platform.cycognito.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -189,6 +191,8 @@ apis:
   humanURL: https://api.platform.cycognito.com/v1/docs/index.html
   baseURL: https://api.platform.cycognito.com
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
