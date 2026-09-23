@@ -1,28 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 0.0.1
   title: CyCognito API V1 Reference Assets API
-  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
-
-    | Code | Name | Description |
-
-    |------|------|-------------|
-
-    | 200 | OK | Success |
-
-    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
-
-    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
-
-    | 404 | Not Found | The provided resource was not found. |
-
-    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
-
-    | 415 | Unsupported Media Type | The request content type is not supported. |
-
-    | 5XX | | Server failure |  |
-
-    '
+  description: The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues.
 tags:
 - name: Assets
 paths:
@@ -117,7 +97,7 @@ paths:
                     description: Specifies the value or values for the field.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     example:
                     - new
                 required:
@@ -142,7 +122,7 @@ paths:
                     additional-properties:
                       description: Supplementary attributes or characteristics of a web application asset, particularly detailing any unique web resource features or specifications of interest.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n      \"hosting.environment\": {\n        \"value\": [\n          \"IaaS\"\n        ],\n        \"display_name\": \"Hosting environment\"\n      },\n      \"hosting.provider\": {\n        \"value\": [\n          \"Amazon\"\n        ],\n        \"display_name\": \"Hosting provider\"\n      },\n      \"hosting.type\": {\n        \"value\": [\n          \"cloud\"\n        ],\n        \"display_name\": \"Hosting type\"\n      }\n    }"
                     advisories:
@@ -216,7 +196,7 @@ paths:
                       anyOf:
                       - type: array
                         items:
-                          $ref: '#/components/schemas/json.any?'
+                          $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "[\n      {\n        \"owner\": \"Amazon.com, Inc.\",\n        \"asn\": \"AS16509\"\n      },\n      {\n        \"owner\": \"GoDaddy.com, LLC\",\n        \"asn\": \"AS26496\"\n      }\n    ]"
                     attractiveness:
@@ -410,9 +390,9 @@ paths:
                             dest:
                               type: string
                             movement-type:
-                              $ref: '#/components/schemas/json.any?'
+                              $ref: '#/components/schemas/json.any'
                             movement-data:
-                              $ref: '#/components/schemas/json.any?'
+                              $ref: '#/components/schemas/json.any'
                           required:
                           - src
                           - dest
@@ -429,7 +409,7 @@ paths:
                     dns-records:
                       description: A list of the domain's DNS, SPF, and DKIM records.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n      \"A\": [\n        \"1.1.255.255\"\n      ],\n      \"MX\": [\n        \"10 us2.mx1.foobar.com.\"\n      ],\n      \"NS\": [\n        \"ns0.acmedns.net.\"\n      ],\n      \"SOA\": [\n        \"ns0.acmedns.net. support.acme.com. 1122334455 66778 8990 9090 1212\"\n      ],\n      \"TXT\": [\n        \"\\\"v=spf1 redirect=_spf.foobar.com\\\"\"\n      ]\n    }"
                     domain:
@@ -457,7 +437,7 @@ paths:
                       anyOf:
                       - type: array
                         items:
-                          $ref: '#/components/schemas/json.any?'
+                          $ref: '#/components/schemas/json.any'
                       - type: string
                       - type: 'null'
                       example: 'no'
@@ -814,7 +794,7 @@ paths:
                       - type: array
                         items:
                           anyOf:
-                          - $ref: '#/components/schemas/json.any?'
+                          - $ref: '#/components/schemas/json.any'
                           - type: 'null'
                       - type: 'null'
                       example: "[\n      {\n        \"domain_name\": \"is-oveds.sabich.amazonaws.com\",\n        \"first_seen\": \"2023-05-09T11:53:26.726Z\",\n        \"subject\": [\n          \"2.4.6.8.foo.bar.\"\n        ],\n        \"to_time\": \"2024-07-28T09:49:19.227Z\"\n      }\n    ]"
@@ -885,7 +865,7 @@ paths:
                     related-asset-ids:
                       description: A list of IDs for assets that are associated with the specified asset.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n      \"ip\": [\n        \"ip/1.1.1.1\",\n        \"ip/2.2.2.2\"\n      ],\n      \"cert\": [\n        \"cert/1234567890qwertyuiop\"\n      ],\n      \"webapp\": [\n        \"webapp/acmecorporation.com:82\"\n      ]\n    }"
                     related-screenshot-urls:
@@ -966,7 +946,7 @@ paths:
                                 - type: string
                               evidence:
                                 anyOf:
-                                - $ref: '#/components/schemas/json.any?'
+                                - $ref: '#/components/schemas/json.any'
                                 - type: 'null'
                               banners:
                                 anyOf:
@@ -995,7 +975,7 @@ paths:
                     serving-machines:
                       description: A list of servers that have been found to serve the certificate.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "[\n      {\n        \"id\": \"ip/1.1.1.1\",\n        \"ip\": \"1.2.3.4\",\n        \"port\": \"443\",\n        \"protocol\": \"tcp\"\n      }\n    ]"
                     severe-issues:
@@ -1188,6 +1168,8 @@ paths:
                       - type: string
                       - type: 'null'
                       example: webapp.acme.com
+      operationId: postV1Assets
+      x-operation-id-source: derived
     delete:
       description: Remove multiple assets from your attack surface in a single request. CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again.
       security:
@@ -1239,9 +1221,11 @@ paths:
                     example: Asset successfully removed.
                 required:
                 - status
+      operationId: deleteV1Assets
+      x-operation-id-source: derived
   /v1/assets/{asset_type}:
     post:
-      description: Fetch assets based on given criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      description: Fetch assets based on given criteria. If you are comparing search results with the CyCognito app, note that Predefined Filters are not applied to data queried via the API by default.
       security:
       - apiAuth: []
       summary: Retrieve assets
@@ -1342,7 +1326,7 @@ paths:
                     description: Specifies the value or values for the field.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     example:
                     - new
                 required:
@@ -1367,7 +1351,7 @@ paths:
                     additional-properties:
                       description: Supplementary attributes or characteristics of a web application asset, particularly detailing any unique web resource features or specifications of interest.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n      \"hosting.environment\": {\n        \"value\": [\n          \"IaaS\"\n        ],\n        \"display_name\": \"Hosting environment\"\n      },\n      \"hosting.provider\": {\n        \"value\": [\n          \"Amazon\"\n        ],\n        \"display_name\": \"Hosting provider\"\n      },\n      \"hosting.type\": {\n        \"value\": [\n          \"cloud\"\n        ],\n        \"display_name\": \"Hosting type\"\n      }\n    }"
                     advisories:
@@ -1441,7 +1425,7 @@ paths:
                       anyOf:
                       - type: array
                         items:
-                          $ref: '#/components/schemas/json.any?'
+                          $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "[\n      {\n        \"owner\": \"Amazon.com, Inc.\",\n        \"asn\": \"AS16509\"\n      },\n      {\n        \"owner\": \"GoDaddy.com, LLC\",\n        \"asn\": \"AS26496\"\n      }\n    ]"
                     attractiveness:
@@ -1631,9 +1615,9 @@ paths:
                             dest:
                               type: string
                             movement-type:
-                              $ref: '#/components/schemas/json.any?'
+                              $ref: '#/components/schemas/json.any'
                             movement-data:
-                              $ref: '#/components/schemas/json.any?'
+                              $ref: '#/components/schemas/json.any'
                           required:
                           - src
                           - dest
@@ -1650,7 +1634,7 @@ paths:
                     dns-records:
                       description: A list of the domain's DNS, SPF, and DKIM records.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n      \"A\": [\n        \"1.1.255.255\"\n      ],\n      \"MX\": [\n        \"10 us2.mx1.foobar.com.\"\n      ],\n      \"NS\": [\n        \"ns0.acmedns.net.\"\n      ],\n      \"SOA\": [\n        \"ns0.acmedns.net. support.acme.com. 1122334455 66778 8990 9090 1212\"\n      ],\n      \"TXT\": [\n        \"\\\"v=spf1 redirect=_spf.foobar.com\\\"\"\n      ]\n    }"
                     domain:
@@ -1674,7 +1658,7 @@ paths:
                       anyOf:
                       - type: array
                         items:
-                          $ref: '#/components/schemas/json.any?'
+                          $ref: '#/components/schemas/json.any'
                       - type: string
                       - type: 'null'
                       example: 'no'
@@ -2017,7 +2001,7 @@ paths:
                       - type: array
                         items:
                           anyOf:
-                          - $ref: '#/components/schemas/json.any?'
+                          - $ref: '#/components/schemas/json.any'
                           - type: 'null'
                       - type: 'null'
                       example: "[\n      {\n        \"domain_name\": \"is-oveds.sabich.amazonaws.com\",\n        \"first_seen\": \"2023-05-09T11:53:26.726Z\",\n        \"subject\": [\n          \"2.4.6.8.foo.bar.\"\n        ],\n        \"to_time\": \"2024-07-28T09:49:19.227Z\"\n      }\n    ]"
@@ -2086,7 +2070,7 @@ paths:
                     related-asset-ids:
                       description: A list of IDs for assets that are associated with the specified asset.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n      \"ip\": [\n        \"ip/1.1.1.1\",\n        \"ip/2.2.2.2\"\n      ],\n      \"cert\": [\n        \"cert/1234567890qwertyuiop\"\n      ],\n      \"webapp\": [\n        \"webapp/acmecorporation.com:82\"\n      ]\n    }"
                     related-screenshot-urls:
@@ -2167,7 +2151,7 @@ paths:
                                 - type: string
                               evidence:
                                 anyOf:
-                                - $ref: '#/components/schemas/json.any?'
+                                - $ref: '#/components/schemas/json.any'
                                 - type: 'null'
                               banners:
                                 anyOf:
@@ -2196,7 +2180,7 @@ paths:
                     serving-machines:
                       description: A list of servers that have been found to serve the certificate.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "[\n      {\n        \"id\": \"ip/1.1.1.1\",\n        \"ip\": \"1.2.3.4\",\n        \"port\": \"443\",\n        \"protocol\": \"tcp\"\n      }\n    ]"
                     severe-issues:
@@ -2381,6 +2365,8 @@ paths:
                       description: The name of the web application asset—e.g., `1.2.3.4`, `subdomain.acme.com`. This corresponds to the **Webapp Address** column in the Asset List.
                       type: string
                       example: webapp.acme.com
+      operationId: postV1AssetsByAssetType
+      x-operation-id-source: derived
   /v1/assets/{asset_type}/{asset_id}:
     get:
       description: Obtain specific asset details by type and ID.
@@ -2424,7 +2410,7 @@ paths:
                   additional-properties:
                     description: Supplementary attributes or characteristics of a web application asset, particularly detailing any unique web resource features or specifications of interest.
                     anyOf:
-                    - $ref: '#/components/schemas/json.any?'
+                    - $ref: '#/components/schemas/json.any'
                     - type: 'null'
                     example: "{\n      \"hosting.environment\": {\n        \"value\": [\n          \"IaaS\"\n        ],\n        \"display_name\": \"Hosting environment\"\n      },\n      \"hosting.provider\": {\n        \"value\": [\n          \"Amazon\"\n        ],\n        \"display_name\": \"Hosting provider\"\n      },\n      \"hosting.type\": {\n        \"value\": [\n          \"cloud\"\n        ],\n        \"display_name\": \"Hosting type\"\n      }\n    }"
                   advisories:
@@ -2498,7 +2484,7 @@ paths:
                     anyOf:
                     - type: array
                       items:
-                        $ref: '#/components/schemas/json.any?'
+                        $ref: '#/components/schemas/json.any'
                     - type: 'null'
                     example: "[\n      {\n        \"owner\": \"Amazon.com, Inc.\",\n        \"asn\": \"AS16509\"\n      },\n      {\n        \"owner\": \"GoDaddy.com, LLC\",\n        \"asn\": \"AS26496\"\n      }\n    ]"
                   attractiveness:
@@ -2688,9 +2674,9 @@ paths:
                           dest:
                             type: string
                           movement-type:
-                            $ref: '#/components/schemas/json.any?'
+                            $ref: '#/components/schemas/json.any'
                           movement-data:
-                            $ref: '#/components/schemas/json.any?'
+                            $ref: '#/components/schemas/json.any'
                         required:
                         - src
                         - dest
@@ -2707,7 +2693,7 @@ paths:
                   dns-records:
                     description: A list of the domain's DNS, SPF, and DKIM records.
                     anyOf:
-                    - $ref: '#/components/schemas/json.any?'
+                    - $ref: '#/components/schemas/json.any'
                     - type: 'null'
                     example: "{\n      \"A\": [\n        \"1.1.255.255\"\n      ],\n      \"MX\": [\n        \"10 us2.mx1.foobar.com.\"\n      ],\n      \"NS\": [\n        \"ns0.acmedns.net.\"\n      ],\n      \"SOA\": [\n        \"ns0.acmedns.net. support.acme.com. 1122334455 66778 8990 9090 1212\"\n      ],\n      \"TXT\": [\n        \"\\\"v=spf1 redirect=_spf.foobar.com\\\"\"\n      ]\n    }"
                   domain:
@@ -2731,7 +2717,7 @@ paths:
                     anyOf:
                     - type: array
                       items:
-                        $ref: '#/components/schemas/json.any?'
+                        $ref: '#/components/schemas/json.any'
                     - type: string
                     - type: 'null'
                     example: 'no'
@@ -3074,7 +3060,7 @@ paths:
                     - type: array
                       items:
                         anyOf:
-                        - $ref: '#/components/schemas/json.any?'
+                        - $ref: '#/components/schemas/json.any'
                         - type: 'null'
                     - type: 'null'
                     example: "[\n      {\n        \"domain_name\": \"is-oveds.sabich.amazonaws.com\",\n        \"first_seen\": \"2023-05-09T11:53:26.726Z\",\n        \"subject\": [\n          \"2.4.6.8.foo.bar.\"\n        ],\n        \"to_time\": \"2024-07-28T09:49:19.227Z\"\n      }\n    ]"
@@ -3143,7 +3129,7 @@ paths:
                   related-asset-ids:
                     description: A list of IDs for assets that are associated with the specified asset.
                     anyOf:
-                    - $ref: '#/components/schemas/json.any?'
+                    - $ref: '#/components/schemas/json.any'
                     - type: 'null'
                     example: "{\n      \"ip\": [\n        \"ip/1.1.1.1\",\n        \"ip/2.2.2.2\"\n      ],\n      \"cert\": [\n        \"cert/1234567890qwertyuiop\"\n      ],\n      \"webapp\": [\n        \"webapp/acmecorporation.com:82\"\n      ]\n    }"
                   related-screenshot-urls:
@@ -3224,7 +3210,7 @@ paths:
                               - type: string
                             evidence:
                               anyOf:
-                              - $ref: '#/components/schemas/json.any?'
+                              - $ref: '#/components/schemas/json.any'
                               - type: 'null'
                             banners:
                               anyOf:
@@ -3253,7 +3239,7 @@ paths:
                   serving-machines:
                     description: A list of servers that have been found to serve the certificate.
                     anyOf:
-                    - $ref: '#/components/schemas/json.any?'
+                    - $ref: '#/components/schemas/json.any'
                     - type: 'null'
                     example: "[\n      {\n        \"id\": \"ip/1.1.1.1\",\n        \"ip\": \"1.2.3.4\",\n        \"port\": \"443\",\n        \"protocol\": \"tcp\"\n      }\n    ]"
                   severe-issues:
@@ -3438,6 +3424,8 @@ paths:
                     description: The name of the web application asset—e.g., `1.2.3.4`, `subdomain.acme.com`. This corresponds to the **Webapp Address** column in the Asset List.
                     type: string
                     example: webapp.acme.com
+      operationId: getV1AssetsByAssetTypeByAssetId
+      x-operation-id-source: derived
     delete:
       description: Remove an asset from your attack surface. Note that CyCognito will continue to monitor removed assets for changes, in case you later decide that they are relevant again.
       security:
@@ -3496,15 +3484,17 @@ paths:
                     example: Asset successfully removed.
                 required:
                 - status
+      operationId: deleteV1AssetsByAssetTypeByAssetId
+      x-operation-id-source: derived
   /v1/assets/{asset_type}/{asset_id}/investigation-status:
     put:
       description: 'Adjust the specified asset''s investigation status:
 
-        - **Investigated** – The asset has been investigated.
+        - **Investigated** – The asset has been investigated.
 
-        - **Investigating** – The asset is currently undergoing investigation by someone in your team.
+        - **Investigating** – The asset is currently undergoing investigation by someone in your team.
 
-        - **Uninvestigated** – The asset has not been investigated yet. '
+        - **Uninvestigated** – The asset has not been investigated yet.'
       security:
       - apiAuth: []
       summary: Update asset's investigation status
@@ -3555,7 +3545,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -3566,6 +3556,8 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1AssetsByAssetTypeByAssetIdInvestigationStatus
+      x-operation-id-source: derived
   /v1/assets/actions/add/comment:
     put:
       description: Allows you to add comments to multiple assets identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content.
@@ -3606,7 +3598,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -3617,6 +3609,8 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1AssetsActionsAddComment
+      x-operation-id-source: derived
   /v1/assets/actions/{action}/tags:
     put:
       description: Add or remove custom tags from specified assets.
@@ -3675,7 +3669,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -3686,9 +3680,11 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1AssetsActionsByActionTags
+      x-operation-id-source: derived
 components:
   schemas:
-    json.any?:
+    json.any:
       anyOf:
       - type: string
       - type: boolean
@@ -3699,10 +3695,10 @@ components:
         format: byte
       - type: array
         items:
-          $ref: '#/components/schemas/json.any?'
+          $ref: '#/components/schemas/json.any'
       - type: object
         additionalProperties:
-          $ref: '#/components/schemas/json.any?'
+          $ref: '#/components/schemas/json.any'
       - type: 'null'
   securitySchemes:
     apiAuth:

@@ -1,34 +1,14 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 0.0.1
-  title: CyCognito API V1 Reference Assets Issues API
-  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
-
-    | Code | Name | Description |
-
-    |------|------|-------------|
-
-    | 200 | OK | Success |
-
-    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
-
-    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
-
-    | 404 | Not Found | The provided resource was not found. |
-
-    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
-
-    | 415 | Unsupported Media Type | The request content type is not supported. |
-
-    | 5XX | | Server failure |  |
-
-    '
+  title: CyCognito API V1 Reference Issues API
+  description: The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues.
 tags:
 - name: Issues
 paths:
   /v1/issues:
     post:
-      description: Retrieve a list of issues based on given filter criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      description: Retrieve a list of issues based on given filter criteria. If you are comparing search results with the CyCognito app, note that Predefined Filters are not applied to data queried via the API by default.
       security:
       - apiAuth: []
       summary: Search issues
@@ -117,7 +97,7 @@ paths:
                     description: Specifies the value or values for the field.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     example:
                     - new
                 required:
@@ -356,7 +336,7 @@ paths:
                     evidence:
                       description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
                     exploitation-availability:
@@ -737,7 +717,7 @@ paths:
                                 - type: boolean
                                 - type: 'null'
                               tool-references:
-                                $ref: '#/components/schemas/json.any?'
+                                $ref: '#/components/schemas/json.any'
                               tool-visibility:
                                 anyOf:
                                 - type: string
@@ -807,6 +787,8 @@ paths:
                       - type: string
                       - type: 'null'
                       example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+      operationId: postV1Issues
+      x-operation-id-source: derived
   /v1/issues/issue/{issue_instance_id}:
     get:
       description: Obtain details of a specific issue using its identifier.
@@ -1052,7 +1034,7 @@ paths:
                   evidence:
                     description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
                     anyOf:
-                    - $ref: '#/components/schemas/json.any?'
+                    - $ref: '#/components/schemas/json.any'
                     - type: 'null'
                     example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
                   exploitation-availability:
@@ -1433,7 +1415,7 @@ paths:
                               - type: boolean
                               - type: 'null'
                             tool-references:
-                              $ref: '#/components/schemas/json.any?'
+                              $ref: '#/components/schemas/json.any'
                             tool-visibility:
                               anyOf:
                               - type: string
@@ -1503,15 +1485,17 @@ paths:
                     - type: string
                     - type: 'null'
                     example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+      operationId: getV1IssuesIssueByIssueInstanceId
+      x-operation-id-source: derived
   /v1/issues/issue/{issue_instance_id}/investigation-status:
     put:
       description: 'Adjust the specified issue''s investigation status:
 
-        - **Investigated** – The issue has been investigated.
+        - **Investigated** – The issue has been investigated.
 
-        - **Investigating** – The issue is currently undergoing investigation by someone in your team.
+        - **Investigating** – The issue is currently undergoing investigation by someone in your team.
 
-        - **Uninvestigated** – The issue has not been investigated yet.'
+        - **Uninvestigated** – The issue has not been investigated yet.'
       security:
       - apiAuth: []
       summary: Update issue's investigation status
@@ -1550,7 +1534,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -1561,6 +1545,8 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1IssuesIssueByIssueInstanceIdInvestigationStatus
+      x-operation-id-source: derived
   /v1/issues/actions/add/comment:
     put:
       description: Allows you to add comments to multiple issues identified by their unique IDs. The comments are appended to the existing comment log and do not replace any existing content.
@@ -1602,7 +1588,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -1613,6 +1599,8 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1IssuesActionsAddComment
+      x-operation-id-source: derived
   /v1/issues/actions/{action}/tags:
     put:
       description: Add or remove custom tags from specified issues.
@@ -1669,7 +1657,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -1680,6 +1668,8 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1IssuesActionsByActionTags
+      x-operation-id-source: derived
   /v1/issues/actions/archive:
     put:
       description: Move issues to an archived state, distinguishing them from open and resolved issues.
@@ -1733,7 +1723,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -1744,6 +1734,8 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1IssuesActionsArchive
+      x-operation-id-source: derived
   /v1/issues/actions/snooze:
     put:
       description: Snooze issues for a specified duration, hiding them from your open issues list until the snooze period expires. This enables automated lifecycle control from external workflows while maintaining accurate attack surface metrics.
@@ -1788,7 +1780,7 @@ paths:
                     description: A list of entity IDs for which the requested action could not be completed. When the response status is 200, the list includes entity IDs where the action could not be executed, possibly due to insufficient permissions or because the entity ID is associated with multiple teams. When the response status is 400, the list contains an error message indicating that the number of provided entity IDs exceeds the maximum allowable limit.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     uniqueItems: true
                   updated:
                     description: A list of entity IDs that were successfully updated as a result of the action. It confirms the successful execution of the requested operation on these entities.
@@ -1799,9 +1791,11 @@ paths:
                 required:
                 - failed
                 - updated
+      operationId: putV1IssuesActionsSnooze
+      x-operation-id-source: derived
   /v1/archived-issues:
     post:
-      description: Retrieve archived issues based on set criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      description: Retrieve archived issues based on set criteria. If you are comparing search results with the CyCognito app, note that Predefined Filters are not applied to data queried via the API by default.
       security:
       - apiAuth: []
       summary: Search archived issues
@@ -1890,7 +1884,7 @@ paths:
                     description: Specifies the value or values for the field.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     example:
                     - new
                 required:
@@ -2129,7 +2123,7 @@ paths:
                     evidence:
                       description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
                     exploitation-availability:
@@ -2510,7 +2504,7 @@ paths:
                                 - type: boolean
                                 - type: 'null'
                               tool-references:
-                                $ref: '#/components/schemas/json.any?'
+                                $ref: '#/components/schemas/json.any'
                               tool-visibility:
                                 anyOf:
                                 - type: string
@@ -2580,9 +2574,11 @@ paths:
                       - type: string
                       - type: 'null'
                       example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+      operationId: postV1ArchivedIssues
+      x-operation-id-source: derived
   /v1/resolved-issues:
     post:
-      description: Retrieve resolved issues based on set criteria. If you are comparing search results with the CyCognito app, note that <span name="kb-predefined-filters-api-explanation">Predefined Filters</span> are not applied to data queried via the API by default.
+      description: Retrieve resolved issues based on set criteria. If you are comparing search results with the CyCognito app, note that Predefined Filters are not applied to data queried via the API by default.
       security:
       - apiAuth: []
       summary: Search resolved issues
@@ -2671,7 +2667,7 @@ paths:
                     description: Specifies the value or values for the field.
                     type: array
                     items:
-                      $ref: '#/components/schemas/json.any?'
+                      $ref: '#/components/schemas/json.any'
                     example:
                     - new
                 required:
@@ -2910,7 +2906,7 @@ paths:
                     evidence:
                       description: Provides detailed proof supporting the detection of an issue by CyCognito, including validation steps and necessary information for verification.
                       anyOf:
-                      - $ref: '#/components/schemas/json.any?'
+                      - $ref: '#/components/schemas/json.any'
                       - type: 'null'
                       example: "{\n                                      \"evidence\": \"This field is designed to handle complex data structures, potentially involving multiple nested properties that vary from issue to issue.\",\n                                      \"more-details-link\": \"A URL to more details\",\n                                      \"curl-cmd\": \"The curl command\",\n                                      \"hostname\": \"The host name\"\n                                      }"
                     exploitation-availability:
@@ -3291,7 +3287,7 @@ paths:
                                 - type: boolean
                                 - type: 'null'
                               tool-references:
-                                $ref: '#/components/schemas/json.any?'
+                                $ref: '#/components/schemas/json.any'
                               tool-visibility:
                                 anyOf:
                                 - type: string
@@ -3361,9 +3357,11 @@ paths:
                       - type: string
                       - type: 'null'
                       example: '"CVE-2019-19781 was weaponized and productized. The actor pumpedkicks (aka mont4na) allegedly exploited CVE-2019-19781 and posted a list of targets vulnerable to CVE-2019-19781. Additionally, the actor BiosHell posted a link to an exploit for CVE-2019-19781."'
+      operationId: postV1ResolvedIssues
+      x-operation-id-source: derived
 components:
   schemas:
-    json.any?:
+    json.any:
       anyOf:
       - type: string
       - type: boolean
@@ -3374,10 +3372,10 @@ components:
         format: byte
       - type: array
         items:
-          $ref: '#/components/schemas/json.any?'
+          $ref: '#/components/schemas/json.any'
       - type: object
         additionalProperties:
-          $ref: '#/components/schemas/json.any?'
+          $ref: '#/components/schemas/json.any'
       - type: 'null'
   securitySchemes:
     apiAuth:

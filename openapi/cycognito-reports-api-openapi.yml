@@ -1,28 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 0.0.1
-  title: CyCognito API V1 Reference Assets Reports API
-  description: 'The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues. You can also manage the scope of your attack surface, attribute assets to organizations, and verify the identity of IP scans on your assets. Our legacy API (V0) documentation is available for download [here](https://platform.cycognito.com/CyCognito-API-V0-Reference.pdf). While V0 is still being supported, please note that this API is undergoing deprecation.
-
-    | Code | Name | Description |
-
-    |------|------|-------------|
-
-    | 200 | OK | Success |
-
-    | 400 | Bad Request | The request is malformed—e.g., the body cannot be properly parsed, expected fields are not included in the body, or unsupported request header values. |
-
-    | 403 | Access Restricted | There are insufficient permissions or a valid API key was not provided. |
-
-    | 404 | Not Found | The provided resource was not found. |
-
-    | 405 | Method Not Allowed | The HTTP method is not allowed for the given resource. |
-
-    | 415 | Unsupported Media Type | The request content type is not supported. |
-
-    | 5XX | | Server failure |  |
-
-    '
+  title: CyCognito API V1 Reference Reports API
+  description: The CyCognito API V1 is a REST API that allows you to post and get data from our main data entities—assets and issues.
 tags:
 - name: Reports
 paths:
@@ -76,6 +56,8 @@ paths:
                     example: a123456b-cd78-910e-1f2g-34h56i789j10
                 required:
                 - report-id
+      operationId: postV1ReportsExecutiveReportRequest
+      x-operation-id-source: derived
   /v1/reports/executive-report/get/{report_id}:
     get:
       description: Check the status of your executive report export and retrieve the download link once available. This endpoint provides the status of the PDF generation process and, upon completion, the link to download the generated PDF report.
@@ -121,6 +103,8 @@ paths:
                 required:
                 - export-status
                 - export-date
+      operationId: getV1ReportsExecutiveReportGetByReportId
+      x-operation-id-source: derived
 components:
   securitySchemes:
     apiAuth:

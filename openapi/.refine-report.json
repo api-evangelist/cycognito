@@ -1,18 +1,7 @@
 {
   "provider": "cycognito",
   "sources": [
-    "cycognito-assets-api-openapi.yml",
-    "cycognito-audit-logs-api-openapi.yml",
-    "cycognito-cloud-connectors-api-openapi.yml",
-    "cycognito-export-data-api-openapi.yml",
-    "cycognito-issues-api-openapi.yml",
-    "cycognito-organizations-api-openapi.yml",
-    "cycognito-realm-api-openapi.yml",
-    "cycognito-reports-api-openapi.yml",
-    "cycognito-revalidation-api-openapi.yml",
-    "cycognito-scope-management-api-openapi.yml",
-    "cycognito-users-api-openapi.yml",
-    "cycognito-verify-ips-api-openapi.yml"
+    "_original/cycognito-v1-openapi-original.json"
   ],
   "outputs": [
     "cycognito-assets-api-openapi.yml",
@@ -31,6 +20,35 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "cycognito-v1-openapi-original.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0; renamed 1 component key(s) illegal in 3.x (e.g. json.any?)",
+    "cycognito-v1-openapi-original.json: declared missing tag: Assets",
+    "cycognito-v1-openapi-original.json: declared missing tag: Audit Logs",
+    "cycognito-v1-openapi-original.json: declared missing tag: Cloud Connectors",
+    "cycognito-v1-openapi-original.json: declared missing tag: Export Data",
+    "cycognito-v1-openapi-original.json: declared missing tag: Issues",
+    "cycognito-v1-openapi-original.json: declared missing tag: Organizations",
+    "cycognito-v1-openapi-original.json: declared missing tag: Realm",
+    "cycognito-v1-openapi-original.json: declared missing tag: Reports",
+    "cycognito-v1-openapi-original.json: declared missing tag: Revalidation",
+    "cycognito-v1-openapi-original.json: declared missing tag: Scope Management",
+    "cycognito-v1-openapi-original.json: declared missing tag: Users",
+    "cycognito-v1-openapi-original.json: declared missing tag: Verify IPs",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "cycognito-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-audit-logs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-cloud-connectors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-export-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-issues-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-realm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-revalidation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-scope-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cycognito-verify-ips-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
