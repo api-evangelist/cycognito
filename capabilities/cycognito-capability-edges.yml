@@ -1,0 +1,38 @@
+slug: cycognito
+provider: CyCognito
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Issues
+  spec_file: cycognito-issues-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.78
+  evidence: POST /v1/issues  Search issues; PUT /v1/issues/issue/{issue_instance_id}/investigation-status  Update
+    issue's investigation status; POST /v1/resolved-issues  Search resolved issues
+  reason: Issues in this EASM platform are discovered security exposures tracked through investigation,
+    snooze, archive and resolution — i.e. the find-triage-remediate loop of vulnerability management.
+    Some chance the better fit is threat detection/response, hence 0.78 rather than higher.
+- tag: Assets
+  spec_file: cycognito-assets-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: PUT /v1/assets/{asset_type}/{asset_id}/investigation-status  Update asset's investigation
+    status
+  reason: Assets here are internet-exposed attack-surface entities (domains, IPs, web apps) with security
+    investigation status, comments and tags, per the vendor's EASM platform. That places it in Cybersecurity
+    Management, but the operations are inventory/triage of the attack surface and do not clearly name
+    vulnerability scanning or SOC response, so no L2 is asserted.
