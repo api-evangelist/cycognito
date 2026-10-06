@@ -44,7 +44,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-10-06'
 image: https://www.cycognito.com/images/social/banner-homepage-2400x1256-email.png
 tags:
 - Company
@@ -234,6 +234,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- url: https://www.cycognito.com/blog/feed/
+  type: BlogRSS
 - type: CapabilityMap
   url: capabilities/cycognito-capability-edges.yml
   name: CyCognito Business Capability Map
