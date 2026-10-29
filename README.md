@@ -1,4 +1,4 @@
-# Cycognito
+# CyCognito
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,6 +64,143 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Cycognito is a company surfaced as a portfolio company of accel, lightspeed-venture-partners and added to the API Evangelist network as a stub for enrichment. Sector: cybersecurity. This profile is a lead awaiting the enrichment pipeline.
+CyCognito is a cybersecurity company providing an external attack surface management (EASM) and exposure management platform. Its cloud-native platform continuously discovers, maps, and tests an organization's internet-exposed assets—domains, IPs, web apps, APIs, and cloud environments—to surface and validate critical exposures before attackers exploit them. The CyCognito API V1 is a REST API (API-key authenticated) that lets you query assets and issues, manage attack-surface scope, attribute assets to organizations, manage users and cloud connectors, run exports and executive reports, and verify the identity of scanner IPs. CyCognito is backed by Accel and Lightspeed Venture Partners.
 
-Backed by: accel, lightspeed-venture-partners — http://www.cycognito.com/
+**Areas:** Company · Cybersecurity · Attack Surface Management · Exposure Management · Security · Vulnerability Management · Cloud Security · API Security
+
+## CyCognito on APIs.io
+
+Everything profiled for CyCognito is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cycognito/](https://apis.io/providers/cycognito/)** — or go straight to one of the APIs or properties below.
+
+### APIs (12)
+
+- [CyCognito Assets API](https://apis.io/apis/cycognito/cycognito-assets-api/) — The Assets API from CyCognito — 6 operation(s) for assets.
+- [CyCognito Audit Logs API](https://apis.io/apis/cycognito/cycognito-audit-logs-api/) — The Audit Logs API from CyCognito — 1 operation(s) for audit logs.
+- [CyCognito Cloud Connectors API](https://apis.io/apis/cycognito/cycognito-cloud-connectors-api/) — The Cloud Connectors API from CyCognito — 4 operation(s) for cloud connectors.
+- [CyCognito Export Data API](https://apis.io/apis/cycognito/cycognito-export-data-api/) — The Export Data API from CyCognito — 6 operation(s) for export data.
+- [CyCognito Issues API](https://apis.io/apis/cycognito/cycognito-issues-api/) — The Issues API from CyCognito — 9 operation(s) for issues.
+- [CyCognito Organizations API](https://apis.io/apis/cycognito/cycognito-organizations-api/) — The Organizations API from CyCognito — 2 operation(s) for organizations.
+- [CyCognito Realm API](https://apis.io/apis/cycognito/cycognito-realm-api/) — The Realm API from CyCognito — 2 operation(s) for realm.
+- [CyCognito Reports API](https://apis.io/apis/cycognito/cycognito-reports-api/) — The Reports API from CyCognito — 2 operation(s) for reports.
+- [CyCognito Revalidation API](https://apis.io/apis/cycognito/cycognito-revalidation-api/) — The Revalidation API from CyCognito — 1 operation(s) for revalidation.
+- [CyCognito Scope Management API](https://apis.io/apis/cycognito/cycognito-scope-management-api/) — The Scope Management API from CyCognito — 1 operation(s) for scope management.
+- [CyCognito Users API](https://apis.io/apis/cycognito/cycognito-users-api/) — The Users API from CyCognito — 2 operation(s) for users.
+- [CyCognito Verify IPs API](https://apis.io/apis/cycognito/cycognito-verify-ips-api/) — The Verify IPs API from CyCognito — 1 operation(s) for verify ips.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [cycognito](https://apis.io/servers/cycognito/cycognito/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Cycognito Agentic Access](https://apis.io/agentic-access/cycognito/cycognito-agentic-access/)
+
+#### Collections (12)
+
+Postman and Open Collection request collections.
+
+- [CyCognito API V1 Reference Assets API](https://apis.io/collections/cycognito/open-cycognito-assets-api/)
+- [CyCognito API V1 Reference Assets Audit Logs API](https://apis.io/collections/cycognito/open-cycognito-audit-logs-api/)
+- [CyCognito API V1 Reference Assets Cloud Connectors API](https://apis.io/collections/cycognito/open-cycognito-cloud-connectors-api/)
+- [CyCognito API V1 Reference Assets Export Data API](https://apis.io/collections/cycognito/open-cycognito-export-data-api/)
+- [CyCognito API V1 Reference Assets Issues API](https://apis.io/collections/cycognito/open-cycognito-issues-api/)
+- [CyCognito API V1 Reference Assets Organizations API](https://apis.io/collections/cycognito/open-cycognito-organizations-api/)
+- [CyCognito API V1 Reference Assets Realm API](https://apis.io/collections/cycognito/open-cycognito-realm-api/)
+- [CyCognito API V1 Reference Assets Reports API](https://apis.io/collections/cycognito/open-cycognito-reports-api/)
+- [CyCognito API V1 Reference Assets Revalidation API](https://apis.io/collections/cycognito/open-cycognito-revalidation-api/)
+- [CyCognito API V1 Reference Assets Scope Management API](https://apis.io/collections/cycognito/open-cycognito-scope-management-api/)
+- [CyCognito API V1 Reference Assets Users API](https://apis.io/collections/cycognito/open-cycognito-users-api/)
+- [CyCognito API V1 Reference Assets Verify IPs API](https://apis.io/collections/cycognito/open-cycognito-verify-ips-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Cycognito V1 Overlay](https://apis.io/overlays/cycognito/cycognito-v1-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Cycognito Authentication](https://apis.io/security/cycognito/cycognito-authentication/)
+- [Cycognito Domain Security](https://apis.io/security/cycognito/cycognito-domain-security/)
+- [Cycognito Trust Center](https://apis.io/security/cycognito/cycognito-trust-center/)
+- [Cycognito Vulnerability Disclosure](https://apis.io/security/cycognito/cycognito-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.cycognito.com/)
+- [Documentation](https://api.platform.cycognito.com/v1/docs/index.html)
+- [API reference](https://api.platform.cycognito.com/v1/docs/index.html)
+- [Pricing](https://www.cycognito.com/platform/pricing.php)
+- [Sign up](https://www.cycognito.com/demo)
+- [Blog](https://www.cycognito.com/blog/)
+- [Compliance](https://www.cycognito.com/company/trust.php)
+- [Terms of service](https://www.cycognito.com/terms-of-service)
+- [Privacy policy](https://www.cycognito.com/privacy-policy)
+- [GitHub](https://github.com/CyCognito)
+
+## API Evangelist rating
+
+**Kin Score 42.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 26.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 44.6 |
+| Access clarity | 60.5 |
+
+**Agent readiness 33.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cycognito/](https://apis.io/providers/cycognito/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for CyCognito: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cycognito/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
